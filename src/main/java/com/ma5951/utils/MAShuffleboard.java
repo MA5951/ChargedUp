@@ -1,19 +1,7 @@
 package com.ma5951.utils;
 
 import java.util.HashMap;
-import java.util.Map;
-import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.BooleanSubscriber;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.Publisher;
-import edu.wpi.first.networktables.StringPublisher;
-import edu.wpi.first.networktables.StringSubscriber;
-import edu.wpi.first.networktables.Subscriber;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
