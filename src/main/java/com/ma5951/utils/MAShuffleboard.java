@@ -15,56 +15,52 @@ public class MAShuffleboard {
     }
 
     public void addNum(String title, double num) {
-        try {
-            values.get(title).setDouble(num);
-        }
-        catch (Exception e) {
+        if (!values.containsKey(title)) {
             values.put(title, board.add(title, num).getEntry());
+        } else {
+            values.get(title).setDouble(num);
         }
     }
 
     public void addString(String title, String str) {
-        try {
-            values.get(title).setString(str);
-        }
-        catch (Exception e) {
+        if(!values.containsKey(title)) {
             values.put(title, board.add(title, str).getEntry());
+        } else {
+            values.get(title).setString(str);
         }
     }
 
     public void addBoolean(String title, boolean bol) {
-        try {
-            values.get(title).setBoolean(bol);
-        }
-        catch (Exception e) {
+        if (!values.containsKey(title)) {
             values.put(title, board.add(title, bol).getEntry());
+        } else {
+            values.get(title).setBoolean(bol);
         }
     }
     
     public double getNum(String title) {
-        try {
+        if (values.containsKey(title)) {
             return values.get(title).getDouble(0);
-        } catch (Exception e){
-            System.err.println("none existing title");
         }
+        System.err.println("none existing title: " + title);
         return 0;
     }
 
     public String getString(String title) {
-        try {
+
+        if (values.containsKey(title)) {
             return values.get(title).getString("null");
-        } catch (Exception e){
-            System.err.println("none existing title");
         }
+        System.err.println("none existing title: " + title);
         return "null";
     }
 
     public Boolean getBoolean(String title) {
-        try {
+
+        if (values.containsKey(title)) {
             return values.get(title).getBoolean(false);
-        } catch (Exception e){
-            System.err.println("none existing title");
         }
+        System.err.println("none existing title: " + title);
         return false;
     }
 }
