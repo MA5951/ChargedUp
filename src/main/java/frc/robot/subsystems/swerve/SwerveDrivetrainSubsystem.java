@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.swerve;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
@@ -44,8 +46,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   private final String theta_KI = "theta_KI";
   private final String theta_KD = "theta_KD";
   
-
-
   private final MAShuffleboard board;
 
   private final Translation2d frontLeftLocation = new Translation2d(
@@ -109,12 +109,21 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics,
     new Rotation2d(0), getSwerveModulePositions());
 
-  public static SwerveModulePosition[] getSwerveModulePositions() {
+  private static SwerveModulePosition[] getSwerveModulePositions() {
     return new SwerveModulePosition[] {
+      frontLeftModule.getPosition(), 
+      frontRightModule.getPosition(),
+      rearLeftModule.getPosition(),
+      rearRightModule.getPosition()};
+  }
+
+  private static SwerveModuleState[] getSwerveModuleStates() {
+    return new SwerveModuleState[] {
       frontLeftModule.getState(), 
       frontRightModule.getState(),
       rearLeftModule.getState(),
-      rearRightModule.getState()};
+      rearRightModule.getState()
+    };
   }
 
   /** Creates a new DrivetrainSubsystem. */
@@ -246,6 +255,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     P_CONTROLLER_Y.setP(board.getNum(KP_Y));
     thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI), board.getNum(theta_KD));
     odometry.update(getRotation2d(), getSwerveModulePositions());
+    Logger.getInstance().recordOutput("Odometry", getPose());
+    Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());
 
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());

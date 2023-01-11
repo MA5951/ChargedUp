@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
-public class swerveJoystickCommand extends CommandBase {
+public class SwerveJoystickCommand extends CommandBase {
   /** Creates a new swerveJoystickCommand. */
   private final SwerveDrivetrainSubsystem swerve;
   //private final SlewRateLimiter xRateLimiter, yRateLimiter, turningRateLimiter;
@@ -22,14 +22,11 @@ public class swerveJoystickCommand extends CommandBase {
    * @param ySpeedSupplier Percentage (-1 - 1)
    * @param turningSpeedSupplier Percentage (-1 - 1)
    */
-  public swerveJoystickCommand(
+  public SwerveJoystickCommand(
     Supplier<Double> xSpeedSupplier,
     Supplier<Double> ySpeedSupplier,
     Supplier<Double> turningSpeedSupplier) {
     swerve = SwerveDrivetrainSubsystem.getInstance();
-    // xRateLimiter = new SlewRateLimiter(2.2);
-    // yRateLimiter = new SlewRateLimiter(2.2);
-    // turningRateLimiter = new SlewRateLimiter(1.9);
     this.xSpeedSupplier = xSpeedSupplier;
     this.ySpeedSupplier = ySpeedSupplier;
     this.turningSpeedSupplier = turningSpeedSupplier;

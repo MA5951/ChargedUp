@@ -19,9 +19,15 @@ public abstract class SwerveModule {
 
     public abstract void resetEncoders();
 
-    public SwerveModulePosition getState() {
+    public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             getDrivePosition(), new Rotation2d(Math.toRadians(getTurningPosition()))
+        );
+    }
+
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(
+            getDriveVelocity(), new Rotation2d(Math.toRadians(getTurningPosition()))
         );
     }
     
