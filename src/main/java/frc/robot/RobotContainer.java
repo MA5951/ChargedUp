@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
+import com.ma5951.utils.PhotonVision;
 import com.ma5951.utils.RobotConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +26,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final static CommandPS4Controller COMMAND_PS4_CONTROLLER = 
     new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
+  public final static PhotonVision photonVision = new PhotonVision(
+    "ma5951", 0, 0, new double[0]);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
