@@ -23,7 +23,7 @@ public class SwerveModuleTalonFX extends SwerveModule{
 
     private final CANCoder absoluteEcoder;
 
-    private final boolean isAbsoluteEcoderReversed;
+    private final boolean isAbsoluteEncoderReversed;
     private final double offsetEncoder;
 
     private final MAShuffleboard board;
@@ -36,13 +36,13 @@ public class SwerveModuleTalonFX extends SwerveModule{
     private final String turningKD = "turningKD";
 
     public SwerveModuleTalonFX(String tabName, int driveID,
-            int turningID, int absoluteEcoderID, boolean isDriveMotorReversed,
-            boolean isTurningMotorReversed, boolean isAbsoluteEcoderReversed,
+            int turningID, int absoluteEncoderID, boolean isDriveMotorReversed,
+            boolean isTurningMotorReversed, boolean isAbsoluteEncoderReversed,
             double offsetEncoder) {
-        this.absoluteEcoder = new CANCoder(absoluteEcoderID);
+        this.absoluteEcoder = new CANCoder(absoluteEncoderID);
 
         this.offsetEncoder = offsetEncoder;
-        this.isAbsoluteEcoderReversed = isAbsoluteEcoderReversed;
+        this.isAbsoluteEncoderReversed = isAbsoluteEncoderReversed;
 
         this.board = new MAShuffleboard(tabName);
 
@@ -108,7 +108,7 @@ public class SwerveModuleTalonFX extends SwerveModule{
     }
 
     public double getAbsoluteEncoderPosition() {
-        return isAbsoluteEcoderReversed ?
+        return isAbsoluteEncoderReversed ?
          360 - absoluteEcoder.getAbsolutePosition() :
          absoluteEcoder.getAbsolutePosition();
     }

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
-public class SwerveJoystickCommand extends CommandBase {
+public class DriveSwerveCommand extends CommandBase {
   /** Creates a new swerveJoystickCommand. */
   private final SwerveDrivetrainSubsystem swerve;
   //private final SlewRateLimiter xRateLimiter, yRateLimiter, turningRateLimiter;
@@ -22,7 +22,7 @@ public class SwerveJoystickCommand extends CommandBase {
    * @param ySpeedSupplier Percentage (-1 - 1)
    * @param turningSpeedSupplier Percentage (-1 - 1)
    */
-  public SwerveJoystickCommand(
+  public DriveSwerveCommand(
     Supplier<Double> xSpeedSupplier,
     Supplier<Double> ySpeedSupplier,
     Supplier<Double> turningSpeedSupplier) {
@@ -52,7 +52,7 @@ public class SwerveJoystickCommand extends CommandBase {
 
     xSpeed = Math.abs(xSpeed) < 0.1 ? 0 : xSpeed;
     ySpeed = Math.abs(ySpeed) < 0.1 ? 0 : ySpeed;
-    turningSpeed = Math.abs(turningSpeed) < 0.1 ? 0 : turningSpeed;
+    turningSpeed = (Math.abs(turningSpeed) < 0.1 ? 0 : turningSpeed);
 
     xSpeed = xSpeed * 
       SwerveConstants.maxVelocity * 
