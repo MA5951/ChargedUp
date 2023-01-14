@@ -19,6 +19,16 @@ public abstract class SwerveModule {
 
     public abstract void resetEncoders();
 
+    public abstract void turningMotorSetPower(double power);
+
+    public abstract void driveMotorSetPower(double power);
+
+    public abstract void turningUsingPID(double setPoint);
+
+    public abstract void driveUsingPID(double setPoint);
+
+    public abstract void setNeutralMode(NeutralMode mode);
+
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             getDrivePosition(), new Rotation2d(Math.toRadians(getTurningPosition()))
@@ -30,16 +40,6 @@ public abstract class SwerveModule {
             getDriveVelocity(), new Rotation2d(Math.toRadians(getTurningPosition()))
         );
     }
-    
-    public abstract void turningMotorSetPower(double power);
-
-    public abstract void driveMotorSetPower(double power);
-
-    public abstract void turningUsingPID(double setPoint);
-
-    public abstract void driveUsingPID(double setPoint);
-
-    public abstract void setNeutralMode(NeutralMode mode);
 
     public void setDesiredState(SwerveModuleState desiredState) {
         SwerveModuleState optimizedState = SwerveModule.optimize(desiredState,

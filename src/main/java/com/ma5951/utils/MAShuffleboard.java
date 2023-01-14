@@ -13,7 +13,7 @@ public class MAShuffleboard {
         board = Shuffleboard.getTab(tab);
         values = new HashMap<String, GenericEntry>();
     }
-
+    
     public void addNum(String title, double num) {
         if (!values.containsKey(title)) {
             values.put(title, board.add(title, num).getEntry());

@@ -8,9 +8,11 @@ import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.SwerveJoystickCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.DriveSwerveCommand;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 /**
@@ -23,6 +25,7 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private final static String COMM_STRING = "commnds";
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,8 +40,10 @@ public class Robot extends LoggedRobot {
     Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
     Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
+    
     //Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     //new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+
     Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 
   }
@@ -57,7 +62,7 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    RobotContainer.photonVision.update();
+    //RobotContainer.photonVision.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -93,10 +98,19 @@ public class Robot extends LoggedRobot {
     }
 
     CommandScheduler.getInstance().setDefaultCommand(
-      SwerveDrivetrainSubsystem.getInstance(), new SwerveJoystickCommand(
+      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
         RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
+    Shuffleboard.getTab(COMM_STRING).add("XReversed", new InstantCommand(
+      () -> SwerveDrivetrainSubsystem.getInstance().isXReversed = 
+      !SwerveDrivetrainSubsystem.getInstance().isXReversed));
+    Shuffleboard.getTab(COMM_STRING).add("YReversed", new InstantCommand(
+      () -> SwerveDrivetrainSubsystem.getInstance().isYReversed = 
+      !SwerveDrivetrainSubsystem.getInstance().isYReversed));
+    Shuffleboard.getTab(COMM_STRING).add("XYReversed", new InstantCommand(
+      () -> SwerveDrivetrainSubsystem.getInstance().isXYReversed = 
+      !SwerveDrivetrainSubsystem.getInstance().isXYReversed));
   }
 
   /** This function is called periodically during operator control. */

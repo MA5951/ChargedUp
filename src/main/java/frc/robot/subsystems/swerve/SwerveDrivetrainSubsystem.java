@@ -37,16 +37,16 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public PIDController thetaPID;
 
   public boolean isXReversed = true;
-  public boolean isYReversed = false;
+  public boolean isYReversed = true;
   public boolean isXYReversed = true;
 
-  private final String KP_X = "kp_x";
-  private final String KP_Y = "kp_y";
-  private final String theta_KP = "theta_KP";
-  private final String theta_KI = "theta_KI";
-  private final String theta_KD = "theta_KD";
+  private static final String KP_X = "kp_x";
+  private static final String KP_Y = "kp_y";
+  private static final String theta_KP = "theta_KP";
+  private static final String theta_KI = "theta_KI";
+  private static final String theta_KD = "theta_KD";
   
-  private final MAShuffleboard board;
+  public final MAShuffleboard board;
 
   private final Translation2d frontLeftLocation = new Translation2d(
       -SwerveConstants.width / 2,
@@ -70,40 +70,40 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       "frontLeftModule",
       SwervePortMap.leftFrontDriveID,
       SwervePortMap.leftFrontTurningID,
-      SwervePortMap.leftFrontAbsoluteEcoder,
+      SwervePortMap.leftFrontAbsoluteEncoder,
       SwerveConstants.frontLeftModuleIsDriveMotorReversed,
       SwerveConstants.frontLeftModuleIsTurningMotorReversed,
-      SwerveConstants.frontLeftModuleIsAbsoluteEcoderReversed,
+      SwerveConstants.frontLeftModuleIsAbsoluteEncoderReversed,
       SwerveConstants.frontLeftModuleOffsetEncoder);
 
   private final static SwerveModule frontRightModule = new SwerveModuleTalonFX(
       "frontRightModule",
       SwervePortMap.rightFrontDriveID,
       SwervePortMap.rightFrontTurningID,
-      SwervePortMap.rightFrontAbsoluteEcoder,
+      SwervePortMap.rightFrontAbsoluteEncoder,
       SwerveConstants.frontRightModuleIsDriveMotorReversed,
       SwerveConstants.frontRightModuleIsTurningMotorReversed,
-      SwerveConstants.frontRightModuleIsAbsoluteEcoderReversed,
+      SwerveConstants.frontRightModuleIsAbsoluteEncoderReversed,
       SwerveConstants.frontRightModuleOffsetEncoder);
 
   private final static SwerveModule rearLeftModule = new SwerveModuleTalonFX(
       "rearLeftModule",
       SwervePortMap.leftBackDriveID,
       SwervePortMap.leftBackTurningID,
-      SwervePortMap.leftBackAbsoluteEcoder,
+      SwervePortMap.leftBackAbsoluteEncoder,
       SwerveConstants.rearLeftModuleIsDriveMotorReversed,
       SwerveConstants.rearLeftModuleIsTurningMotorReversed,
-      SwerveConstants.rearLeftModuleIsAbsoluteEcoderReversed,
+      SwerveConstants.rearLeftModuleIsAbsoluteEncoderReversed,
       SwerveConstants.rearLeftModuleOffsetEncoder);
 
   private final static SwerveModule rearRightModule = new SwerveModuleTalonFX(
       "rearRightModule",
       SwervePortMap.rightBackDriveID,
       SwervePortMap.rightBackTurningID,
-      SwervePortMap.rightBackAbsoluteEcoder,
+      SwervePortMap.rightBackAbsoluteEncoder,
       SwerveConstants.rearRightModuleIsDriveMotorReversed,
       SwerveConstants.rearRightModuleIsTurningMotorReversed,
-      SwerveConstants.rearRightModuleIsAbsoluteEcoderReversed,
+      SwerveConstants.rearRightModuleIsAbsoluteEncoderReversed,
       SwerveConstants.rearRightModuleOffsetEncoder);
 
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics,
@@ -202,26 +202,19 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void setModules(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.maxVelocity);
-    frontLeftModule.setDesiredState(states[3]);
-    frontRightModule.setDesiredState(states[1]);
-    rearLeftModule.setDesiredState(states[2]);
-    rearRightModule.setDesiredState(states[0]);
+    rearLeftModule.setDesiredState(states[0]);
+    frontLeftModule.setDesiredState(states[1]);
+    rearRightModule.setDesiredState(states[2]);
+    frontRightModule.setDesiredState(states[3]);
   }
 
   public void drive(double x, double y, double omega, boolean fieldRelative) {
     SwerveModuleState[] states = kinematics
         .toSwerveModuleStates(
             fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, 
-            new Rotation2d(Math.toRadians(getFusedHeading())))
+            new Rotation2d(Math.toRadians(-getFusedHeading())))
                 : new ChassisSpeeds(x, y, omega));
     setModules(states);
-  }
-
-  public static SwerveDrivetrainSubsystem getInstance() {
-    if (swerve == null) {
-      swerve = new SwerveDrivetrainSubsystem();
-    }
-    return swerve;
   }
 
   public Command getAutonomousPathCommand(
@@ -246,6 +239,18 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
         this),
       new InstantCommand(this::stop)
     );
+  }
+
+  public Command getAutonomousPathCommand(
+    String pathName) {
+    return getAutonomousPathCommand(pathName, false);
+  }
+
+  public static SwerveDrivetrainSubsystem getInstance() {
+    if (swerve == null) {
+      swerve = new SwerveDrivetrainSubsystem();
+    }
+    return swerve;
   }
 
   @Override
