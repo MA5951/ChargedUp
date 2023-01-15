@@ -29,6 +29,8 @@ public abstract class SwerveModule {
 
     public abstract void setNeutralMode(NeutralMode mode);
 
+    public abstract void setInvertedTurning(Boolean mode);
+
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             getDrivePosition(), new Rotation2d(Math.toRadians(getTurningPosition()))

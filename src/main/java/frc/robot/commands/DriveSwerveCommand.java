@@ -36,7 +36,14 @@ public class DriveSwerveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    swerve.setInverted(
+      new boolean[] {
+        SwerveConstants.frontLeftModuleIsTurningMotorReversed,
+        SwerveConstants.frontRightModuleIsTurningMotorReversed,
+        SwerveConstants.rearLeftModuleIsTurningMotorReversed,
+        SwerveConstants.rearRightModuleIsTurningMotorReversed,
+      });
+    swerve.isRed = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,7 +59,7 @@ public class DriveSwerveCommand extends CommandBase {
 
     xSpeed = Math.abs(xSpeed) < 0.1 ? 0 : xSpeed;
     ySpeed = Math.abs(ySpeed) < 0.1 ? 0 : ySpeed;
-    turningSpeed = (Math.abs(turningSpeed) < 0.1 ? 0 : turningSpeed);
+    turningSpeed = (Math.abs(turningSpeed) < 0.1 ? 0 : turningSpeed) * -1;
 
     xSpeed = xSpeed * 
       SwerveConstants.maxVelocity * 

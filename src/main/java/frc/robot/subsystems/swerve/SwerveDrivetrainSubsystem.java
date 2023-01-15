@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.ma5951.utils.MAShuffleboard;
 
 public class SwerveDrivetrainSubsystem extends SubsystemBase {
@@ -35,6 +36,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public PIDController P_CONTROLLER_X;
   public PIDController P_CONTROLLER_Y;
   public PIDController thetaPID;
+  public boolean isRed = false;
 
   public boolean isXReversed = true;
   public boolean isYReversed = true;
@@ -111,10 +113,11 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private static SwerveModulePosition[] getSwerveModulePositions() {
     return new SwerveModulePosition[] {
-      frontLeftModule.getPosition(), 
-      frontRightModule.getPosition(),
       rearLeftModule.getPosition(),
-      rearRightModule.getPosition()};
+      frontLeftModule.getPosition(),
+      rearRightModule.getPosition(),
+      frontRightModule.getPosition()
+    };
   }
 
   private static SwerveModuleState[] getSwerveModuleStates() {
@@ -152,7 +155,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addNum(theta_KD, SwerveConstants.theta_KD);
 
     thetaPID = new PIDController(board.getNum(theta_KP),
-     board.getNum(theta_KI), board.getNum(theta_KD));
+     board.getNum(theta_KI), board.getNum(theta_KD));//, new TrapezoidProfile.Constraints(2, 1));
   }
 
   public void setNeutralMode(NeutralMode mode) {
@@ -170,7 +173,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getFusedHeading() {
-    return navx.getYaw();
+    return isRed ? navx.getYaw() : -navx.getYaw();
   }
 
   public Rotation2d getRotation2d() {
@@ -208,20 +211,43 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     frontRightModule.setDesiredState(states[3]);
   }
 
+  private void setModulesRed(SwerveModuleState[] states) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.maxVelocity);
+    frontLeftModule.setDesiredState(states[3]);
+    frontRightModule.setDesiredState(states[1]);
+    rearLeftModule.setDesiredState(states[2]);
+    rearRightModule.setDesiredState(states[0]);
+  }
+
   public void drive(double x, double y, double omega, boolean fieldRelative) {
     SwerveModuleState[] states = kinematics
         .toSwerveModuleStates(
             fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, 
-            new Rotation2d(Math.toRadians(-getFusedHeading())))
+            new Rotation2d(Math.toRadians(getFusedHeading())))
                 : new ChassisSpeeds(x, y, omega));
     setModules(states);
   }
 
+  public void setInverted(boolean[] turningMode) {
+    frontLeftModule.setInvertedTurning(turningMode[0]);
+    frontRightModule.setInvertedTurning(turningMode[1]);
+    rearLeftModule.setInvertedTurning(turningMode[2]);
+    rearRightModule.setInvertedTurning(turningMode[3]);
+  }
+
   public Command getAutonomousPathCommand(
     String pathName, boolean isFirst) {
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath(pathName,
-     new PathConstraints(
+    PathPlannerTrajectory trajectory  = PathPlanner.loadPath(pathName, new PathConstraints(
       SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
+    if (isRed) {
+      setInverted(
+        new boolean[] {
+          !SwerveConstants.frontLeftModuleIsTurningMotorReversed,
+          !SwerveConstants.frontRightModuleIsTurningMotorReversed,
+          !SwerveConstants.rearLeftModuleIsTurningMotorReversed,
+          !SwerveConstants.rearRightModuleIsTurningMotorReversed,
+        });
+    }
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         if (isFirst) {
@@ -235,10 +261,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
         P_CONTROLLER_X,
         P_CONTROLLER_Y,
         thetaPID,
-        this::setModules,
+        isRed ? this::setModulesRed : this::setModules,
         this),
-      new InstantCommand(this::stop)
-    );
+      new InstantCommand(this::stop));
   }
 
   public Command getAutonomousPathCommand(
@@ -281,5 +306,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addNum("rearLeft drive pose", rearLeftModule.getDrivePosition());
     board.addNum("frontRight drive pose", frontRightModule.getDrivePosition());
     board.addNum("rearRight drive pose", rearRightModule.getDrivePosition());
+    board.addBoolean("isRed", isRed);
   }
 }
