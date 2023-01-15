@@ -150,6 +150,10 @@ public class SwerveModuleTalonFX extends SwerveModule{
         driveMotor.set(ControlMode.PercentOutput, power);
     }
 
+    public void setInvertedTurning(Boolean turningMode) {
+        turningMotor.setInverted(turningMode);
+    }
+
     public void turningUsingPID(double setPoint) {
         turningMotor.config_kP(0, board.getNum(turningKP));
         turningMotor.config_kI(0, board.getNum(turningKI));

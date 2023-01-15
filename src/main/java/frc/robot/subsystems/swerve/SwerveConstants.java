@@ -1,6 +1,9 @@
 package frc.robot.subsystems.swerve;
 
 public class SwerveConstants {
+    
+    public final static double maxXValue = 16.4592;
+
     // swerve constants
     public final static double width = 0.61665;
     public final static double length = 0.61665;
