@@ -209,6 +209,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     frontLeftModule.setDesiredState(states[1]);
     rearRightModule.setDesiredState(states[2]);
     frontRightModule.setDesiredState(states[3]);
+
   }
 
   private void setModulesRed(SwerveModuleState[] states) {
@@ -223,7 +224,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     SwerveModuleState[] states = kinematics
         .toSwerveModuleStates(
             fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, 
-            new Rotation2d(Math.toRadians(getFusedHeading())))
+            new Rotation2d(Math.toRadians(-getFusedHeading())))
                 : new ChassisSpeeds(x, y, omega));
     setModules(states);
   }
@@ -264,6 +265,18 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
         isRed ? this::setModulesRed : this::setModules,
         this),
       new InstantCommand(this::stop));
+  }
+
+  public Command getAutonomousPathCommand(
+    String pathName) {
+    return getAutonomousPathCommand(pathName, false);
+  }
+
+  public static SwerveDrivetrainSubsystem getInstance() {
+    if (swerve == null) {
+      swerve = new SwerveDrivetrainSubsystem();
+    }
+    return swerve;
   }
 
   public Command getAutonomousPathCommand(

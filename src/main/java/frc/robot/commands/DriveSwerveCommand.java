@@ -59,6 +59,7 @@ public class DriveSwerveCommand extends CommandBase {
 
     xSpeed = Math.abs(xSpeed) < 0.1 ? 0 : xSpeed;
     ySpeed = Math.abs(ySpeed) < 0.1 ? 0 : ySpeed;
+    
     turningSpeed = (Math.abs(turningSpeed) < 0.1 ? 0 : turningSpeed) * -1;
 
     xSpeed = xSpeed * 
