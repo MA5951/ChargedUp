@@ -279,18 +279,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     return swerve;
   }
 
-  public Command getAutonomousPathCommand(
-    String pathName) {
-    return getAutonomousPathCommand(pathName, false);
-  }
-
-  public static SwerveDrivetrainSubsystem getInstance() {
-    if (swerve == null) {
-      swerve = new SwerveDrivetrainSubsystem();
-    }
-    return swerve;
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

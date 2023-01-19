@@ -25,7 +25,7 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private final static String COMM_STRING = "commnds";
+  private final static String COMM_STRING = "commands";
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -102,15 +102,6 @@ public class Robot extends LoggedRobot {
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
         RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
-    Shuffleboard.getTab(COMM_STRING).add("XReversed", new InstantCommand(
-      () -> SwerveDrivetrainSubsystem.getInstance().isXReversed = 
-      !SwerveDrivetrainSubsystem.getInstance().isXReversed));
-    Shuffleboard.getTab(COMM_STRING).add("YReversed", new InstantCommand(
-      () -> SwerveDrivetrainSubsystem.getInstance().isYReversed = 
-      !SwerveDrivetrainSubsystem.getInstance().isYReversed));
-    Shuffleboard.getTab(COMM_STRING).add("XYReversed", new InstantCommand(
-      () -> SwerveDrivetrainSubsystem.getInstance().isXYReversed = 
-      !SwerveDrivetrainSubsystem.getInstance().isXYReversed));
   }
 
   /** This function is called periodically during operator control. */
