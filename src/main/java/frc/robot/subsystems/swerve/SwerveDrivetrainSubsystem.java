@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.swerve;
 
-import org.littletonrobotics.junction.Logger;
+// import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -36,11 +36,13 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public PIDController P_CONTROLLER_X;
   public PIDController P_CONTROLLER_Y;
   public PIDController thetaPID;
-  public boolean isRed = false;
 
   public boolean isXReversed = true;
   public boolean isYReversed = true;
   public boolean isXYReversed = true;
+
+  public double maxVelocity = SwerveConstants.maxVelocity;
+  public double maxAngularVelocity = SwerveConstants.maxAngularVelocity;
 
   private static final String KP_X = "kp_x";
   private static final String KP_Y = "kp_y";
@@ -131,15 +133,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrainSubsystem. */
   public SwerveDrivetrainSubsystem() {
-    new Thread(
-      ()-> {
-        try {
-          Thread.sleep(1000);
-          resetNavx();
-        } catch (Exception e) {
-        }
-      }
-    ).start();
+
+    resetNavx();
+   
     this.board = new MAShuffleboard("swerve");
 
     board.addNum(KP_X, SwerveConstants.KP_X);
@@ -173,7 +169,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getFusedHeading() {
-    return isRed ? navx.getYaw() : -navx.getYaw();
+    return -navx.getYaw();
   }
 
   public Rotation2d getRotation2d() {
@@ -212,43 +208,40 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   }
 
-  private void setModulesRed(SwerveModuleState[] states) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.maxVelocity);
-    frontLeftModule.setDesiredState(states[3]);
-    frontRightModule.setDesiredState(states[1]);
-    rearLeftModule.setDesiredState(states[2]);
-    rearRightModule.setDesiredState(states[0]);
-  }
-
   public void drive(double x, double y, double omega, boolean fieldRelative) {
     SwerveModuleState[] states = kinematics
         .toSwerveModuleStates(
             fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, 
-            new Rotation2d(Math.toRadians(-getFusedHeading())))
+            new Rotation2d(Math.toRadians(getFusedHeading())))
                 : new ChassisSpeeds(x, y, omega));
     setModules(states);
   }
 
-  public void setInverted(boolean[] turningMode) {
-    frontLeftModule.setInvertedTurning(turningMode[0]);
-    frontRightModule.setInvertedTurning(turningMode[1]);
-    rearLeftModule.setInvertedTurning(turningMode[2]);
-    rearRightModule.setInvertedTurning(turningMode[3]);
+  public void lowerVelocityTo40() {
+    maxVelocity = 
+      SwerveConstants.maxVelocity * 0.4;
+    maxAngularVelocity = 
+      SwerveConstants.maxAngularVelocity * 0.4;
+  }
+
+  public void lowerVelocityTo22() {
+    maxVelocity = 
+      SwerveConstants.maxVelocity * 0.22;
+    maxAngularVelocity = 
+      SwerveConstants.maxAngularVelocity * 0.22;
+  }
+
+  public void returnVelocityToNormal() {
+    SwerveDrivetrainSubsystem.getInstance().maxVelocity = 
+      SwerveConstants.maxVelocity;
+    SwerveDrivetrainSubsystem.getInstance().maxAngularVelocity = 
+      SwerveConstants.maxAngularVelocity;
   }
 
   public Command getAutonomousPathCommand(
     String pathName, boolean isFirst) {
     PathPlannerTrajectory trajectory  = PathPlanner.loadPath(pathName, new PathConstraints(
       SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
-    if (isRed) {
-      setInverted(
-        new boolean[] {
-          !SwerveConstants.frontLeftModuleIsTurningMotorReversed,
-          !SwerveConstants.frontRightModuleIsTurningMotorReversed,
-          !SwerveConstants.rearLeftModuleIsTurningMotorReversed,
-          !SwerveConstants.rearRightModuleIsTurningMotorReversed,
-        });
-    }
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         if (isFirst) {
@@ -262,7 +255,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
         P_CONTROLLER_X,
         P_CONTROLLER_Y,
         thetaPID,
-        isRed ? this::setModulesRed : this::setModules,
+        this::setModules,
+        true,
         this),
       new InstantCommand(this::stop));
   }
@@ -286,17 +280,12 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     P_CONTROLLER_Y.setP(board.getNum(KP_Y));
     thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI), board.getNum(theta_KD));
     odometry.update(getRotation2d(), getSwerveModulePositions());
-    Logger.getInstance().recordOutput("Odometry", getPose());
-    Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());
+    // Logger.getInstance().recordOutput("Odometry", getPose());
+    // Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());
 
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());
     board.addNum("angle in radians", getPose().getRotation().getRadians());
-
-    board.addNum("cancoder frontLeft", frontLeftModule.getAbsoluteEncoderPosition());
-    board.addNum("cancoder frontRight", frontRightModule.getAbsoluteEncoderPosition());
-    board.addNum("cancoder rearLeft", rearLeftModule.getAbsoluteEncoderPosition());
-    board.addNum("cancoder rearRight", rearRightModule.getAbsoluteEncoderPosition());
 
     board.addNum("frontLeft angle", frontLeftModule.getTurningPosition());
     board.addNum("frontRight angle", frontRightModule.getTurningPosition());
@@ -307,6 +296,5 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addNum("rearLeft drive pose", rearLeftModule.getDrivePosition());
     board.addNum("frontRight drive pose", frontRightModule.getDrivePosition());
     board.addNum("rearRight drive pose", rearRightModule.getDrivePosition());
-    board.addBoolean("isRed", isRed);
   }
 }
