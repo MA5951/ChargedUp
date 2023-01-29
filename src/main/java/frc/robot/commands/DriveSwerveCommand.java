@@ -7,7 +7,6 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class DriveSwerveCommand extends CommandBase {
@@ -36,14 +35,6 @@ public class DriveSwerveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    swerve.setInverted(
-      new boolean[] {
-        SwerveConstants.frontLeftModuleIsTurningMotorReversed,
-        SwerveConstants.frontRightModuleIsTurningMotorReversed,
-        SwerveConstants.rearLeftModuleIsTurningMotorReversed,
-        SwerveConstants.rearRightModuleIsTurningMotorReversed,
-      });
-    swerve.isRed = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,13 +54,13 @@ public class DriveSwerveCommand extends CommandBase {
     turningSpeed = (Math.abs(turningSpeed) < 0.1 ? 0 : turningSpeed) * -1;
 
     xSpeed = xSpeed * 
-      SwerveConstants.maxVelocity * 
+      swerve.maxVelocity * 
       (SwerveDrivetrainSubsystem.getInstance().isXReversed ? -1 : 1);
     ySpeed = ySpeed * 
-      SwerveConstants.maxVelocity *
+      swerve.maxVelocity *
       (SwerveDrivetrainSubsystem.getInstance().isYReversed ? -1 : 1);
     turningSpeed = turningSpeed * 
-      SwerveConstants.maxAngularVelocity;
+      swerve.maxAngularVelocity;
     
     
     swerve.drive(xSpeed, ySpeed, turningSpeed, true);

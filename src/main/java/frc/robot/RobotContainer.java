@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -49,8 +50,20 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+
     COMMAND_PS4_CONTROLLER.button(RobotConstants.Y).whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::resetNavx));
+    COMMAND_PS4_CONTROLLER.R2().whileTrue(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
+    whileFalse(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
+    );
+
+    COMMAND_PS4_CONTROLLER.L2().whileTrue(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22)
+    ).whileFalse(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
+    );
   }
 
   /**

@@ -4,10 +4,11 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+// import org.littletonrobotics.junction.LoggedRobot;
+// import org.littletonrobotics.junction.Logger;
+// import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -21,7 +22,7 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -37,15 +38,12 @@ public class Robot extends LoggedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     
-    Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
+    // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
-    Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
+    // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
     
     //Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     //new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-
-    Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-
   }
 
   /**
@@ -102,6 +100,8 @@ public class Robot extends LoggedRobot {
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
         RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
+
+    //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }
 
   /** This function is called periodically during operator control. */
