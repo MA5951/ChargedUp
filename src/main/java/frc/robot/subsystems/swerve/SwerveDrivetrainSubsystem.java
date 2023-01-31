@@ -232,9 +232,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public void returnVelocityToNormal() {
-    SwerveDrivetrainSubsystem.getInstance().maxVelocity = 
+    maxVelocity = 
       SwerveConstants.maxVelocity;
-    SwerveDrivetrainSubsystem.getInstance().maxAngularVelocity = 
+    maxAngularVelocity = 
       SwerveConstants.maxAngularVelocity;
   }
 
