@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems.swerve;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 // import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -14,12 +18,12 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -27,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 import com.ma5951.utils.MAShuffleboard;
 
@@ -110,8 +115,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       SwerveConstants.rearRightModuleIsAbsoluteEncoderReversed,
       SwerveConstants.rearRightModuleOffsetEncoder);
 
-  private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics,
-    new Rotation2d(0), getSwerveModulePositions());
+  private final SwerveDrivePoseEstimator odometry = new SwerveDrivePoseEstimator(kinematics,
+    new Rotation2d(0), getSwerveModulePositions(),
+    new Pose2d(0, 0, new Rotation2d(0)));
 
   private static SwerveModulePosition[] getSwerveModulePositions() {
     return new SwerveModulePosition[] {
@@ -181,7 +187,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    return odometry.getPoseMeters();
+    return odometry.getEstimatedPosition();
   }
 
   public SwerveDriveKinematics getKinematics() {
@@ -280,6 +286,15 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     P_CONTROLLER_Y.setP(board.getNum(KP_Y));
     thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI), board.getNum(theta_KD));
     odometry.update(getRotation2d(), getSwerveModulePositions());
+    Optional<EstimatedRobotPose> result = 
+      RobotContainer.photonVision.getEstimatedRobotPose(getPose());
+
+    if (result.isPresent()) {
+      EstimatedRobotPose camPose = result.get();
+      odometry.addVisionMeasurement(camPose.estimatedPose.toPose2d(),
+      camPose.timestampSeconds);
+    }
+    
     // Logger.getInstance().recordOutput("Odometry", getPose());
     // Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());
 

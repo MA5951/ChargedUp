@@ -1,11 +1,22 @@
 package com.ma5951.utils;
 
+import java.io.IOException;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 
@@ -15,16 +26,20 @@ public class PhotonVision {
     private PhotonTrackedTarget target;
     private double cameraHeightMeters;
     private double cameraPitchRadians;
-    private double[] targetsHeightMeters;
+    private AprilTagFieldLayout layout;
+    private PhotonPoseEstimator photonPoseEstimator;
 
     public PhotonVision(String cameraName, 
         double cameraHeightMeters, 
         double cameraPitchRadians,
-        double[] targetsHeightMeters) {
+        Transform3d robotToCam,
+        AprilTagFieldLayout layout) {
         camera = new PhotonCamera(cameraName);
         this.cameraHeightMeters = cameraHeightMeters;
         this.cameraPitchRadians = cameraPitchRadians;
-        this.targetsHeightMeters = targetsHeightMeters;
+        this.layout = layout;
+        photonPoseEstimator = new PhotonPoseEstimator(
+            layout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
         update();
     }
 
@@ -104,15 +119,19 @@ public class PhotonVision {
     }
 
     /**
-     * @param targetIndex the index of the height of the target in the array that was given in the contractor
      * @return distance from the target in meters
      */
-    public double getDistanceToTargetMeters(int targetIndex) {
+    public double getDistanceToTargetMeters() {
         return PhotonUtils.calculateDistanceToTargetMeters(
                 cameraHeightMeters,
-                targetsHeightMeters[targetIndex],
+                layout.getTagPose(getTargetID()).get().getZ(),
                 cameraPitchRadians,
                 Units.degreesToRadians(getPich()));
+    }
+
+    public Optional<EstimatedRobotPose> getEstimatedRobotPose(Pose2d prevEstimatedRobotPose) {
+        photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+        return photonPoseEstimator.update();
     }
 
     /**

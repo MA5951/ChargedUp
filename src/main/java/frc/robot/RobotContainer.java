@@ -11,6 +11,11 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 import com.ma5951.utils.PhotonVision;
 import com.ma5951.utils.RobotConstants;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -27,13 +32,31 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final static CommandPS4Controller COMMAND_PS4_CONTROLLER = 
     new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
-  public final static PhotonVision photonVision = new PhotonVision(
-    "ma5951", 0, 0, new double[0]);
 
+  private static AprilTagFieldLayout aprilTagFieldLayout;
+
+  public static PhotonVision photonVision;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    try {
+      aprilTagFieldLayout = 
+      AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+    } catch (Exception e) {
+      System.err.println(e);
+    }
+
+    photonVision  = new PhotonVision(
+      "ma5951", 0, 0,
+      new Transform3d(
+       new Translation3d(
+        0, 0, 0
+       ), new Rotation3d(
+        0, 0, 0
+       )),
+      aprilTagFieldLayout
+       );
     configureBindings();
   }
 
