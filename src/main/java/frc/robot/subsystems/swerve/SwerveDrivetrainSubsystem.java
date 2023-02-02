@@ -168,6 +168,14 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     rearRightModule.resetEncoders();
   }
 
+  public double getAngularVelocity() {
+    return this.kinematics.toChassisSpeeds(getSwerveModuleStates()).omegaRadiansPerSecond;
+  }
+
+  public double getRadialAcceleration() {
+    return Math.pow(getAngularVelocity(), 2) * SwerveConstants.radius;
+  }
+
   public double getFusedHeading() {
     return -navx.getYaw();
   }

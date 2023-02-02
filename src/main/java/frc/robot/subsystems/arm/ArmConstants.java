@@ -16,5 +16,4 @@ public class ArmConstants {
     public static final double armRotationStartPose = 0; // radians
 
     public static final double armExtenstionDiameterOfTheWheel = 0.0323342; // meters
-    
 }
