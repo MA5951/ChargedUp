@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -48,12 +47,12 @@ public class RobotContainer {
     }
 
     photonVision  = new PhotonVision(
-      "ma5951", 0, 0,
+      "ma5951", 0.4, 0,
       new Transform3d(
        new Translation3d(
-        0, 0, 0
+        0.377, -0.017, 0.3225
        ), new Rotation3d(
-        0, 0, 0
+        0, 0, Math.toRadians(20)
        )),
       aprilTagFieldLayout
        );
@@ -75,7 +74,7 @@ public class RobotContainer {
     // cancelling on release.
 
     COMMAND_PS4_CONTROLLER.button(RobotConstants.Y).whileTrue(
-      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::resetNavx));
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
     COMMAND_PS4_CONTROLLER.R2().whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
     whileFalse(

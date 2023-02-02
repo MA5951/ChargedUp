@@ -26,11 +26,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 import com.ma5951.utils.MAShuffleboard;
@@ -45,6 +48,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public boolean isXReversed = true;
   public boolean isYReversed = true;
   public boolean isXYReversed = true;
+  public double offsetAngle = 0;
 
   public double maxVelocity = SwerveConstants.maxVelocity;
   public double maxAngularVelocity = SwerveConstants.maxAngularVelocity;
@@ -174,6 +178,10 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     rearRightModule.resetEncoders();
   }
 
+  public void updateOffset() {
+    offsetAngle = getFusedHeading();
+  }
+
   public double getFusedHeading() {
     return -navx.getYaw();
   }
@@ -218,7 +226,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     SwerveModuleState[] states = kinematics
         .toSwerveModuleStates(
             fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, 
-            new Rotation2d(Math.toRadians(getFusedHeading())))
+            new Rotation2d(Math.toRadians(getFusedHeading() + offsetAngle)))
                 : new ChassisSpeeds(x, y, omega));
     setModules(states);
   }
@@ -272,6 +280,31 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     return getAutonomousPathCommand(pathName, false);
   }
 
+  public void updateOdometry() {
+    Optional<EstimatedRobotPose> result = 
+      RobotContainer.photonVision.getEstimatedRobotPose(getPose());
+
+    if (result.isPresent()) {
+      EstimatedRobotPose camPose = result.get();
+      odometry.addVisionMeasurement(camPose.estimatedPose.toPose2d(),
+      camPose.timestampSeconds);
+    }
+  }
+
+  public void fixOdometry() {
+    if (DriverStation.getAlliance() == Alliance.Red) {
+      resetOdometry(
+      new Pose2d(
+        new Translation2d(
+          getPose().getX(),
+          Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
+        ),
+        new Rotation2d()
+      )
+    );
+    }
+  }
+
   public static SwerveDrivetrainSubsystem getInstance() {
     if (swerve == null) {
       swerve = new SwerveDrivetrainSubsystem();
@@ -286,14 +319,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     P_CONTROLLER_Y.setP(board.getNum(KP_Y));
     thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI), board.getNum(theta_KD));
     odometry.update(getRotation2d(), getSwerveModulePositions());
-    Optional<EstimatedRobotPose> result = 
-      RobotContainer.photonVision.getEstimatedRobotPose(getPose());
-
-    if (result.isPresent()) {
-      EstimatedRobotPose camPose = result.get();
-      odometry.addVisionMeasurement(camPose.estimatedPose.toPose2d(),
-      camPose.timestampSeconds);
-    }
     
     // Logger.getInstance().recordOutput("Odometry", getPose());
     // Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());

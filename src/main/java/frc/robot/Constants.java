@@ -16,4 +16,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static final class FieldConstants {
+    public static final double FIELD_WIDTH_METERS = 8.02;
+  }
 }
