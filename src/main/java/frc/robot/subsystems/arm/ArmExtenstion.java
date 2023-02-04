@@ -58,7 +58,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   /**
    * @return meters
    */
-  public double getPose() {
+  public double getExtenstion() {
     return encoder.getPosition();
   }
 
@@ -70,7 +70,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   @Override
   public void calculate(double setPoint) {
     pidController.setReference(setPoint, ControlType.kPosition,
-    0, feed.calculate(ArmRotation.getInstance().getRotation()  + (0.5 * Math.PI), 
+    0, feed.calculate((0.5 * Math.PI) - ArmRotation.getInstance().getRotation(), 
     0), ArbFFUnits.kPercentOut);
   }
 
@@ -96,7 +96,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setP(board.getNum(kp));
     pidController.setI(board.getNum(ki));
     pidController.setD(board.getNum(kd));
-    board.addNum("pose in meters", getPose());
+    board.addNum("pose in extenstion", getExtenstion());
     if (hallEffect.get()) {
       encoder.setPosition(0);
     }

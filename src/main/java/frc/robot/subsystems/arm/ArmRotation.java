@@ -9,10 +9,13 @@ import com.ma5951.utils.subsystem.ControlSubsystemInSubsystemControl;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -68,12 +71,27 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void calculate(double setPoint) {
-    // TODO Auto-generated method stub
+    pidController.setReference(setPoint, ControlType.kPosition,
+    0, getFeed(), ArbFFUnits.kPercentOut);
   }
 
   @Override
   public boolean atPoint() {
     return false;
+  }
+
+  public double getCenterOfMass(double extenstion) {
+    // TODO graph on excel
+    return 0;
+  }
+
+  public double getFeed() {
+    return (((ArmConstants.armMass * 9.8) * 
+      getCenterOfMass(ArmExtenstion.getInstance().getExtenstion()))
+      / ArmConstants.armRotationRadiusOfTheWheel +
+      ArmConstants.armMass * 
+      SwerveDrivetrainSubsystem.getInstance().getAngularVelocity())
+      * ArmConstants.armRotationNewtonToPercentage;
   }
 
   public static ArmRotation getInstance() {
