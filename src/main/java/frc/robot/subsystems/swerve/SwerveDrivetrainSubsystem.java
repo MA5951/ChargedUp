@@ -172,6 +172,10 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     return -navx.getYaw();
   }
 
+  public double getPitch() {
+    return navx.getPitch();
+  }
+
   public Rotation2d getRotation2d() {
     return new Rotation2d(Math.toRadians(getFusedHeading()));
   }

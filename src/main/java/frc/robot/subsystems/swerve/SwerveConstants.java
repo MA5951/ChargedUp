@@ -91,4 +91,5 @@ public class SwerveConstants {
     public final static double maxVelocity = 4.96824;
     public final static double maxAcceleration = Math.pow(maxVelocity, 2) / radius;
     public final static double maxAngularVelocity = maxVelocity / radius; // radians
+    public final static double mass = 0;
 }
