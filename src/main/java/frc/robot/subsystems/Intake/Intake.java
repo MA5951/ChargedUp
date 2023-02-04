@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
 
   private DigitalInput isCloseHallEffect;
 
-  private MAShuffleboard intakShuffleboard;
+  private MAShuffleboard intakeShuffleboard;
 
   public Intake() {
     upperMotor = new CANSparkMax(IntakeConstants.UpperMotorID,MotorType.kBrushless);
@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
 
     isCloseHallEffect = new DigitalInput(IntakeConstants.isCloseHallEffectChanelle);
 
-    intakShuffleboard = new MAShuffleboard("Intake");
+    intakeShuffleboard = new MAShuffleboard("Intake");
   }
 
 
@@ -116,8 +116,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    intakShuffleboard.addBoolean("isIntakeClose", isIntakeClose());
-    intakShuffleboard.addNum("position", openAndCloseIntakeEncoder.getPosition());
-    intakShuffleboard.addBoolean("isGamePiceEntered", isGamePiceEntered());
+    intakeShuffleboard.addBoolean("isIntakeClose", isIntakeClose());
+    intakeShuffleboard.addNum("position", openAndCloseIntakeEncoder.getPosition());
+    intakeShuffleboard.addBoolean("isGamePiceEntered", isGamePiceEntered());
   }
 }
