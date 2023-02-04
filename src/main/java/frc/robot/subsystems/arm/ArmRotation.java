@@ -68,7 +68,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public boolean canMove() {
-    return false;
+    return true;
   }
 
   @Override

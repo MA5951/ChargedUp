@@ -78,7 +78,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public boolean canMove() {
-    return false;
+    return true;
   }
 
   public boolean atPoint() {
