@@ -47,7 +47,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public boolean isXReversed = true;
   public boolean isYReversed = true;
-  public boolean isXYReversed = true;
+  public boolean isXYReversed = false;
   public double offsetAngle = 0;
 
   public double maxVelocity = SwerveConstants.maxVelocity;
@@ -162,6 +162,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     thetaPID = new PIDController(board.getNum(theta_KP),
      board.getNum(theta_KI), board.getNum(theta_KD));//, new TrapezoidProfile.Constraints(2, 1));
+    thetaPID.enableContinuousInput(-180, 180);
   }
 
   public void setNeutralMode(NeutralMode mode) {
@@ -293,6 +294,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void fixOdometry() {
     if (DriverStation.getAlliance() == Alliance.Red) {
+      navx.setAngleAdjustment(180);
       resetOdometry(
       new Pose2d(
         new Translation2d(
