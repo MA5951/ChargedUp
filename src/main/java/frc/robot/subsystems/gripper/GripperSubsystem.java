@@ -10,11 +10,11 @@ public class GripperSubsystem extends SubsystemBase {
   private CANSparkMax gripperMotor;
 
   public GripperSubsystem() {
-    // initialize the subsystem
-    GripperSubsystem gripperSubsystem = new GripperSubsystem(); 
     // Initialize the motor
     gripperMotor = new CANSparkMax(1, MotorType.kBrushless);
   }
+
+  //TODO: add some logic to prevent over opening (and closing) or just merge to one function: setPower
 
   public void closeGripper(double power) {
     gripperMotor.set(power);
