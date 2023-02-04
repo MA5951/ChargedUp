@@ -90,7 +90,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       getCenterOfMass(ArmExtenstion.getInstance().getExtenstion()))
       / ArmConstants.armRotationRadiusOfTheWheel +
       ArmConstants.armMass * 
-      SwerveDrivetrainSubsystem.getInstance().getAngularVelocity())
+      SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration())
       * ArmConstants.armRotationNewtonToPercentage;
   }
 
