@@ -66,7 +66,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public boolean canMove() {
-    return false;
+    return true;
   }
 
   @Override
@@ -77,7 +77,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public boolean atPoint() {
-    return false;
+    return false; //TODO
   }
 
   public double getCenterOfMass(double extenstion) {
