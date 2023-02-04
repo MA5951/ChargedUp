@@ -30,6 +30,8 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   private String ki = "ki";
   private String kd = "kd";
 
+  private double setPoint = 0;
+
   private static ArmRotation armRotation;
 
   public ArmRotation() {
@@ -71,13 +73,14 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void calculate(double setPoint) {
+    this.setPoint = setPoint;
     pidController.setReference(setPoint, ControlType.kPosition,
     0, getFeed(), ArbFFUnits.kPercentOut);
   }
 
-  @Override
   public boolean atPoint() {
-    return false;
+    return Math.abs(encoder.getPosition() - setPoint)
+    < ArmConstants.armRotationTolerance;
   }
 
   public double getCenterOfMass(double extenstion) {
@@ -86,11 +89,12 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   }
 
   public double getFeed() {
-    return (((ArmConstants.armMass * 9.8) * 
+    return ((ArmConstants.armMass * 9.8) * 
+      Math.cos(getRotation()) * 
       getCenterOfMass(ArmExtenstion.getInstance().getExtenstion()))
-      / ArmConstants.armRotationRadiusOfTheWheel +
-      ArmConstants.armMass * 
-      SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration())
+      * ArmConstants.armRotationkt -
+      SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration()
+      * ArmConstants.armMass
       * ArmConstants.armRotationNewtonToPercentage;
   }
 
