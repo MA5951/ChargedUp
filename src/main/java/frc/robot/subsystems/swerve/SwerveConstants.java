@@ -87,6 +87,12 @@ public class SwerveConstants {
     public final static double theta_KI = 0;
     public final static double theta_KD = 0;
 
+    // swerve theta PROFILED_PID_CONTROLLER radians
+    public final static double Profiled_theta_KP = 0; // TODO
+    public final static double Profiled_theta_KI = 0; // TODO
+    public final static double Profiled_theta_KD = 0; // TODO
+    public final static double maxAngularAcceleration = 0; // TODO
+
     // swerve physics
     public final static double maxVelocity = 4.96824;
     public final static double maxAcceleration = Math.pow(maxVelocity, 2) / radius;

@@ -9,7 +9,6 @@ package frc.robot;
 // import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveSwerveCommand;
@@ -92,6 +91,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    SwerveDrivetrainSubsystem.getInstance().fixOdometry();
+
     CommandScheduler.getInstance().setDefaultCommand(
       SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
         RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
@@ -104,6 +105,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    SwerveDrivetrainSubsystem.getInstance().updateOdometry();
   }
 
   @Override
