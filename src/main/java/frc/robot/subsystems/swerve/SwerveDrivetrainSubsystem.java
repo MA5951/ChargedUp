@@ -380,7 +380,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
           getPose().getX(),
           Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
         ),
-        new Rotation2d()
+        getRotation2d()
       )
     );
     }

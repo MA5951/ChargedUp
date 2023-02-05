@@ -60,30 +60,30 @@ public final class Constants {
         blueX, A1Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, C3Y, new Rotation2d(Math.toRadians(180))),
+        redX, C3Y, new Rotation2d(Math.toRadians(0))),
       new Pose2d(
-        redX, C2Y, new Rotation2d(Math.toRadians(180))
+        redX, C2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, C1Y, new Rotation2d(Math.toRadians(180))
+        redX, C1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, B3Y, new Rotation2d(Math.toRadians(180)) 
+        redX, B3Y, new Rotation2d(Math.toRadians(0)) 
       ),
       new Pose2d(
-        redX, B2Y, new Rotation2d(Math.toRadians(180))
+        redX, B2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, B1Y, new Rotation2d(Math.toRadians(180))
+        redX, B1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, A3Y, new Rotation2d(Math.toRadians(180))
+        redX, A3Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, A2Y, new Rotation2d(Math.toRadians(180))
+        redX, A2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, A1Y, new Rotation2d(Math.toRadians(180))
+        redX, A1Y, new Rotation2d(Math.toRadians(0))
       )
     }; // need to check
   }
