@@ -37,7 +37,7 @@ public class AutoBalance extends CommandBase {
     swerve.drive(
     pid.calculate(
       swerve.getPitch()) + 
-      feed.calculate(Math.toRadians(swerve.getPitch()) + (Math.PI / 2.0), 0),
+      feed.calculate((Math.PI / 2.0) - Math.toRadians(swerve.getPitch()), 0),
       0, 0, true);
   }
 
