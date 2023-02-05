@@ -199,6 +199,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       board.getNum(profiled_theta_KD), 
       new TrapezoidProfile.Constraints(SwerveConstants.maxAngularVelocity,
       SwerveConstants.maxAngularAcceleration));
+    
+    thetaProfiledPID.enableContinuousInput(-Math.PI, Math.PI);
 
 
     SmartDashboard.putData("Field", field);
