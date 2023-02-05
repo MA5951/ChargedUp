@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -23,6 +21,70 @@ public final class Constants {
   }
   public static final class FieldConstants {
     public static final double FIELD_WIDTH_METERS = 8.02;
-    public static final Pose2d[] ScoringPoses = {}; //TODO
+    private static final double blueX = 1.80;
+    private static final double redX = 14.74;
+    private static final double A1Y = 0.5;
+    private static final double A2Y = 1.10;
+    private static final double A3Y = 1.60;
+    private static final double B1Y = 2.2;
+    private static final double B2Y = 2.76;
+    private static final double B3Y = 3.30;
+    private static final double C1Y = 3.90;
+    private static final double C2Y = 4.42;
+    private static final double C3Y = 4.92;
+    public static final Pose2d[] ScoringPoses = {
+      new Pose2d(
+        blueX, C3Y, new Rotation2d(Math.toRadians(180))),
+      new Pose2d(
+        blueX, C2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        blueX, C1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        blueX, B3Y, new Rotation2d(Math.toRadians(180)) 
+      ),
+      new Pose2d(
+        blueX, B2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        blueX, B1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        blueX, A3Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        blueX, A2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        blueX, A1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, C3Y, new Rotation2d(Math.toRadians(180))),
+      new Pose2d(
+        redX, C2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, C1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, B3Y, new Rotation2d(Math.toRadians(180)) 
+      ),
+      new Pose2d(
+        redX, B2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, B1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, A3Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, A2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        redX, A1Y, new Rotation2d(Math.toRadians(180))
+      )
+    }; // need to check
   }
 }

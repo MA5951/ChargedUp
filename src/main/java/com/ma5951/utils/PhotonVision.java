@@ -35,7 +35,7 @@ public class PhotonVision {
         this.cameraPitchRadians = cameraPitchRadians;
         this.layout = layout;
         photonPoseEstimator = new PhotonPoseEstimator(
-            layout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
+            layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, robotToCam);
         update();
     }
 
