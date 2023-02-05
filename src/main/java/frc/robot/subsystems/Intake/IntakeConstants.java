@@ -6,14 +6,13 @@ package frc.robot.subsystems.Intake;
 
 /** Add your docs here. */
 public class IntakeConstants {
+    public final static double ClosePosition = 0;//tiks, TODO
+    public final static double OpenPosition = 100;//tiks, TODO
+    public final static double MiddlePosition = 50;//tiks, TODO
 
-    public final static  int UpperMotorID = 1;
-    public final static int LowerMotorID = 2;
-    public final static int OpenAndCloseIntakeMotorID = 3;
+    public final static double kG = 0;//TODO
 
-    public final static int isCloseHallEffectChanelle = 0;
+    public static final int kCPR = 4096;
 
-    public final static double ClosePosition = 0;
-    public final static double OpenPosition = 100;
-    public final static double MiddlePosition = 50;
+    public static final int ticksPerRound = 0;//TODO
 }

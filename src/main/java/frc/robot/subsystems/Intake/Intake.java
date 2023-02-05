@@ -1,42 +1,23 @@
 package frc.robot.subsystems.Intake;
 
 import com.ma5951.utils.MAShuffleboard;
-import com.ma5951.utils.RobotConstants;
+import com.ma5951.utils.subsystem.MotorSubsystem;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
-
-  enum IntakePosition{
-    Close,
-    Open,
-    Middle
-  }
+public class Intake extends SubsystemBase{
 
   private static Intake intake;
 
   private CANSparkMax upperMotor;
   private CANSparkMax lowerMotor;
 
-  private CANSparkMax openAndCloseIntakeMotor;
-  private RelativeEncoder openAndCloseIntakeEncoder;
-
-  private DigitalInput isCloseHallEffect;
-
   private MAShuffleboard intakeShuffleboard;
 
   public Intake() {
-    upperMotor = new CANSparkMax(IntakeConstants.UpperMotorID,MotorType.kBrushless);
-    lowerMotor = new CANSparkMax(IntakeConstants.LowerMotorID,MotorType.kBrushless);
-
-    openAndCloseIntakeMotor = new CANSparkMax(IntakeConstants.OpenAndCloseIntakeMotorID, MotorType.kBrushless);
-    openAndCloseIntakeEncoder = openAndCloseIntakeMotor.getAlternateEncoder(RobotConstants.KTICKS_PER_PULSE);
-
-    isCloseHallEffect = new DigitalInput(IntakeConstants.isCloseHallEffectChanelle);
+    upperMotor = new CANSparkMax(IntakePortMap.UpperMotorID,MotorType.kBrushless);
+    lowerMotor = new CANSparkMax(IntakePortMap.LowerMotorID,MotorType.kBrushless);
 
     intakeShuffleboard = new MAShuffleboard("Intake");
   }
@@ -58,55 +39,6 @@ public class Intake extends SubsystemBase {
     lowerMotor.setVoltage(voltage);
   }
 
-  public void setOpenAndCloseIntakeMotorVelocity(double velocity){
-    openAndCloseIntakeMotor.set(velocity);
-  }
-
-  public void setOpenAndCloseIntakeMotorVoltage(double voltage){
-    openAndCloseIntakeMotor.setVoltage(voltage);
-  }
-
-  public boolean isIntakeClose(){
-    if(isCloseHallEffect.get()){
-      openAndCloseIntakeEncoder.setPosition(IntakeConstants.ClosePosition);
-      return true;
-    }
-    return false;
-  }
-
-  public void resetEncoder(){
-    openAndCloseIntakeEncoder.setPosition(0);
-  }
-
-  public void openIntake(IntakePosition enumPosition, double velocity){
-
-    double position = 0;
-
-    if(enumPosition == IntakePosition.Open){
-      position = IntakeConstants.OpenPosition;
-    }
-    else if(enumPosition == IntakePosition.Close){
-      position = IntakeConstants.OpenPosition;
-    }
-    else if(enumPosition == IntakePosition.Middle){
-      position = IntakeConstants.MiddlePosition;
-    }
-
-    if(position != openAndCloseIntakeEncoder.getPosition()){
-      openAndCloseIntakeMotor.set(velocity);
-    }
-
-    openAndCloseIntakeMotor.set(0);
-  }
-
-  public boolean isGamePiceEntered(){
-    if(openAndCloseIntakeMotor.getBusVoltage() >9-5 && openAndCloseIntakeMotor.getBusVoltage()<9+5 ){//9 is the voltage when game pice entered, and 5 is tolorance
-      return true;
-    }
-
-    return false;
-  }
-
   public static Intake getInstance() {
     if (intake == null) {
       intake = new Intake();
@@ -116,8 +48,5 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    intakeShuffleboard.addBoolean("isIntakeClose", isIntakeClose());
-    intakeShuffleboard.addNum("position", openAndCloseIntakeEncoder.getPosition());
-    intakeShuffleboard.addBoolean("isGamePiceEntered", isGamePiceEntered());
   }
 }
