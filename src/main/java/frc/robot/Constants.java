@@ -87,4 +87,8 @@ public final class Constants {
       )
     }; // need to check
   }
+  public static class pipeLines{
+    public static final int apriltagPipeLine = 0; // TODO
+    public static final int reflectiveLightPipeLine = 0; //TODO
+  }
 }
