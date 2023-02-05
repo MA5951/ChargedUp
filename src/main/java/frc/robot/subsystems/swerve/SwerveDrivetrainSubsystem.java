@@ -28,6 +28,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -122,6 +125,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   private final SwerveDrivePoseEstimator odometry = new SwerveDrivePoseEstimator(kinematics,
     new Rotation2d(0), getSwerveModulePositions(),
     new Pose2d(0, 0, new Rotation2d(0)));
+  
+  private final Field2d field = 
+    new Field2d();
 
   private static SwerveModulePosition[] getSwerveModulePositions() {
     return new SwerveModulePosition[] {
@@ -164,6 +170,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
      board.getNum(theta_KI), board.getNum(theta_KD));
     
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
+
+    SmartDashboard.putData("Field", field);
   }
 
   public void setNeutralMode(NeutralMode mode) {
@@ -323,6 +331,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     P_CONTROLLER_Y.setP(board.getNum(KP_Y));
     thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI), board.getNum(theta_KD));
     odometry.update(getRotation2d(), getSwerveModulePositions());
+
+    field.setRobotPose(getPose());
     
     // Logger.getInstance().recordOutput("Odometry", getPose());
     // Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());
