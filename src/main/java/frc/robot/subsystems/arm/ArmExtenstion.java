@@ -31,6 +31,8 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private String ki = "ki";
   private String kd = "kd";
 
+  private double setPoint = 0;
+
   private static ArmExtenstion armExtenstion;
 
   public ArmExtenstion() {
@@ -79,9 +81,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     return true;
   }
 
-  @Override
   public boolean atPoint() {
-    return false; //TODO
+    return Math.abs(encoder.getPosition() - setPoint)
+    < ArmConstants.armExtenstionTolerance;
   }
 
   public static ArmExtenstion getInstance() {

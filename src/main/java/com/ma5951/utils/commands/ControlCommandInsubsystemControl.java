@@ -49,6 +49,6 @@ public class ControlCommandInsubsystemControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subsystem.atPoint() || !subsystem.canMove();
+    return !subsystem.canMove();
   }
 }
