@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.swerve;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -18,6 +20,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,6 +29,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,8 +40,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -56,11 +65,21 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public double maxVelocity = SwerveConstants.maxVelocity;
   public double maxAngularVelocity = SwerveConstants.maxAngularVelocity;
 
+  private static final TrajectoryConfig configForTelopPathCommand = 
+    new TrajectoryConfig(
+      SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration);
+  
+  private ProfiledPIDController thetaProfiledPID;
+
   private static final String KP_X = "kp_x";
   private static final String KP_Y = "kp_y";
   private static final String theta_KP = "theta_KP";
   private static final String theta_KI = "theta_KI";
   private static final String theta_KD = "theta_KD";
+
+  private static final String profiled_theta_KP = "Profiled_theta_KP";
+  private static final String profiled_theta_KI = "Profiled_theta_KI";
+  private static final String profiled_theta_KD = "Profiled_theta_KD";
   
   public final MAShuffleboard board;
 
@@ -171,6 +190,17 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
 
+    board.addNum(profiled_theta_KP, SwerveConstants.Profiled_theta_KP);
+    board.addNum(profiled_theta_KI, SwerveConstants.Profiled_theta_KI);
+    board.addNum(profiled_theta_KD, SwerveConstants.Profiled_theta_KD);
+
+    thetaProfiledPID = new ProfiledPIDController(
+      board.getNum(profiled_theta_KP), board.getNum(profiled_theta_KI),
+      board.getNum(profiled_theta_KD), 
+      new TrapezoidProfile.Constraints(SwerveConstants.maxAngularVelocity,
+      SwerveConstants.maxAngularAcceleration));
+
+
     SmartDashboard.putData("Field", field);
   }
 
@@ -262,6 +292,31 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       SwerveConstants.maxAngularVelocity;
   }
 
+  public Pose2d getClosestScoringPose() {
+    return new Pose2d(); // TODO
+  }
+
+  public Command getTelopPathCommand() {
+    Pose2d startPose = getPose();
+    Pose2d endPose = getClosestScoringPose();
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+      startPose, new ArrayList<Translation2d>(),
+      endPose, configForTelopPathCommand);
+    return new SwerveControllerCommand(
+      trajectory,
+      this::getPose,
+      getKinematics(),
+      P_CONTROLLER_X,
+      P_CONTROLLER_Y,
+      thetaProfiledPID,
+      this::setModules,
+      this
+    ).andThen(new InstantCommand(
+      this::stop
+    ));
+    
+  }
+
   public Command getAutonomousPathCommand(
     String pathName, boolean isFirst) {
     PathPlannerTrajectory trajectory  = PathPlanner.loadPath(pathName, new PathConstraints(
@@ -329,7 +384,12 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     P_CONTROLLER_X.setP(board.getNum(KP_X));
     P_CONTROLLER_Y.setP(board.getNum(KP_Y));
-    thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI), board.getNum(theta_KD));
+    thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI),
+      board.getNum(theta_KD));
+    thetaProfiledPID.setPID(
+      board.getNum(profiled_theta_KP), board.getNum(profiled_theta_KI),
+      board.getNum(profiled_theta_KD));
+    
     odometry.update(getRotation2d(), getSwerveModulePositions());
 
     field.setRobotPose(getPose());
