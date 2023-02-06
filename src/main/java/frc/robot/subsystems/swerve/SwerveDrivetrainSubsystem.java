@@ -5,7 +5,6 @@
 package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -35,12 +34,10 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -228,6 +225,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public double getRadialAcceleration() {
     return Math.pow(getAngularVelocity(), 2) * SwerveConstants.radius;
+  }
+
   public void updateOffset() {
     offsetAngle = getFusedHeading();
   }
@@ -380,12 +379,12 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void fixOdometry() {
     if (DriverStation.getAlliance() == Alliance.Red) {
-      navx.setAngleAdjustment(180);
+      navx.setAngleAdjustment(0);
       updateOffset();
       resetOdometry(
       new Pose2d(
         new Translation2d(
-          getPose().getX(),
+          Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
           Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
         ),
         getRotation2d()

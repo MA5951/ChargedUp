@@ -8,7 +8,6 @@ import com.ma5951.utils.controllers.PIDController;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class AutoBalance extends CommandBase {
