@@ -57,7 +57,6 @@ public class SpaceStateControlCommand extends CommandBase {
     this.Loop = loop;
     this.setPoint = setPoint;
     this.subsystem = subsystem;
-    addRequirements(subsystem);
   }
   /**
    * @param qelms Velocity error tolerance, in radians per second.

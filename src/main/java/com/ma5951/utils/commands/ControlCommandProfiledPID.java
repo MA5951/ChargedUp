@@ -98,7 +98,7 @@ public class ControlCommandProfiledPID extends CommandBase {
     );
     lastTime = Timer.getFPGATimestamp();
     lastSpeed = ProfiledPID.getSetpoint().velocity;
-    if (ProfiledPID.atGoal() && !AtGoal){
+    if (ProfiledPID.atGoal() && AtGoal){
       AtGoal = true;
       time = Timer.getFPGATimestamp();
     }

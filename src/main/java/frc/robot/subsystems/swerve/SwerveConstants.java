@@ -2,8 +2,8 @@ package frc.robot.subsystems.swerve;
 
 public class SwerveConstants {
     // swerve constants
-    public final static double width = 0.750;
-    public final static double length = 0.750;
+    public final static double width = 0.61665;
+    public final static double length = 0.61665;
     public final static double radius = Math.sqrt(
         Math.pow(width, 2) + Math.pow(length, 2)
     ) / 2;
@@ -87,15 +87,8 @@ public class SwerveConstants {
     public final static double theta_KI = 0;
     public final static double theta_KD = 0;
 
-    // swerve theta PROFILED_PID_CONTROLLER radians
-    public final static double Profiled_theta_KP = 0; // TODO
-    public final static double Profiled_theta_KI = 0; // TODO
-    public final static double Profiled_theta_KD = 0; // TODO
-    public final static double maxAngularAcceleration = 0; // TODO
-
     // swerve physics
     public final static double maxVelocity = 4.96824;
     public final static double maxAcceleration = Math.pow(maxVelocity, 2) / radius;
     public final static double maxAngularVelocity = maxVelocity / radius; // radians
-    public final static double mass = 0;
 }
