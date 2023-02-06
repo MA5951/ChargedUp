@@ -17,7 +17,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl{
+public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
   /** Creates a new TelescopicArm. */
   private CANSparkMax motor;
   private RelativeEncoder encoder;
