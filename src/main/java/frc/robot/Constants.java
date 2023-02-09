@@ -21,7 +21,7 @@ public final class Constants {
   }
   public static final class FieldConstants {
     public static final double FIELD_WIDTH_METERS = 8.02;
-    public static final double FIELD_LENGTH_METERS = 16.4846;
+    public static final double FIELD_LENGTH_METERS = 16.54;
     private static final double blueX = 1.80;
     private static final double redX = 14.74;
     private static final double A1Y = 0.5;
