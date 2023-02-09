@@ -17,8 +17,8 @@ public class A1Scoring2 extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-    swerve.getAutonomousPathCommand("From A1 to pickup 1", true),
-    swerve.getAutonomousPathCommand("From pickup 1 to A3")
+      swerve.getAutonomousPathCommand("From A1 to pickup 1", true),
+      swerve.getAutonomousPathCommand("From pickup 1 to A3")
     );
   }
 }

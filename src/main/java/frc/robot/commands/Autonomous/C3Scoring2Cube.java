@@ -10,15 +10,15 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class C2Scoring2 extends SequentialCommandGroup {
-  /** Creates a new C3Scoring2. */
+public class C3Scoring2Cube extends SequentialCommandGroup {
+  /** Creates a new C3Scoring2Cube. */
   private SwerveDrivetrainSubsystem swerve = SwerveDrivetrainSubsystem.getInstance();
-  public C2Scoring2() {
+  public C3Scoring2Cube() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      swerve.getAutonomousPathCommand("From C2 to pickup 4", true),
-      swerve.getAutonomousPathCommand("From pickup 4 to C3")
+      swerve.getAutonomousPathCommand("From C3 to pickup 4", true),
+      swerve.getAutonomousPathCommand("From pickup 4 to C2")
     );
   }
 }
