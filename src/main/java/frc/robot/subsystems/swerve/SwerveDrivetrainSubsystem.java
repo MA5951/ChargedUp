@@ -167,8 +167,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public SwerveDrivetrainSubsystem() {
 
     resetNavx();
-
-    navx.setAngleAdjustment(180);
    
     this.board = new MAShuffleboard("swerve");
 
@@ -201,7 +199,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     
     thetaProfiledPID.enableContinuousInput(-Math.PI, Math.PI);
 
-
     SmartDashboard.putData("Field", field);
   }
 
@@ -232,7 +229,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getFusedHeading() {
-    return -navx.getYaw();
+    return -navx.getAngle();
   }
 
   public double getPitch() {
@@ -335,19 +332,31 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     ).andThen(new InstantCommand(
       this::stop
     ));
-    
+  }
+
+  public void odometrySetUpForAutonomous(PathPlannerTrajectory trajectory) {
+    PathPlannerTrajectory tPathPlannerTrajectory;
+    if (DriverStation.getAlliance() == Alliance.Red) {
+      tPathPlannerTrajectory
+       = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, Alliance.Red);
+    } else {
+      tPathPlannerTrajectory = trajectory;
+    }
+    resetNavx();
+    resetOdometry(
+      tPathPlannerTrajectory.getInitialPose());
+    navx.setAngleAdjustment(-getPose().getRotation().getDegrees());
   }
 
   public Command getAutonomousPathCommand(
     String pathName, boolean isFirst) {
     PathPlannerTrajectory trajectory  = PathPlanner.loadPath(pathName, new PathConstraints(
-      SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
+      2,1));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         if (isFirst) {
-          resetOdometry(trajectory.getInitialPose());
-        }
-      }),
+          odometrySetUpForAutonomous(trajectory);
+        }}),
       new PPSwerveControllerCommand(
         trajectory,
         this::getPose,
@@ -379,19 +388,18 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void fixOdometry() {
     if (DriverStation.getAlliance() == Alliance.Red) {
-      navx.setAngleAdjustment(0);
-      updateOffset();
       resetOdometry(
       new Pose2d(
         new Translation2d(
           Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
           Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
         ),
-        getRotation2d()
+        getRotation2d().rotateBy(Rotation2d.fromDegrees(180))
       )
     );
-    }
+    updateOffset();
   }
+}
 
   public static SwerveDrivetrainSubsystem getInstance() {
     if (swerve == null) {
@@ -420,6 +428,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());
+    board.addNum("angle gyro", getFusedHeading());
     board.addNum("angle in radians", getPose().getRotation().getRadians());
 
     board.addNum("frontLeft angle", frontLeftModule.getTurningPosition());
