@@ -4,11 +4,13 @@
 package frc.robot.commands.spinner;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Spinner.Spinner;
 
 public class SpinnerCommand extends CommandBase {
   /** Creates a new SpinnerCommand. */
   private Spinner spinnerSubsystem;
+  private Intake intakeSubsystem;
 
   // create a boolean variable to store if the reverse spin action has been completed and when it is completed set it to true
   private boolean reverseSpinComplete;
@@ -18,6 +20,7 @@ public class SpinnerCommand extends CommandBase {
   public SpinnerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     spinnerSubsystem = Spinner.getInstance();
+    intakeSubsystem = Intake.getInstance();
 
     addRequirements(spinnerSubsystem);
   }
@@ -34,16 +37,21 @@ public class SpinnerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!spinnerSubsystem.getIR()) {
-      spinnerSubsystem.setVelocity(-0.5);
-    } 
-    
-    else if (!reverseSpin) {
-      spinnerSubsystem.setVelocity(0.5);
-      if (spinnerSubsystem.getEncoder() - startEncoder >= 42) {
-        reverseSpin = true;
-        reverseSpinComplete = true;
+    if (intakeSubsystem.isGamePiceEntered()){
+      if (!spinnerSubsystem.getIR()) {
+        spinnerSubsystem.setVelocity(-0.3);
+      } 
+      
+      else if (!reverseSpin) {
+        spinnerSubsystem.setVelocity(0.3);
+        if (spinnerSubsystem.getEncoder() - startEncoder >= 42) {
+          reverseSpin = true;
+          reverseSpinComplete = true;
+        }
       }
+    }
+    else {
+      spinnerSubsystem.setVelocity(0);
     }
   }
 
