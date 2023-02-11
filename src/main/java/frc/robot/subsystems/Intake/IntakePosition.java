@@ -14,15 +14,15 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class OpenIntake extends SubsystemBase {
+public class IntakePosition extends SubsystemBase {
 
-  enum IntakePosition{
+  enum intakePosition{
     Close,
     Open,
     Middle
   }
 
-  private static OpenIntake openIntake;
+  private static IntakePosition openIntake;
 
   private CANSparkMax openAndCloseIntakeMotor;
   private RelativeEncoder openAndCloseIntakeEncoder;
@@ -34,7 +34,7 @@ public class OpenIntake extends SubsystemBase {
   private ArmFeedforward feed;
 
 
-  public OpenIntake(){
+  public IntakePosition(){
     openAndCloseIntakeMotor = new CANSparkMax(IntakePortMap.OpenAndCloseIntakeMotorID, MotorType.kBrushless);
     openAndCloseIntakeEncoder = openAndCloseIntakeMotor.getAlternateEncoder(IntakeConstants.kCPR);
 
@@ -95,17 +95,13 @@ public class OpenIntake extends SubsystemBase {
     openAndCloseIntakeMotor.set(velocity);
   }
 
-  public boolean isGamePiceEntered(){
-    if(openAndCloseIntakeMotor.getBusVoltage() >9-5 && openAndCloseIntakeMotor.getBusVoltage()<9+5 ){//9 is the voltage when game pice entered, and 5 is tolorance
-      return true;
-    }
-
-    return false;
+  public void setPower(double power){
+    openAndCloseIntakeMotor.set(power);
   }
 
-  public static OpenIntake getInstance() {
+  public static IntakePosition getInstance() {
     if (openIntake == null) {
-      openIntake = new OpenIntake();
+      openIntake = new IntakePosition();
     }
     return openIntake;
   }
@@ -117,7 +113,5 @@ public class OpenIntake extends SubsystemBase {
     if (isCloseHallEffect.get()) {
       openAndCloseIntakeEncoder.setPosition(IntakeConstants.ClosePosition);
     }
-
-    openIntakeShuffleboard.addBoolean("isGamePiceEntered", isGamePiceEntered());
   }
 }

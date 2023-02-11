@@ -38,6 +38,14 @@ public class Intake extends SubsystemBase{
     lowerMotor.setVoltage(voltage);
   }
 
+  public boolean isGamePiceEntered(){
+    if(upperMotor.getOutputCurrent() > 9 && upperMotor.getOutputCurrent()< 9 ){//9 is the voltage when game pice entered, and 5 is tolorance
+      return true;
+    }
+
+    return false;
+  }
+
   public static Intake getInstance() {
     if (intake == null) {
       intake = new Intake();

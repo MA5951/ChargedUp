@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -60,7 +61,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    SwerveDrivetrainSubsystem.getInstance().setNeutralMode(NeutralMode.Coast);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -92,11 +95,11 @@ public class Robot extends TimedRobot {
 
     SwerveDrivetrainSubsystem.getInstance().fixOdometry();
 
-    CommandScheduler.getInstance().setDefaultCommand(
-      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
-        RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
-        RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
-        RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
+    //     RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
+    //     RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
+    //     RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
 
     //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }

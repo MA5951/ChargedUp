@@ -10,16 +10,16 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SpinnerSubsystem extends SubsystemBase {
+public class Spinner extends SubsystemBase {
   // create subsystem
-  private static SpinnerSubsystem spinnerSubsystem;
+  private static Spinner spinnerSubsystem;
   //create spinner motor
   private CANSparkMax spinnerMotor;
   //create spinner ir sensor (digital input)
   private DigitalInput spinnerIR;
 
   //create spinner motor and ir sensor
-  public SpinnerSubsystem() {
+  public Spinner() {
     //initialize spinner motor
     spinnerMotor = new CANSparkMax(0, MotorType.kBrushless);
     //initialize spinner ir sensor
@@ -48,9 +48,9 @@ public class SpinnerSubsystem extends SubsystemBase {
   //TODO: add setPower function to set the motor via precentage input
 
   // create subsystem method
-  public static SpinnerSubsystem getInstance() {
+  public static Spinner getInstance() {
     if (spinnerSubsystem == null) {
-      spinnerSubsystem = new SpinnerSubsystem();
+      spinnerSubsystem = new Spinner();
     }
     return spinnerSubsystem;
   }

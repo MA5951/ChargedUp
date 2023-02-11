@@ -400,6 +400,14 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     updateOffset();
   }
 }
+public void setTuRL(double power) {
+  frontLeftModule.turningMotorSetPower(power);
+}
+
+public void setTuRR(double power) {
+  frontRightModule.turningMotorSetPower(power);
+}
+
 
   public static SwerveDrivetrainSubsystem getInstance() {
     if (swerve == null) {

@@ -4,11 +4,11 @@
 package frc.robot.commands.spinner;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Spinner.SpinnerSubsystem;
+import frc.robot.subsystems.Spinner.Spinner;
 
 public class SpinnerCommand extends CommandBase {
   /** Creates a new SpinnerCommand. */
-  private SpinnerSubsystem spinnerSubsystem;
+  private Spinner spinnerSubsystem;
 
   // create a boolean variable to store if the reverse spin action has been completed and when it is completed set it to true
   private boolean reverseSpinComplete;
@@ -17,7 +17,7 @@ public class SpinnerCommand extends CommandBase {
 
   public SpinnerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    spinnerSubsystem = SpinnerSubsystem.getInstance();
+    spinnerSubsystem = Spinner.getInstance();
 
     addRequirements(spinnerSubsystem);
   }
