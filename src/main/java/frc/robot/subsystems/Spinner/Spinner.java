@@ -5,6 +5,7 @@
 package frc.robot.subsystems.Spinner;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -16,24 +17,31 @@ public class Spinner extends SubsystemBase {
   //create spinner motor
   private CANSparkMax spinnerMotor;
   //create spinner ir sensor (digital input)
-  private DigitalInput spinnerIR;
+  private DigitalInput buttomIR;
+  private DigitalInput stuckIR;
+
+  private RelativeEncoder encoder;
 
   //create spinner motor and ir sensor
   public Spinner() {
     //initialize spinner motor
-    spinnerMotor = new CANSparkMax(0, MotorType.kBrushless);
+    spinnerMotor = new CANSparkMax(SpinnerPortMap.motorID, MotorType.kBrushless);
     //initialize spinner ir sensor
-    spinnerIR = new DigitalInput(0);
+    buttomIR = new DigitalInput(SpinnerPortMap.buttomIRChanlle);
+    stuckIR = new DigitalInput(SpinnerPortMap.stuckIRChanlle);
+
+    encoder = spinnerMotor.getEncoder();
+
+    encoder.setPositionConversionFactor(360*(1/SpinnerConstants.ticksPerRound));
   }
 
   // get sensor value
-  public boolean getIR() {
-    return spinnerIR.get();
+  public boolean isGamePiceEntered() {
+    return buttomIR.get();
   }
 
-  // get motor encoder value
-  public double getEncoder() {
-    return spinnerMotor.getEncoder().getPosition();
+  public boolean isStuck() {
+    return stuckIR.get();
   }
 
   // if sensor is true, spin motor in one direction (clockwise) if false, spin motor in other direction (counter clockwise) for 1 spin (42 motor ticks)
@@ -41,11 +49,21 @@ public class Spinner extends SubsystemBase {
     spinnerMotor.setVoltage(voltage);
   }
 
-  public void setVelocity(double velocity){
-    spinnerMotor.set(velocity);
+  public void setPower(double power){
+    spinnerMotor.set(power);
   }
 
-  //TODO: add setPower function to set the motor via precentage input
+  public double getPosition(){
+    return encoder.getPosition();
+  }
+
+  public void resetEncoder(){
+    encoder.setPosition(0);
+  }
+
+  public double getVoltage(){
+    return spinnerMotor.getBusVoltage();
+  }
 
   // create subsystem method
   public static Spinner getInstance() {

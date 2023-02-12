@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Automations;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
@@ -14,6 +15,7 @@ public class IntakeSpinnerCommand extends CommandBase {
   Intake intake;
   IntakeCommand intakeCommand;
   SpinnerCommand spinnerCommand;
+
   public IntakeSpinnerCommand() {
     intake = Intake.getInstance();
     addRequirements(intake);

@@ -4,18 +4,17 @@
 
 package frc.robot.subsystems.Intake;
 
+import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakePosition extends SubsystemBase {
 
-  enum intakePosition{
+  public enum intakePosition{
     Close,
     Open,
     Middle
@@ -23,77 +22,96 @@ public class IntakePosition extends SubsystemBase {
 
   private static IntakePosition openIntake;
 
-  private CANSparkMax openAndCloseIntakeMotor;
-  private RelativeEncoder openAndCloseIntakeEncoder;
+  private CANSparkMax motor;
+  private RelativeEncoder encoder;
 
-  private DigitalInput isCloseHallEffect;
+  private DigitalInput hallEffect;
 
-  private ArmFeedforward feed;
+  private MAShuffleboard openIntakeShuffleboard;
 
 
   public IntakePosition(){
-    openAndCloseIntakeMotor = new CANSparkMax(IntakePortMap.OpenAndCloseIntakeMotorID, MotorType.kBrushless);
-    openAndCloseIntakeEncoder = openAndCloseIntakeMotor.getAlternateEncoder(IntakeConstants.kCPR);
+    motor = new CANSparkMax(IntakePortMap.OpenAndCloseIntakeMotorID, MotorType.kBrushless);
+    encoder = motor.getEncoder();
 
-    isCloseHallEffect = new DigitalInput(IntakePortMap.isCloseHallEffectChanelle);
+    hallEffect = new DigitalInput(IntakePortMap.isCloseHallEffectChanelle);
 
-    feed = new ArmFeedforward(0, IntakeConstants.kG, 0);
 
-    openAndCloseIntakeMotor.setIdleMode(IdleMode.kCoast);
-    openAndCloseIntakeEncoder.setPositionConversionFactor(2*Math.PI/IntakeConstants.ticksPerRound);
+    motor.setIdleMode(IdleMode.kCoast);
+    encoder.setPositionConversionFactor(2*Math.PI*(1/IntakeConstants.ticksPerRound)*IntakeConstants.gear);
 
     resetEncoder();
   }
 
 
-  public void setOpenAndCloseIntakeMotorVelocity(double velocity){
-    openAndCloseIntakeMotor.set(velocity);
+  public void setPower(double power){
+    motor.set(power);
   }
 
-  public void setOpenAndCloseIntakeMotorVoltage(double voltage){
-    openAndCloseIntakeMotor.setVoltage(voltage);
+  public void setVoltage(double voltage){
+    motor.setVoltage(voltage);
   }
 
   public void resetEncoder(){
-    openAndCloseIntakeEncoder.setPosition(0);
+    encoder.setPosition(0);
   }
 
-
-  //10 is tolorance
-  public void openIntake(double velocity){
-    if(openAndCloseIntakeEncoder.getPosition()< IntakeConstants.ClosePosition+10 && openAndCloseIntakeEncoder.getPosition()> IntakeConstants.ClosePosition-10){
-      openAndCloseIntakeMotor.set(0);
-      openAndCloseIntakeEncoder.setPosition(IntakeConstants.ClosePosition);
+  public void openIntake(){
+    if(isOpen()){
+      motor.set(0);
     }
-
-    openAndCloseIntakeMotor.set(-velocity);
+    motor.set(IntakeConstants.openPower);
   }
 
-  public void middleIntake(double velocity){
-    if(openAndCloseIntakeEncoder.getPosition()> IntakeConstants.MiddlePosition+10){
-      openAndCloseIntakeMotor.set(-velocity);
+  public void middleIntake(){
+    if(encoder.getPosition()> IntakeConstants.MiddlePosition+IntakeConstants.positionTolorance){
+      motor.set(IntakeConstants.closePower);
     }
-    else if(openAndCloseIntakeEncoder.getPosition()< IntakeConstants.MiddlePosition-10){
-      openAndCloseIntakeMotor.set(velocity);
+    else if(encoder.getPosition()< IntakeConstants.MiddlePosition-IntakeConstants.positionTolorance){
+      motor.set(IntakeConstants.openPower);
     }
-    else if(openAndCloseIntakeEncoder.getPosition()< IntakeConstants.MiddlePosition+10 && openAndCloseIntakeEncoder.getPosition()> IntakeConstants.MiddlePosition-10){
-      openAndCloseIntakeMotor.set(-feed.calculate((openAndCloseIntakeEncoder.getPosition())/IntakeConstants.ticksPerRound, 0));
+    else{
+      motor.set(IntakeConstants.kGForMiddle);
     }
-
-    openAndCloseIntakeMotor.set(0);
-
+    motor.set(0);
   }
 
-  public void closeIntake(double velocity){
-    if(openAndCloseIntakeEncoder.getPosition()< IntakeConstants.OpenPosition+10 && openAndCloseIntakeEncoder.getPosition()> IntakeConstants.OpenPosition-10){
-      openAndCloseIntakeMotor.set(0);
+  public void closeIntake(){
+    if(isClose()){
+      motor.set(0);
     }
-
-    openAndCloseIntakeMotor.set(velocity);
+    motor.set(IntakeConstants.closePower);
   }
 
-  public void setPower(double power){
-    openAndCloseIntakeMotor.set(power);
+  public void changeIntakePosition(intakePosition intakePose){
+    if(intakePose == intakePosition.Open){
+      motor.setIdleMode(IdleMode.kCoast);
+      openIntake();
+    }
+    else if(intakePose == intakePosition.Close){
+      motor.setIdleMode(IdleMode.kCoast);
+      closeIntake();
+    }
+    else{
+      motor.setIdleMode(IdleMode.kBrake);
+      middleIntake();
+    }
+  }
+
+  public boolean isOpen(){
+    return Math.abs(
+      encoder.getPosition() - IntakeConstants.ClosePosition) < 
+      IntakeConstants.positionTolorance;
+  }
+
+  public boolean isClose(){
+    return Math.abs(encoder.getPosition()-IntakeConstants.ClosePosition) < 
+    IntakeConstants.positionTolorance;
+  }
+
+  public boolean isMiddle(){
+    return Math.abs(encoder.getPosition()-IntakeConstants.MiddlePosition) < 
+    IntakeConstants.positionTolorance;
   }
 
   public static IntakePosition getInstance() {
@@ -103,12 +121,16 @@ public class IntakePosition extends SubsystemBase {
     return openIntake;
   }
 
-
-
   @Override
   public void periodic() {
-    if (isCloseHallEffect.get()) {
-      openAndCloseIntakeEncoder.setPosition(IntakeConstants.ClosePosition);
+    if (hallEffect.get()) {
+      encoder.setPosition(IntakeConstants.ClosePosition);
     }
+
+    openIntakeShuffleboard.addBoolean("isClose", isClose());
+    openIntakeShuffleboard.addBoolean("isOpen", isOpen());
+    openIntakeShuffleboard.addBoolean("isMiddle", isMiddle());
+
+    openIntakeShuffleboard.addNum("position", encoder.getPosition());
   }
 }

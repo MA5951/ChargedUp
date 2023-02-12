@@ -23,7 +23,7 @@ public class CloseIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakePosition.closeIntake(0.5);
+    intakePosition.closeIntake();
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +35,6 @@ public class CloseIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return intakePosition.isClose();
   }
 }
