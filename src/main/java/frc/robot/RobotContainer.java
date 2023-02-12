@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autonomous.A1Scoring2;
+import frc.robot.commands.Autonomous.A1Scoring2Cube;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -82,32 +83,6 @@ public class RobotContainer {
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
     );
 
-    COMMAND_PS4_CONTROLLER.button(RobotConstants.B).whileTrue(
-      new InstantCommand(
-        () -> {
-          SwerveDrivetrainSubsystem.getInstance().setTuRL(0.7);
-        }
-      )
-    ).whileFalse(
-      new InstantCommand(
-        () -> {
-          SwerveDrivetrainSubsystem.getInstance().setTuRL(0);
-        }
-    ));
-
-    COMMAND_PS4_CONTROLLER.button(RobotConstants.X).whileTrue(
-      new InstantCommand(
-        () -> {
-          SwerveDrivetrainSubsystem.getInstance().setTuRR(0.7);
-        }
-      )
-    ).whileFalse(
-      new InstantCommand(
-        () -> {
-          SwerveDrivetrainSubsystem.getInstance().setTuRR(0);
-        }
-    ));
-
     COMMAND_PS4_CONTROLLER.L2().whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22)
     ).whileFalse(
@@ -122,6 +97,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new A1Scoring2();
+    return SwerveDrivetrainSubsystem.getInstance().getAutonomousPathCommand("From A1 to pickup 1", true);
   }
 }

@@ -185,8 +185,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     thetaPID = new PIDController(board.getNum(theta_KP),
      board.getNum(theta_KI), board.getNum(theta_KD));
     
-    thetaPID.enableContinuousInput(-Math.PI, Math.PI);
-
     board.addNum(profiled_theta_KP, SwerveConstants.Profiled_theta_KP);
     board.addNum(profiled_theta_KI, SwerveConstants.Profiled_theta_KI);
     board.addNum(profiled_theta_KD, SwerveConstants.Profiled_theta_KD);
@@ -197,8 +195,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       new TrapezoidProfile.Constraints(SwerveConstants.maxAngularVelocity,
       SwerveConstants.maxAngularAcceleration));
     
-    thetaProfiledPID.enableContinuousInput(-Math.PI, Math.PI);
-
     SmartDashboard.putData("Field", field);
   }
 
@@ -345,7 +341,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     resetNavx();
     resetOdometry(
       tPathPlannerTrajectory.getInitialPose());
-    navx.setAngleAdjustment(-getPose().getRotation().getDegrees());
   }
 
   public Command getAutonomousPathCommand(
@@ -388,6 +383,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void fixOdometry() {
     if (DriverStation.getAlliance() == Alliance.Red) {
+      navx.setAngleAdjustment(180 + (getFusedHeading() - getPose().getRotation().getDegrees()));
       resetOdometry(
       new Pose2d(
         new Translation2d(

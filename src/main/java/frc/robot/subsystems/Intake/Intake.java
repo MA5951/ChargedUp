@@ -1,6 +1,5 @@
 package frc.robot.subsystems.Intake;
 
-import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,13 +11,11 @@ public class Intake extends SubsystemBase{
   private CANSparkMax upperMotor;
   private CANSparkMax lowerMotor;
 
-  private MAShuffleboard intakeShuffleboard;
 
   public Intake() {
     upperMotor = new CANSparkMax(IntakePortMap.UpperMotorID,MotorType.kBrushless);
     lowerMotor = new CANSparkMax(IntakePortMap.LowerMotorID,MotorType.kBrushless);
 
-    intakeShuffleboard = new MAShuffleboard("Intake");
   }
 
 

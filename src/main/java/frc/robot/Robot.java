@@ -95,11 +95,11 @@ public class Robot extends TimedRobot {
 
     SwerveDrivetrainSubsystem.getInstance().fixOdometry();
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
-    //     RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
-    //     RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
-    //     RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
+    CommandScheduler.getInstance().setDefaultCommand(
+      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
+        RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
+        RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
+        RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
 
     //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }

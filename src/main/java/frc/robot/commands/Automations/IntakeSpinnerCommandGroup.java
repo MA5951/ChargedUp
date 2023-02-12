@@ -5,23 +5,17 @@
 package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.commands.Intake.IntakeCommand;
-import frc.robot.commands.Intake.OpenIntake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeAutomation extends SequentialCommandGroup {
-  /** Creates a new IntakeAutomation. */
-  public IntakeAutomation() {
+public class IntakeSpinnerCommandGroup extends SequentialCommandGroup {
+  /** Creates a new IntakeSpinnerCommandGroup. */
+  public IntakeSpinnerCommandGroup() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new OpenIntake(),
-      new IntakeCommand(0.5, 0.5),
-      new IntakeSpinnerCommand(),
-      new CloseIntake()
+      
     );
   }
 }

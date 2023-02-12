@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.Intake;
 
-import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -28,8 +27,6 @@ public class IntakePosition extends SubsystemBase {
   private RelativeEncoder openAndCloseIntakeEncoder;
 
   private DigitalInput isCloseHallEffect;
-
-  private MAShuffleboard openIntakeShuffleboard;
 
   private ArmFeedforward feed;
 
