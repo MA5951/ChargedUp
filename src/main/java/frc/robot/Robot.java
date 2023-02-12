@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     PathPlannerServer.startServer(5811);
+
     
     // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     

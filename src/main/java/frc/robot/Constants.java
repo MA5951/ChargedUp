@@ -35,56 +35,56 @@ public final class Constants {
     private static final double C3Y = 4.92;
     public static final Pose2d[] ScoringPoses = {
       new Pose2d(
-        blueX, C3Y, new Rotation2d(Math.toRadians(180))),
+        blueX, C3Y, new Rotation2d(Math.toRadians(0))),
       new Pose2d(
-        blueX, C2Y, new Rotation2d(Math.toRadians(180))
+        blueX, C2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, C1Y, new Rotation2d(Math.toRadians(180))
+        blueX, C1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, B3Y, new Rotation2d(Math.toRadians(180)) 
+        blueX, B3Y, new Rotation2d(Math.toRadians(0)) 
       ),
       new Pose2d(
-        blueX, B2Y, new Rotation2d(Math.toRadians(180))
+        blueX, B2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, B1Y, new Rotation2d(Math.toRadians(180))
+        blueX, B1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, A3Y, new Rotation2d(Math.toRadians(180))
+        blueX, A3Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, A2Y, new Rotation2d(Math.toRadians(180))
+        blueX, A2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, A1Y, new Rotation2d(Math.toRadians(180))
+        blueX, A1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, C3Y, new Rotation2d(Math.toRadians(0))),
+        redX, C3Y, new Rotation2d(Math.toRadians(180))),
       new Pose2d(
-        redX, C2Y, new Rotation2d(Math.toRadians(0))
+        redX, C2Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, C1Y, new Rotation2d(Math.toRadians(0))
+        redX, C1Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, B3Y, new Rotation2d(Math.toRadians(0)) 
+        redX, B3Y, new Rotation2d(Math.toRadians(180)) 
       ),
       new Pose2d(
-        redX, B2Y, new Rotation2d(Math.toRadians(0))
+        redX, B2Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, B1Y, new Rotation2d(Math.toRadians(0))
+        redX, B1Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, A3Y, new Rotation2d(Math.toRadians(0))
+        redX, A3Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, A2Y, new Rotation2d(Math.toRadians(0))
+        redX, A2Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, A1Y, new Rotation2d(Math.toRadians(0))
+        redX, A1Y, new Rotation2d(Math.toRadians(180))
       )
     }; // need to check
   }

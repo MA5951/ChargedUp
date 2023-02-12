@@ -46,6 +46,10 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 import com.ma5951.utils.MAShuffleboard;
+import com.ma5951.utils.led.AddressableLEDController;
+import com.ma5951.utils.led.RainbowColorPattern;
+import com.ma5951.utils.led.SolidColorPattern;
+
 
 public class SwerveDrivetrainSubsystem extends SubsystemBase {
   private static SwerveDrivetrainSubsystem swerve;
@@ -383,14 +387,15 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void fixOdometry() {
     if (DriverStation.getAlliance() == Alliance.Red) {
-      navx.setAngleAdjustment(180 + (getFusedHeading() - getPose().getRotation().getDegrees()));
+      navx.setAngleAdjustment((getPose().getRotation().getDegrees()) - 180);
+      resetNavx();
       resetOdometry(
       new Pose2d(
         new Translation2d(
           Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
           Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
         ),
-        getRotation2d().rotateBy(Rotation2d.fromDegrees(180))
+        getRotation2d()
       )
     );
     updateOffset();
