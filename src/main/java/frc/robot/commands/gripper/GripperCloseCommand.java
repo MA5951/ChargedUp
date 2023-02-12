@@ -38,9 +38,11 @@ public class GripperCloseCommand extends CommandBase {
   @Override
   public void execute() {
     motorTicks = gripperSubsystem.getMotorTicks();
+    
     motorCurrent = gripperSubsystem.getMotorCurrent();
     currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    if(Math.abs(currentPosition - GripperConstants.closePosition) > GripperConstants.gripperTolerance){
+    if(Math.abs(currentPosition - GripperConstants.closePosition)
+      > GripperConstants.gripperTolerance){
       //checks if the gripper touched an object
       if (motorCurrent - lastCurrent > GripperConstants.currentJump) {
         touched = true;

@@ -6,13 +6,24 @@ package frc.robot.subsystems.Intake;
 
 /** Add your docs here. */
 public class IntakeConstants {
-    public final static double ClosePosition = 0;//tiks, TODO
-    public final static double OpenPosition = 100;//tiks, TODO
-    public final static double MiddlePosition = 50;//tiks, TODO
+    public final static double ClosePosition = 0;//RAD, TODO
+    public final static double OpenPosition = 100;//RAD, TODO
+    public final static double MiddlePosition = 50;//RAD, TODO
 
-    public final static double kG = 0;//TODO
+    public final static double kGForMiddle = 0;//TODO
 
-    public static final int kCPR = 4096;
+    public static final int ticksPerRound = 42;
 
-    public static final int ticksPerRound = 0;//TODO
+    public static final double gear = 1/23.75;
+
+    public static final double positionTolorance = 0;//RAD, TODO
+
+    public static final double openPower = 0;//TODO
+    public static final double closePower = 0;//TODO
+
+    public static final double lowerAmpsJump = 0;//TODO
+    public static final double lowerAmpsTolorance = 0;//TODO
+    public static final double upperAmpsJumped = 0;//TODO
+    public static final double upperAmpsTolorance = 0;//TODO
+
 }
