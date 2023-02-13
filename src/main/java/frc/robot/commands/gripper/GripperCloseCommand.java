@@ -5,6 +5,7 @@
 package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
 
@@ -35,10 +36,11 @@ public class GripperCloseCommand extends CommandBase {
       tachedGamePice = true;
     }
     if (tachedGamePice) {
-      if (motorAngleInRadians >= GripperConstants.cudeAngle) {
-        gripperSubsystem.setPower(GripperConstants.cubePower);
-      } else {
+      if (motorAngleInRadians <= GripperConstants.coneAngle) {
         gripperSubsystem.setPower(GripperConstants.conePower);
+        ArmConstants.isThereCone = true;
+      } else {
+        gripperSubsystem.setPower(GripperConstants.cubePower);
       }
     } else {
           gripperSubsystem.setPower(GripperConstants.closingPower);
@@ -53,7 +55,6 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return gripperSubsystem.getCurrentEncoderPosition()
-      >= GripperConstants.cudeAngle || tachedGamePice;
+    return tachedGamePice;
   }
 }
