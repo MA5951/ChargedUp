@@ -15,6 +15,8 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.gripper.GripperConstants;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
@@ -83,18 +85,34 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     < ArmConstants.armRotationTolerance;
   }
 
-  public double getCenterOfMass(double extenstion) {
-    // TODO graph on excel
-    return 0;
+  public double getCenterOfMass() {
+    if (ArmConstants.isThereCone) {
+      return 0.475 * ArmExtenstion.getInstance().getExtenstion() + 0.248;
+    }
+    double mu1 = 
+      ((GripperConstants.openPosition
+      - GripperSubsystem.getInstance().getCurrentEncoderPosition()) / 
+      (GripperConstants.openPosition - GripperConstants.closePosition));
+    double mu2 = (1 - Math.cos(mu1 * Math.PI)) / 2;
+    double x = ArmExtenstion.getInstance().getExtenstion();
+    double close = 0.4311 * x + 0.2035;
+    double open = 0.4226 * x + 0.1732;
+    double y = close - open;
+    return open + y * mu2;
   }
 
   public double getFeed() {
-    return ((ArmConstants.armMass * 9.8) * 
+    double mass =
+      ArmConstants.isThereCone ? ArmConstants.armMass + ArmConstants.coneMass :
+      ArmConstants.armMass;
+    return ((mass * 9.8) * 
       Math.cos(getRotation()) * 
-      getCenterOfMass(ArmExtenstion.getInstance().getExtenstion()))
-      * ArmConstants.armRotationkt -
-      SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration()
-      * ArmConstants.armMass
+      getCenterOfMass())
+      * ArmConstants.armRotationkT +
+      (-SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration()
+      * mass * Math.sin(getRotation()) +
+      -SwerveDrivetrainSubsystem.getInstance().getXAcceleration() * 
+      mass * Math.sin(getRotation()))
       * ArmConstants.armRotationNewtonToPercentage;
   }
 

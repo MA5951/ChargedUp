@@ -4,8 +4,6 @@
 
 package frc.robot.commands.gripper;
 
-import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
@@ -13,17 +11,10 @@ import frc.robot.subsystems.gripper.GripperSubsystem;
 public class GripperCloseCommand extends CommandBase {
   /** Creates a new GripperCommand. */
   // Declare the subsystem
-  GripperSubsystem gripperSubsystem;
-  // create "lastCurrent" variable
-  double lastCurrent;
-  // create "motorCurrent" variable
-  double motorCurrent;
-  // create "motorTicks" variable
-  double motorTicks;
+  private GripperSubsystem gripperSubsystem;
 
-  boolean touched;
-
-  double currentPosition;
+  private double motorAngleInRadians;
+  private double currentPositionInRadians;
 
   public GripperCloseCommand() {
     gripperSubsystem = GripperSubsystem.getInstance();
@@ -32,30 +23,22 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    touched = false;
+
   }
 
   @Override
   public void execute() {
-    motorTicks = gripperSubsystem.getMotorTicks();
-    motorCurrent = gripperSubsystem.getMotorCurrent();
-    currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    if(Math.abs(currentPosition - GripperConstants.closePosition) > GripperConstants.gripperTolerance){
-      //checks if the gripper touched an object
-      if (motorCurrent - lastCurrent > GripperConstants.currentJump) {
-        touched = true;
-      }
-      if(touched){
-        if (motorTicks >= 1500) {
-          gripperSubsystem.setPower(GripperConstants.conePower);
-        } else if (motorTicks >= 1000) {
-          gripperSubsystem.setPower(GripperConstants.cubePower);
-        }
-      }
-      else{
+    motorAngleInRadians = gripperSubsystem.getCurrentEncoderPosition();
+    currentPositionInRadians = gripperSubsystem.getCurrentEncoderPosition();
+    if(Math.abs(currentPositionInRadians - GripperConstants.closePosition) 
+      > GripperConstants.gripperTolerance) {
+      if (motorAngleInRadians >= GripperConstants.coneAngle) {
+        gripperSubsystem.setPower(GripperConstants.coneAngle);
+      } else if (motorAngleInRadians >= GripperConstants.cudeAngle) {
+        gripperSubsystem.setPower(GripperConstants.cubePower);
+      } else {
         gripperSubsystem.setPower(GripperConstants.closingPower);
       }
-      lastCurrent = gripperSubsystem.getMotorCurrent();
     }
   }
 

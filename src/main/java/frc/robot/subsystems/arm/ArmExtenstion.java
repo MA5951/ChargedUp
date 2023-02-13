@@ -16,6 +16,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
   /** Creates a new TelescopicArm. */
@@ -71,9 +72,24 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void calculate(double setPoint) {
-    pidController.setReference(setPoint, ControlType.kPosition,
-    0, feed.calculate((0.5 * Math.PI) - ArmRotation.getInstance().getRotation(), 
-    0), ArbFFUnits.kPercentOut);
+    pidController.setReference(setPoint, ControlType.kPosition,0,
+    getFeed(), ArbFFUnits.kPercentOut);
+  }
+
+  public double getFeed() {
+    double mass = 
+      ArmConstants.isThereCone ? 
+      ArmConstants.armExtestionMass + ArmConstants.coneMass :
+      ArmConstants.armExtestionMass;
+    return feed.calculate((0.5 * Math.PI) -
+      ArmRotation.getInstance().getRotation(), 0) + 
+      (-SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration()
+      * Math.cos(ArmRotation.getInstance().getRotation())
+      * mass
+      + -SwerveDrivetrainSubsystem.getInstance().getXAcceleration()
+      * Math.cos(ArmRotation.getInstance().getRotation())
+      * mass)
+      * ArmConstants.armExtestionNewtonToPercentage;
   }
 
   @Override

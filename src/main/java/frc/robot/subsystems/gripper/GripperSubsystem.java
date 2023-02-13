@@ -13,32 +13,24 @@ public class GripperSubsystem extends SubsystemBase {
 
   public GripperSubsystem() {
     // Initialize the motor
-    gripperMotor = new CANSparkMax(1, MotorType.kBrushless);
+    gripperMotor = new CANSparkMax(GripperProtMap.GripperMotorId,
+      MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
-  }
-
-  //TODO: add some logic to prevent over opening (and closing) or just merge to one function: setPower
-
-  public void closeGripper(double power) {
-    gripperMotor.set(power);
-  }
-
-  public void openGripper(double power) {
-    gripperMotor.set(-power);
+    encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
+    * GripperConstants.gear * 2 * Math.PI);
   }
 
   public void setPower(double power){
     gripperMotor.set(power);
   }
   
-  public double getMotorTicks() {
-    return gripperMotor.getEncoder().getPosition();
-  }
-
   public double getMotorCurrent() {
     return gripperMotor.getOutputCurrent();
   }
 
+  /**
+   * @return radians
+   */
   public double getCurrentEncoderPosition(){
     return encoder.getPosition();
   }
