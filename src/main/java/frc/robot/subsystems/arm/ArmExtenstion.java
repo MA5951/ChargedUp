@@ -35,7 +35,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   private static ArmExtenstion armExtenstion;
 
-  public ArmExtenstion() {
+  private ArmExtenstion() {
     motor = new CANSparkMax(ArmPortMap.extenstionMotorID, MotorType.kBrushless);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
     hallEffect = new DigitalInput(ArmPortMap.extenstionHallEffectID);
@@ -99,6 +99,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setI(board.getNum(ki));
     pidController.setD(board.getNum(kd));
     board.addNum("pose in extenstion", getExtenstion());
+
     if (hallEffect.get()) {
       encoder.setPosition(0);
     }

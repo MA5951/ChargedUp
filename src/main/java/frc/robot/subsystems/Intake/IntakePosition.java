@@ -14,12 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakePosition extends SubsystemBase {
 
-  public enum intakePosition{
-    Close,
-    Open,
-    Middle
-  }
-
   private static IntakePosition openIntake;
 
   private CANSparkMax motor;
@@ -36,66 +30,23 @@ public class IntakePosition extends SubsystemBase {
 
     hallEffect = new DigitalInput(IntakePortMap.isCloseHallEffectChanelle);
 
-
     motor.setIdleMode(IdleMode.kCoast);
-    encoder.setPositionConversionFactor(2*Math.PI*(1/IntakeConstants.ticksPerRound)*IntakeConstants.gear);
-
+    encoder.setPositionConversionFactor(
+      2 * Math.PI * (1/IntakeConstants.ticksPerRound) * IntakeConstants.gear
+      );
     resetEncoder();
   }
 
-
   public void setPower(double power){
     motor.set(power);
-  }
-
-  public void setVoltage(double voltage){
-    motor.setVoltage(voltage);
   }
 
   public void resetEncoder(){
     encoder.setPosition(0);
   }
 
-  public void openIntake(){
-    if(isOpen()){
-      motor.set(0);
-    }
-    motor.set(IntakeConstants.openPower);
-  }
-
-  public void middleIntake(){
-    if(encoder.getPosition()> IntakeConstants.MiddlePosition+IntakeConstants.positionTolorance){
-      motor.set(IntakeConstants.closePower);
-    }
-    else if(encoder.getPosition()< IntakeConstants.MiddlePosition-IntakeConstants.positionTolorance){
-      motor.set(IntakeConstants.openPower);
-    }
-    else{
-      motor.set(IntakeConstants.kGForMiddle);
-    }
-    motor.set(0);
-  }
-
-  public void closeIntake(){
-    if(isClose()){
-      motor.set(0);
-    }
-    motor.set(IntakeConstants.closePower);
-  }
-
-  public void changeIntakePosition(intakePosition intakePose){
-    if(intakePose == intakePosition.Open){
-      motor.setIdleMode(IdleMode.kCoast);
-      openIntake();
-    }
-    else if(intakePose == intakePosition.Close){
-      motor.setIdleMode(IdleMode.kCoast);
-      closeIntake();
-    }
-    else{
-      motor.setIdleMode(IdleMode.kBrake);
-      middleIntake();
-    }
+  public double getPosition() {
+    return encoder.getPosition();
   }
 
   public boolean isOpen(){
@@ -126,7 +77,6 @@ public class IntakePosition extends SubsystemBase {
     if (hallEffect.get()) {
       encoder.setPosition(IntakeConstants.ClosePosition);
     }
-
     openIntakeShuffleboard.addBoolean("isClose", isClose());
     openIntakeShuffleboard.addBoolean("isOpen", isOpen());
     openIntakeShuffleboard.addBoolean("isMiddle", isMiddle());

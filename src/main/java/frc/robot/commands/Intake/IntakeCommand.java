@@ -26,15 +26,15 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setLowerMotorVelocity(lowerPower);
-    intake.setUpperMotorVelocity(upperPower);
+    intake.setLowerMotorPower(lowerPower);
+    intake.setUpperMotorPower(upperPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setLowerMotorVelocity(0);
-    intake.setUpperMotorVelocity(0);
+    intake.setLowerMotorPower(0);
+    intake.setUpperMotorPower(0);
   }
 
   // Returns true when the command should end.

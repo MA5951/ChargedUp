@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Spinner.Spinner;
 import frc.robot.subsystems.Spinner.SpinnerConstants;
 
+
 public class SpinnerCommand extends CommandBase {
   /** Creates a new SpinnerCommand. */
   private Spinner spinnerSubsystem;
@@ -45,7 +46,7 @@ public class SpinnerCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override 
   public void end(boolean interrupted) {
-    spinnerSubsystem.setVoltage(0);
+    spinnerSubsystem.setPower(0);
   }
   // Returns true when the command should end.
   @Override

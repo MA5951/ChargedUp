@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.Intake.IntakePosition;
 
 public class CloseIntake extends CommandBase {
@@ -12,7 +13,6 @@ public class CloseIntake extends CommandBase {
   private IntakePosition intakePosition;
   public CloseIntake() {
     intakePosition = IntakePosition.getInstance();
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intakePosition);
   }
 
@@ -23,7 +23,7 @@ public class CloseIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakePosition.closeIntake();
+    intakePosition.setPower(IntakeConstants.closePower);;
   }
 
   // Called once the command ends or is interrupted.

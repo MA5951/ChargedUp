@@ -8,13 +8,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.Intake.IntakePosition;
 
-public class OpenIntake extends CommandBase {
-  /** Creates a new OpenIntake. */
+public class MiddleIntake extends CommandBase {
+  /** Creates a new MiddleIntake. */
   private IntakePosition intakePosition;
-  public OpenIntake() {
+  public MiddleIntake() {
     intakePosition = IntakePosition.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intakePosition);
   }
 
   // Called when the command is initially scheduled.
@@ -24,18 +23,24 @@ public class OpenIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakePosition.setPower(IntakeConstants.openPower);
+    if(intakePosition.getPosition() > 
+      IntakeConstants.MiddlePosition + IntakeConstants.positionTolorance){
+      intakePosition.setPower(IntakeConstants.closePower);
+    } else if(intakePosition.getPosition() < 
+      IntakeConstants.MiddlePosition - IntakeConstants.positionTolorance){
+      intakePosition.setPower(IntakeConstants.openPower);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakePosition.setPower(0);
+    intakePosition.setPower(IntakeConstants.kGForMiddle);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intakePosition.isOpen();
+    return intakePosition.isMiddle();
   }
 }

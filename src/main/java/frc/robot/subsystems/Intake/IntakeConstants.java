@@ -20,10 +20,4 @@ public class IntakeConstants {
 
     public static final double openPower = 0;//TODO
     public static final double closePower = 0;//TODO
-
-    public static final double lowerAmpsJump = 0;//TODO
-    public static final double lowerAmpsTolorance = 0;//TODO
-    public static final double upperAmpsJumped = 0;//TODO
-    public static final double upperAmpsTolorance = 0;//TODO
-
 }

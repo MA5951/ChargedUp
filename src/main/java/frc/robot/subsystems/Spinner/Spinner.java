@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.Spinner;
 
+import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -12,41 +13,34 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Spinner extends SubsystemBase {
-  // create subsystem
   private static Spinner spinnerSubsystem;
-  //create spinner motor
+
   private CANSparkMax spinnerMotor;
-  //create spinner ir sensor (digital input)
+  
   private DigitalInput buttomIR;
   private DigitalInput stuckIR;
 
   private RelativeEncoder encoder;
 
-  //create spinner motor and ir sensor
+  private MAShuffleboard board;
+
   public Spinner() {
-    //initialize spinner motor
     spinnerMotor = new CANSparkMax(SpinnerPortMap.motorID, MotorType.kBrushless);
-    //initialize spinner ir sensor
     buttomIR = new DigitalInput(SpinnerPortMap.buttomIRChanlle);
     stuckIR = new DigitalInput(SpinnerPortMap.stuckIRChanlle);
 
     encoder = spinnerMotor.getEncoder();
 
     encoder.setPositionConversionFactor(360*(1/SpinnerConstants.ticksPerRound));
+    board = new MAShuffleboard("Spinner");
   }
 
-  // get sensor value
   public boolean isGamePiceEntered() {
     return buttomIR.get();
   }
 
   public boolean isStuck() {
     return stuckIR.get();
-  }
-
-  // if sensor is true, spin motor in one direction (clockwise) if false, spin motor in other direction (counter clockwise) for 1 spin (42 motor ticks)
-  public void setVoltage(double voltage) {
-    spinnerMotor.setVoltage(voltage);
   }
 
   public void setPower(double power){
@@ -65,7 +59,6 @@ public class Spinner extends SubsystemBase {
     return spinnerMotor.getBusVoltage();
   }
 
-  // create subsystem method
   public static Spinner getInstance() {
     if (spinnerSubsystem == null) {
       spinnerSubsystem = new Spinner();
@@ -75,6 +68,8 @@ public class Spinner extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    board.addBoolean("isGamePiceEntered", isGamePiceEntered());
+    board.addBoolean("isStuck", isStuck());
+    board.addNum("position", getPosition());
   }
 }

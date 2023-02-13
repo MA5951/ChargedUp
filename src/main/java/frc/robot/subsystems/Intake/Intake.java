@@ -12,34 +12,17 @@ public class Intake extends SubsystemBase{
   private CANSparkMax lowerMotor;
 
 
-  public Intake() {
+  private Intake() {
     upperMotor = new CANSparkMax(IntakePortMap.UpperMotorID,MotorType.kBrushless);
     lowerMotor = new CANSparkMax(IntakePortMap.LowerMotorID,MotorType.kBrushless);
   }
 
-
-  public void setUpperMotorVelocity(double velocity){
-    upperMotor.set(velocity);
+  public void setUpperMotorPower(double power){
+    upperMotor.set(power);
   }
 
-  public void setUpperMotorVoltage(double voltage){
-    upperMotor.setVoltage(voltage);
-  }
-
-  public void setLowerMotorVelocity(double velocity){
-    lowerMotor.set(velocity);
-  }
-
-  public void setLowerMotorVoltage(double voltage){
-    lowerMotor.setVoltage(voltage);
-  }
-
-  public boolean isGamePiceEntered(){
-    if(upperMotor.getOutputCurrent() > 9 && upperMotor.getOutputCurrent()< 9 ){//9 is the voltage when game pice entered, and 5 is tolorance
-      return true;
-    }
-
-    return false;
+  public void setLowerMotorPower(double power){
+    lowerMotor.set(power);
   }
 
   public static Intake getInstance() {
@@ -51,5 +34,6 @@ public class Intake extends SubsystemBase{
 
   @Override
   public void periodic() {
+    
   }
 }

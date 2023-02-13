@@ -34,7 +34,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   private static ArmRotation armRotation;
 
-  public ArmRotation() {
+  private ArmRotation() {
     motor = new CANSparkMax(ArmPortMap.rotationMotorID, MotorType.kBrushless);
     hallEffect = new DigitalInput(ArmPortMap.rotationHallEffectID);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
