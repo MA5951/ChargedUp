@@ -14,7 +14,7 @@ public class GripperCloseCommand extends CommandBase {
   private GripperSubsystem gripperSubsystem;
 
   private double lastCurrent;
-  private boolean isCone;
+  private boolean tachedGamePice;
 
   public GripperCloseCommand() {
     gripperSubsystem = GripperSubsystem.getInstance();
@@ -24,31 +24,27 @@ public class GripperCloseCommand extends CommandBase {
   @Override
   public void initialize() {
     lastCurrent = 0;
-    isCone = false;
+    tachedGamePice = false;
   }
 
   @Override
   public void execute() {
     double motorAngleInRadians = gripperSubsystem.getCurrentEncoderPosition();
-    double PositionInRadians = gripperSubsystem.getCurrentEncoderPosition();
     double current = gripperSubsystem.getMotorCurrent();
     if (Math.abs(lastCurrent - current) >= GripperConstants.currentJump) {
-      isCone = true;
+      tachedGamePice = true;
     }
-    if (isCone) {
-      gripperSubsystem.setPower(GripperConstants.conePower);
-    } else {
-        if(Math.abs(PositionInRadians - GripperConstants.closePosition) 
-          > GripperConstants.gripperTolerance) {
-        if (motorAngleInRadians >= GripperConstants.cudeAngle) {
-          gripperSubsystem.setPower(GripperConstants.cubePower);
-        } else {
-          gripperSubsystem.setPower(GripperConstants.closingPower);
-        }
+    if (tachedGamePice) {
+      if (motorAngleInRadians >= GripperConstants.cudeAngle) {
+        gripperSubsystem.setPower(GripperConstants.cubePower);
+      } else {
+        gripperSubsystem.setPower(GripperConstants.conePower);
       }
+    } else {
+          gripperSubsystem.setPower(GripperConstants.closingPower);
+      }
+      lastCurrent = current;
     }
-    lastCurrent = current;
-  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -58,6 +54,6 @@ public class GripperCloseCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return gripperSubsystem.getCurrentEncoderPosition()
-      >= GripperConstants.cudeAngle || isCone;
+      >= GripperConstants.cudeAngle || tachedGamePice;
   }
 }

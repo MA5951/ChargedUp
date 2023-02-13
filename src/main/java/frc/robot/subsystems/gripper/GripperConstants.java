@@ -17,6 +17,7 @@ public final class GripperConstants {
     public static final double gear = 1/100;
 
     public static final double cudeAngle = 0; //TODO
+    public static final double coneAngle = 0; //TODO
 
     public static final int kCPR = 42;
 }

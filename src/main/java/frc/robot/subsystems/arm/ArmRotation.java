@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -45,6 +44,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     pidController.setFeedbackDevice(encoder);
 
     encoder.setPositionConversionFactor(2 * Math.PI);
+    encoder.setVelocityConversionFactor(2 * Math.PI / 60);
 
     pidController.setP(ArmConstants.armRotationKp);
     pidController.setI(ArmConstants.armRotationKi);
@@ -77,12 +77,12 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
     pidController.setReference(setPoint, ControlType.kPosition,
-    0, getFeed(), ArbFFUnits.kPercentOut);
+    0, getFeed(), ArbFFUnits.kVoltage);
   }
 
   public boolean atPoint() {
     return Math.abs(encoder.getPosition() - setPoint)
-    < ArmConstants.armRotationTolerance;
+      < ArmConstants.armRotationTolerance;
   }
 
   public double getCenterOfMass() {
@@ -101,19 +101,20 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     return open + y * mu2;
   }
 
+  public double getAngularVelocity() {
+    return encoder.getVelocity();
+  }
+
   public double getFeed() {
     double mass =
       ArmConstants.isThereCone ? ArmConstants.armMass + ArmConstants.coneMass :
       ArmConstants.armMass;
+    double dis = getCenterOfMass();
     return ((mass * 9.8) * 
-      Math.cos(getRotation()) * 
-      getCenterOfMass())
-      * ArmConstants.armRotationkT +
-      (-SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration()
-      * mass * Math.sin(getRotation()) +
-      -SwerveDrivetrainSubsystem.getInstance().getXAcceleration() * 
-      mass * Math.sin(getRotation()))
-      * ArmConstants.armRotationNewtonToPercentage;
+      Math.cos(getRotation()) * dis - 
+      dis * (ArmConstants.armMass
+      * getAngularVelocity() / 0.02))
+      * ArmConstants.armRotationkT;
   }
 
   public static ArmRotation getInstance() {

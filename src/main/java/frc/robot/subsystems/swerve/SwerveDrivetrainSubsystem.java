@@ -61,8 +61,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public double maxVelocity = SwerveConstants.maxVelocity;
   public double maxAngularVelocity = SwerveConstants.maxAngularVelocity;
-  
-  private double lastXVelocity = 0;
 
   private static final TrajectoryConfig configForTelopPathCommand = 
     new TrajectoryConfig(
@@ -220,11 +218,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public double getRadialAcceleration() {
     return Math.pow(getAngularVelocity(), 2) * SwerveConstants.radius;
-  }
-
-  public double getXAcceleration() {
-    return (kinematics.toChassisSpeeds(getSwerveModuleStates()).vxMetersPerSecond
-    - lastXVelocity) / 0.02;
   }
 
   public void updateOffset() {
@@ -443,8 +436,5 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addNum("rearLeft drive pose", rearLeftModule.getDrivePosition());
     board.addNum("frontRight drive pose", frontRightModule.getDrivePosition());
     board.addNum("rearRight drive pose", rearRightModule.getDrivePosition());
-
-    lastXVelocity = 
-      kinematics.toChassisSpeeds(getSwerveModuleStates()).vxMetersPerSecond;
   }
 }
