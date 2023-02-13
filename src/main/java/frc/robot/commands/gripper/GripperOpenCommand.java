@@ -10,9 +10,9 @@ import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class GripperOpenCommand extends CommandBase {
   /** Creates a new GripperOpenCommand. */
-  GripperSubsystem gripperSubsystem;
+  private GripperSubsystem gripperSubsystem;
 
-  double currentPosition;
+  private double currentPosition;
 
   public GripperOpenCommand(GripperSubsystem gripperSubsystem) {
     this.gripperSubsystem = gripperSubsystem;
@@ -28,9 +28,7 @@ public class GripperOpenCommand extends CommandBase {
   @Override
   public void execute() {
     currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    if(Math.abs(currentPosition - GripperConstants.openPosition) > GripperConstants.gripperTolerance){
-      gripperSubsystem.setPower(GripperConstants.openingPower);
-    }
+    gripperSubsystem.setPower(GripperConstants.openingPower);
   }
 
   // Called once the command ends or is interrupted.
@@ -42,6 +40,9 @@ public class GripperOpenCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return 
+    Math.abs(
+      currentPosition - GripperConstants.openPosition
+      ) < GripperConstants.gripperTolerance;
   }
 }

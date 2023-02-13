@@ -1,5 +1,6 @@
 package frc.robot.subsystems.gripper;
 
+import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -11,13 +12,15 @@ public class GripperSubsystem extends SubsystemBase {
   private CANSparkMax gripperMotor;
   private RelativeEncoder encoder;
 
-  public GripperSubsystem() {
-    // Initialize the motor
+  private MAShuffleboard board;
+
+  private GripperSubsystem() {
     gripperMotor = new CANSparkMax(GripperProtMap.GripperMotorId,
       MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
     encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
-    * GripperConstants.gear * 2 * Math.PI);
+      * GripperConstants.gear * 2 * Math.PI);
+    board = new MAShuffleboard("gripper");
   }
 
   public void setPower(double power){
@@ -44,6 +47,7 @@ public class GripperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    board.addNum("position radians", getCurrentEncoderPosition());
+    board.addNum("MotorCurrent", getMotorCurrent());
   }
 }

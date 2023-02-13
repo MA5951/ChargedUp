@@ -13,8 +13,8 @@ public class GripperCloseCommand extends CommandBase {
   // Declare the subsystem
   private GripperSubsystem gripperSubsystem;
 
-  private double motorAngleInRadians;
-  private double currentPositionInRadians;
+  private double lastCurrent;
+  private boolean isCone;
 
   public GripperCloseCommand() {
     gripperSubsystem = GripperSubsystem.getInstance();
@@ -23,33 +23,41 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void initialize() {
-
+    lastCurrent = 0;
+    isCone = false;
   }
 
   @Override
   public void execute() {
-    motorAngleInRadians = gripperSubsystem.getCurrentEncoderPosition();
-    currentPositionInRadians = gripperSubsystem.getCurrentEncoderPosition();
-    if(Math.abs(currentPositionInRadians - GripperConstants.closePosition) 
-      > GripperConstants.gripperTolerance) {
-      if (motorAngleInRadians >= GripperConstants.coneAngle) {
-        gripperSubsystem.setPower(GripperConstants.coneAngle);
-      } else if (motorAngleInRadians >= GripperConstants.cudeAngle) {
-        gripperSubsystem.setPower(GripperConstants.cubePower);
-      } else {
-        gripperSubsystem.setPower(GripperConstants.closingPower);
+    double motorAngleInRadians = gripperSubsystem.getCurrentEncoderPosition();
+    double PositionInRadians = gripperSubsystem.getCurrentEncoderPosition();
+    double current = gripperSubsystem.getMotorCurrent();
+    if (Math.abs(lastCurrent - current) >= GripperConstants.currentJump) {
+      isCone = true;
+    }
+    if (isCone) {
+      gripperSubsystem.setPower(GripperConstants.conePower);
+    } else {
+        if(Math.abs(PositionInRadians - GripperConstants.closePosition) 
+          > GripperConstants.gripperTolerance) {
+        if (motorAngleInRadians >= GripperConstants.cudeAngle) {
+          gripperSubsystem.setPower(GripperConstants.cubePower);
+        } else {
+          gripperSubsystem.setPower(GripperConstants.closingPower);
+        }
       }
     }
+    lastCurrent = current;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    gripperSubsystem.setPower(0);
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return gripperSubsystem.getCurrentEncoderPosition()
+      >= GripperConstants.cudeAngle || isCone;
   }
 }
