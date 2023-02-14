@@ -30,27 +30,23 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double motorAngleInRadians = gripperSubsystem.getCurrentEncoderPosition();
     double current = gripperSubsystem.getMotorCurrent();
     if (Math.abs(lastCurrent - current) >= GripperConstants.currentJump) {
       tachedGamePice = true;
     }
-    if (tachedGamePice) {
-      if (motorAngleInRadians <= GripperConstants.coneAngle) {
-        gripperSubsystem.setPower(GripperConstants.conePower);
-        ArmConstants.isThereCone = true;
-      } else {
-        gripperSubsystem.setPower(GripperConstants.cubePower);
-      }
-    } else {
-          gripperSubsystem.setPower(GripperConstants.closingPower);
-      }
-      lastCurrent = current;
+    lastCurrent = current;
     }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (gripperSubsystem.getCurrentEncoderPosition()
+     <= GripperConstants.coneAngle) {
+      gripperSubsystem.setPower(GripperConstants.conePower);
+      ArmConstants.isThereCone = true;
+    } else {
+      gripperSubsystem.setPower(GripperConstants.cubePower);
+    }
   }
 
   @Override

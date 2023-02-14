@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
+import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -40,6 +42,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     hallEffect = new DigitalInput(ArmPortMap.rotationHallEffectID);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
+    motor.setIdleMode(IdleMode.kBrake);
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
 
@@ -110,10 +113,15 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       ArmConstants.isThereCone ? ArmConstants.armMass + ArmConstants.coneMass :
       ArmConstants.armMass;
     double dis = getCenterOfMass();
-    return ((mass * 9.8) * 
-      Math.cos(getRotation()) * dis - 
-      dis * (ArmConstants.armMass
-      * getAngularVelocity() / 0.02))
+    double r = ArmConstants.armDistanceFromTheCenter + 
+      Math.cos(getRotation()) * dis;
+    double aR = 
+      Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
+    double FR = (aR * mass) * Math.sin(getRotation());
+    double TR = FR * dis;
+    double GT = (mass * 9.8) * Math.cos(getRotation()) * dis;
+    double angularMomentum = ArmConstants.armMass * getAngularVelocity();
+    return (GT - TR + dis * (-angularMomentum / 0.02))
       * ArmConstants.armRotationkT;
   }
 

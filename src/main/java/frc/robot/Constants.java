@@ -92,4 +92,13 @@ public final class Constants {
     public static final int apriltagPipeLine = 0; // TODO
     public static final int reflectiveLightPipeLine = 0; //TODO
   }
+  public static class cammera {
+    public static final double cammeraDisFromCenterInX = 0.2;
+    public static final double cammeraDisFromCenterInY = 0.022;
+    public static final double cammeraDisFromCenterInZ = 0.7;
+    public static final double cammeraRoll = 0;
+    public static final double cammeraPitch = Math.PI * 0.5;
+    public static final double cammeraYaw = Math.PI;
+
+  }
 }
