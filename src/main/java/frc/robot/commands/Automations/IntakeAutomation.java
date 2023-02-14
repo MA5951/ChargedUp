@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
+import frc.robot.subsystems.arm.ArmConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,7 +31,11 @@ public class IntakeAutomation extends SequentialCommandGroup {
           new SpinnerCommand(),
           new CloseIntake()
         )
-      ), new OpenIntake().repeatedly())
+      ), 
+      new OpenIntake().repeatedly()
+      ),
+      new SetArmAutomation(0, ArmConstants.armRotationStartPose),
+      new GripperCloseCommand()
     );
   }
 }

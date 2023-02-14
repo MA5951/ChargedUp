@@ -15,8 +15,8 @@ public class GripperOpenCommand extends CommandBase {
 
   private double currentPosition;
 
-  public GripperOpenCommand(GripperSubsystem gripperSubsystem) {
-    this.gripperSubsystem = gripperSubsystem;
+  public GripperOpenCommand() {
+    gripperSubsystem = GripperSubsystem.getInstance();
     addRequirements(gripperSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }

@@ -4,11 +4,13 @@
 
 package frc.robot.commands.Automations;
 
-import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.gripper.GripperOpenCommand;
 import frc.robot.subsystems.arm.ArmConstants;
-import frc.robot.subsystems.arm.ArmRotation;
+import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,6 +21,15 @@ public class ScoringAutomation extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ControlCommandInsubsystemControl(ArmRotation.getInstance(), ArmConstants.armRotationStartPose)    );
+      new ParallelCommandGroup(
+        SwerveDrivetrainSubsystem.getInstance().getTelopPathCommand(),
+        new SequentialCommandGroup(
+          new MiddleIntake(),
+          new SetArmAutomation(ArmConstants.extenstionForMidScoring, 
+                               ArmConstants.rotationForMidScoring)
+        )
+      ),
+      new GripperOpenCommand()
+    );
   }
 }

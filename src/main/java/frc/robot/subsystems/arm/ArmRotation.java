@@ -33,7 +33,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   private String ki = "ki";
   private String kd = "kd";
 
-  private double setPoint = 0;
+  public double setPoint = ArmConstants.armRotationStartPose;
 
   private static ArmRotation armRotation;
 

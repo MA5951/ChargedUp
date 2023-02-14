@@ -30,7 +30,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private String ki = "ki";
   private String kd = "kd";
 
-  private double setPoint = 0;
+  public double setPoint = 0;
 
   private static ArmExtenstion armExtenstion;
 
