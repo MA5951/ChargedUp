@@ -99,6 +99,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return SwerveDrivetrainSubsystem.getInstance().getAutonomousPathCommand("From A1 to pickup 1", true);
   }
 }

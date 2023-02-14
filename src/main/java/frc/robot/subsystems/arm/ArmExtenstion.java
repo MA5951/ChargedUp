@@ -109,6 +109,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setI(board.getNum(ki));
     pidController.setD(board.getNum(kd));
     board.addNum("pose in extenstion", getExtenstion());
+
     if (hallEffect.get()) {
       encoder.setPosition(0);
     }

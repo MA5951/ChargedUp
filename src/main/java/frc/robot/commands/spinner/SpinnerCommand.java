@@ -4,45 +4,41 @@
 package frc.robot.commands.spinner;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Spinner.SpinnerSubsystem;
+import frc.robot.subsystems.Spinner.Spinner;
+import frc.robot.subsystems.Spinner.SpinnerConstants;
+
 
 public class SpinnerCommand extends CommandBase {
   /** Creates a new SpinnerCommand. */
-  private SpinnerSubsystem spinnerSubsystem;
+  private Spinner spinnerSubsystem;
 
-  // create a boolean variable to store if the reverse spin action has been completed and when it is completed set it to true
-  private boolean reverseSpinComplete;
-  private boolean reverseSpin;
-  private double startEncoder;
+  private boolean isReversed;
 
   public SpinnerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    spinnerSubsystem = SpinnerSubsystem.getInstance();
-
+    spinnerSubsystem = Spinner.getInstance();
     addRequirements(spinnerSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // set reverse spin to false
-    reverseSpin = false;
-    reverseSpinComplete = false;
-    startEncoder = spinnerSubsystem.getEncoder();
+    isReversed = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (!spinnerSubsystem.getIR()) {
-      spinnerSubsystem.setVelocity(-0.5);
-    } 
-    
-    else if (!reverseSpin) {
-      spinnerSubsystem.setVelocity(0.5);
-      if (spinnerSubsystem.getEncoder() - startEncoder >= 42) {
-        reverseSpin = true;
-        reverseSpinComplete = true;
+  public void execute(){
+    if(spinnerSubsystem.isGamePiceEntered()){
+      if(!spinnerSubsystem.isStuck() && !isReversed){
+        spinnerSubsystem.resetEncoder();
+      }
+      if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() <= 360)){
+        spinnerSubsystem.setPower(SpinnerConstants.spinnerSpeed);
+        isReversed = true;
+      }
+      if(spinnerSubsystem.isStuck()){
+        spinnerSubsystem.setPower(+SpinnerConstants.spinnerSpeed);
       }
     }
   }
@@ -50,11 +46,11 @@ public class SpinnerCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override 
   public void end(boolean interrupted) {
-    spinnerSubsystem.setVoltage(0);
+    spinnerSubsystem.setPower(0);
   }
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return reverseSpinComplete;
+  public boolean isFinished(){
+    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() >= 360;
   }
 }

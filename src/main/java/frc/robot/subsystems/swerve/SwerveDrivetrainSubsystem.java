@@ -13,6 +13,7 @@ import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
+import com.ma5951.utils.MAShuffleboard;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -32,6 +33,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -41,11 +43,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-
-import com.ma5951.utils.MAShuffleboard;
 
 public class SwerveDrivetrainSubsystem extends SubsystemBase {
   private static SwerveDrivetrainSubsystem swerve;
@@ -384,6 +383,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void fixOdometry() {
     if (DriverStation.getAlliance() == Alliance.Red) {
+      navx.setAngleAdjustment((getPose().getRotation().getDegrees()) - 180);
+      resetNavx();
       resetOdometry(
       new Pose2d(
         new Translation2d(
@@ -396,6 +397,14 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     updateOffset();
   }
 }
+public void setTuRL(double power) {
+  frontLeftModule.turningMotorSetPower(power);
+}
+
+public void setTuRR(double power) {
+  frontRightModule.turningMotorSetPower(power);
+}
+
 
   public static SwerveDrivetrainSubsystem getInstance() {
     if (swerve == null) {
