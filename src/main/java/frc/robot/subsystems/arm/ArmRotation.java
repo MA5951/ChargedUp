@@ -10,11 +10,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.gripper.GripperConstants;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
@@ -34,15 +37,17 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   private static ArmRotation armRotation;
 
-  public ArmRotation() {
+  private ArmRotation() {
     motor = new CANSparkMax(ArmPortMap.rotationMotorID, MotorType.kBrushless);
     hallEffect = new DigitalInput(ArmPortMap.rotationHallEffectID);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
+    motor.setIdleMode(IdleMode.kBrake);
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
 
     encoder.setPositionConversionFactor(2 * Math.PI);
+    encoder.setVelocityConversionFactor(2 * Math.PI / 60);
 
     pidController.setP(ArmConstants.armRotationKp);
     pidController.setI(ArmConstants.armRotationKi);
@@ -75,27 +80,49 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
     pidController.setReference(setPoint, ControlType.kPosition,
-    0, getFeed(), ArbFFUnits.kPercentOut);
+    0, getFeed(), ArbFFUnits.kVoltage);
   }
 
   public boolean atPoint() {
     return Math.abs(encoder.getPosition() - setPoint)
-    < ArmConstants.armRotationTolerance;
+      < ArmConstants.armRotationTolerance;
   }
 
-  public double getCenterOfMass(double extenstion) {
-    // TODO graph on excel
-    return 0;
+  public double getCenterOfMass() {
+    if (ArmConstants.isThereCone) {
+      return 0.475 * ArmExtenstion.getInstance().getExtenstion() + 0.248;
+    }
+    double mu1 = 
+      ((GripperConstants.openPosition
+      - GripperSubsystem.getInstance().getCurrentEncoderPosition()) / 
+      (GripperConstants.openPosition - GripperConstants.closePosition));
+    double mu2 = (1 - Math.cos(mu1 * Math.PI)) / 2;
+    double x = ArmExtenstion.getInstance().getExtenstion();
+    double close = 0.4311 * x + 0.2035;
+    double open = 0.4226 * x + 0.1732;
+    double y = close - open;
+    return open + y * mu2;
+  }
+
+  public double getAngularVelocity() {
+    return encoder.getVelocity();
   }
 
   public double getFeed() {
-    return ((ArmConstants.armMass * 9.8) * 
-      Math.cos(getRotation()) * 
-      getCenterOfMass(ArmExtenstion.getInstance().getExtenstion()))
-      * ArmConstants.armRotationkt -
-      SwerveDrivetrainSubsystem.getInstance().getRadialAcceleration()
-      * ArmConstants.armMass
-      * ArmConstants.armRotationNewtonToPercentage;
+    double mass =
+      ArmConstants.isThereCone ? ArmConstants.armMass + ArmConstants.coneMass :
+      ArmConstants.armMass;
+    double dis = getCenterOfMass();
+    double r = ArmConstants.armDistanceFromTheCenter + 
+      Math.cos(getRotation()) * dis;
+    double aR = 
+      Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
+    double FR = (aR * mass) * Math.sin(getRotation());
+    double TR = FR * dis;
+    double GT = (mass * 9.8) * Math.cos(getRotation()) * dis;
+    double angularMomentum = ArmConstants.armMass * getAngularVelocity();
+    return (GT - TR + dis * (-angularMomentum / 0.02))
+      * ArmConstants.armRotationkT;
   }
 
   public static ArmRotation getInstance() {

@@ -1,0 +1,36 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Field": {
+          "open": true
+        },
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "Robot": {
+          "length": 0.75,
+          "width": 0.75
+        },
+        "image": "C:\\Users\\eilon\\OneDrive\\Documents\\pathplanner\\data\\flutter_assets\\images\\field23.png",
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "5951",
+    "visible": false
+  },
+  "NetworkTables View": {
+    "visible": false
+  }
+}

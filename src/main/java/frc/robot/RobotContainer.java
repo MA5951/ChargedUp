@@ -47,12 +47,16 @@ public class RobotContainer {
     }
 
     photonVision  = new PhotonVision(
-      "ma5951", 0.4, 0,
+      "ma5951",
       new Transform3d(
        new Translation3d(
-        0.377, -0.017, 0.3225
+        Constants.cammera.cammeraDisFromCenterInX,
+        Constants.cammera.cammeraDisFromCenterInY,
+        Constants.cammera.cammeraDisFromCenterInZ
        ), new Rotation3d(
-        0, 0, Math.toRadians(200)
+        Constants.cammera.cammeraRoll,
+        Constants.cammera.cammeraPitch,
+        Constants.cammera.cammeraYaw
        )),
       aprilTagFieldLayout
        );
@@ -95,6 +99,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return SwerveDrivetrainSubsystem.getInstance().getAutonomousPathCommand("try", true);
+    return SwerveDrivetrainSubsystem.getInstance().getAutonomousPathCommand("From A1 to pickup 1", true);
   }
 }
