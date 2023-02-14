@@ -4,27 +4,21 @@
 
 package frc.robot.commands.Automations;
 
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Intake.IntakeCommand;
-import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.subsystems.arm.ArmConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeAutomation extends SequentialCommandGroup {
-  /** Creates a new IntakeAutomation. */
-  public IntakeAutomation(double lowerPower, double upperPower) {
+public class AfterScoringAutomation extends SequentialCommandGroup {
+  /** Creates a new AfterScoringAutomation. */
+  public AfterScoringAutomation() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetArmAutomation(0, ArmConstants.armRotationStartPose),
-      new OpenIntake(),
-      new ParallelDeadlineGroup(
-        new IntakeCommand(lowerPower, upperPower),
-        new OpenIntake().repeatedly()
-      )
+      new CloseIntake()
     );
   }
 }

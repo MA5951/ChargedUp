@@ -36,6 +36,8 @@ public class ArmConstants {
     public static final double coneMass = 0.653; // kg
     public static final double armExtestionMass = 2.9; // kg
 
+    public static final double MinRotationForExtenstion = 0; // TODO radians
+
     public static final double rotationForMidScoring = 0; //TODO
     public static final double extenstionForMidScoring = 0; //TODO
 }

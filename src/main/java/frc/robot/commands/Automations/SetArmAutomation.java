@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 
@@ -18,15 +19,25 @@ import frc.robot.subsystems.arm.ArmRotation;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SetArmAutomation extends SequentialCommandGroup {
   /** Creates a new ResetArmAutomation. */
+  private boolean atPoint() {
+    return ArmExtenstion.getInstance().atPoint() 
+      && ArmRotation.getInstance().atPoint();
+  }
   public SetArmAutomation(double extensionSetpoint, double rotationSetpoint) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> ArmExtenstion.getInstance().setPoint = extensionSetpoint),
-      new InstantCommand(() -> ArmRotation.getInstance().setPoint = rotationSetpoint),
-      new ParallelDeadlineGroup(new WaitUntilCommand(() -> ArmExtenstion.getInstance().atPoint() && ArmRotation.getInstance().atPoint()), 
-        new ControlCommandInsubsystemControl(ArmExtenstion.getInstance(), extensionSetpoint).repeatedly(),
-        new ControlCommandInsubsystemControl(ArmRotation.getInstance(), rotationSetpoint).repeatedly()
+      new InstantCommand(
+        () -> ArmExtenstion.getInstance().setPoint = extensionSetpoint),
+      new InstantCommand(
+        () -> ArmRotation.getInstance().setPoint = rotationSetpoint),
+      new ParallelDeadlineGroup(
+        new WaitUntilCommand(this::atPoint), 
+        new ControlCommandInsubsystemControl(ArmExtenstion.getInstance(),
+          extensionSetpoint).repeatedly(),
+        new ControlCommandInsubsystemControl(ArmRotation.getInstance(),
+          rotationSetpoint).repeatedly(),
+        new MiddleIntake().repeatedly()
         )
     );
   }
