@@ -34,7 +34,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   private String ki = "ki";
   private String kd = "kd";
 
-  public double setPoint = ArmConstants.armRotationStartPose;
+  private double setPoint = ArmConstants.armRotationStartPose;
 
   private static ArmRotation armRotation;
 
@@ -67,21 +67,39 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     return encoder.getPosition();
   }
 
+  public void setSetpoint(double setPoint) {
+    this.setPoint = setPoint;
+  }
+
+  public double getSetPoint() {
+    return setPoint;
+  }
+
   @Override
   public void setVoltage(double voltage) {
     motor.set(voltage / 12.0);
   }
 
-  @Override
-  public boolean canMove() {
-    return IntakePosition.getInstance().isMiddle();
+  public boolean isAbleToChangePose(double setPoint) {
+    return (IntakePosition.getInstance().isMiddle() || 
+      IntakePosition.getInstance().isOpen() || (
+        getRotation() > ArmConstants.minRotationForExtenstionSaftyBuffer
+        && setPoint > ArmConstants.minRotationForExtenstionSaftyBuffer
+      ))
+      && (ArmExtenstion.getInstance().getExtenstion() < 
+      ArmConstants.minExtenstionForRotation
+      || getRotation() > ArmConstants.minRotationForExtenstionSaftyBuffer);
   }
 
   @Override
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
-    pidController.setReference(setPoint, ControlType.kPosition,
-    0, getFeed(), ArbFFUnits.kVoltage);
+    double useSetPoint = this.setPoint;
+    if (!isAbleToChangePose(this.setPoint)) {
+      useSetPoint = getRotation();
+    }
+    pidController.setReference(useSetPoint, ControlType.kPosition,
+      0, getFeed(), ArbFFUnits.kVoltage);
   }
 
   public boolean atPoint() {
@@ -131,6 +149,11 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       armRotation = new ArmRotation();
     }
     return armRotation;
+  }
+
+  @Override
+  public boolean canMove() {
+    return true;
   }
 
   @Override

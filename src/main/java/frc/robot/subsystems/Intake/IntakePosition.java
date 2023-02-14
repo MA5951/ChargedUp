@@ -32,8 +32,8 @@ public class IntakePosition extends SubsystemBase {
 
     motor.setIdleMode(IdleMode.kCoast);
     encoder.setPositionConversionFactor(
-      2 * Math.PI * (1/IntakeConstants.ticksPerRound) * IntakeConstants.gear
-      );
+      2 * Math.PI * (1 / IntakeConstants.ticksPerRound) * IntakeConstants.gear
+    );
     resetEncoder();
   }
 

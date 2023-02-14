@@ -15,7 +15,6 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
@@ -31,7 +30,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private String ki = "ki";
   private String kd = "kd";
 
-  public double setPoint = 0;
+  private double setPoint = 0;
 
   private static ArmExtenstion armExtenstion;
 
@@ -67,10 +66,29 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     motor.set(voltage / 12.0);
   }
 
+  public void setSetpoint(double setPoint) {
+    this.setPoint = setPoint;
+  }
+
+  public double getSetpoint() {
+    return setPoint;
+  }
+
+  public boolean isAbleToChangePose() {
+    return ArmRotation.getInstance().getRotation() >
+      ArmConstants.minRotationForExtenstion;
+  }
+
+
   @Override
   public void calculate(double setPoint) {
-    pidController.setReference(setPoint, ControlType.kPosition,0,
-    getFeed(), ArbFFUnits.kPercentOut);
+    this.setPoint = setPoint;
+    double useSetPoint = this.setPoint;
+    if (!isAbleToChangePose()) {
+      useSetPoint = getExtenstion();
+    }
+    pidController.setReference(useSetPoint, ControlType.kPosition,0,
+      getFeed(), ArbFFUnits.kPercentOut);
   }
 
   public double getFeed() {
@@ -87,13 +105,6 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
       mass * 9.8 + FR) * ArmConstants.armExtenstionKn;
   }
 
-  @Override
-  public boolean canMove() {
-    return IntakePosition.getInstance().isMiddle() && 
-      ArmRotation.getInstance().getRotation() >
-      ArmConstants.MinRotationForExtenstion;
-  }
-
   public boolean atPoint() {
     return Math.abs(encoder.getPosition() - setPoint)
     < ArmConstants.armExtenstionTolerance;
@@ -104,6 +115,11 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
       armExtenstion = new ArmExtenstion();
     }
     return armExtenstion;
+  }
+
+  @Override
+  public boolean canMove() {
+    return true;
   }
 
   @Override

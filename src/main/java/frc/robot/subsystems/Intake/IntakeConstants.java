@@ -10,7 +10,7 @@ public class IntakeConstants {
     public final static double OpenPosition = 100;//RAD, TODO
     public final static double MiddlePosition = 50;//RAD, TODO
 
-    public final static double kGForMiddle = 0;//TODO
+    public final static double kG = 0;//TODO
 
     public static final int ticksPerRound = 42;
 
