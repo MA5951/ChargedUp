@@ -15,7 +15,7 @@ public class GripperSubsystem extends SubsystemBase {
   private MAShuffleboard board;
 
   private GripperSubsystem() {
-    gripperMotor = new CANSparkMax(GripperProtMap.GripperMotorId,
+    gripperMotor = new CANSparkMax(GripperPortMap.GripperMotorId,
       MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
     encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
