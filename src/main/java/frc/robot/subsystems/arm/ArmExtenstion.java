@@ -5,6 +5,7 @@
 package frc.robot.subsystems.arm;
 
 import com.ma5951.utils.MAShuffleboard;
+import com.ma5951.utils.RobotConstants;
 import com.ma5951.utils.subsystem.ControlSubsystemInSubsystemControl;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -15,6 +16,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
@@ -35,9 +37,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private static ArmExtenstion armExtenstion;
 
   private ArmExtenstion() {
-    motor = new CANSparkMax(ArmPortMap.extenstionMotorID, MotorType.kBrushless);
+    motor = new CANSparkMax(Constants.PortMap.ArmPortMap.extenstionMotorID, MotorType.kBrushless);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
-    hallEffect = new DigitalInput(ArmPortMap.extenstionHallEffectID);
+    hallEffect = new DigitalInput(Constants.PortMap.ArmPortMap.extenstionHallEffectID);
 
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
@@ -47,7 +49,6 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setP(ArmConstants.armExtenstionKp);
     pidController.setI(ArmConstants.armExtenstionKi);
     pidController.setD(ArmConstants.armExtenstionKd);
-
     board = new MAShuffleboard("ArmExtenstion");
     board.addNum(kp, ArmConstants.armExtenstionKp);
     board.addNum(ki, ArmConstants.armExtenstionKi);
@@ -63,7 +64,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void setVoltage(double voltage) {
-    motor.set(voltage / 12.0);
+    motor.set(voltage / RobotConstants.MAX_VOLTAGE);
   }
 
   public void setSetpoint(double setPoint) {
@@ -102,7 +103,8 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
       Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
     double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
     return (Math.sin(ArmRotation.getInstance().getRotation()) * 
-      mass * 9.8 + FR) * ArmConstants.armExtenstionKn;
+      mass * RobotConstants.KGRAVITY_ACCELERATION + FR)
+      * ArmConstants.armExtenstionKn;
   }
 
   public boolean atPoint() {

@@ -3,6 +3,7 @@ package frc.robot.subsystems.Intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase{
 
@@ -12,7 +13,7 @@ public class Intake extends SubsystemBase{
 
 
   private Intake() {
-    motor = new CANSparkMax(IntakePortMap.IntakemotorID, MotorType.kBrushless);
+    motor = new CANSparkMax(Constants.PortMap.IntakePortMap.IntakemotorID, MotorType.kBrushless);
   }
 
   public void setPower(double power){

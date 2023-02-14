@@ -99,9 +99,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule frontLeftModule = new SwerveModuleTalonFX(
       "frontLeftModule",
-      SwervePortMap.leftFrontDriveID,
-      SwervePortMap.leftFrontTurningID,
-      SwervePortMap.leftFrontAbsoluteEncoder,
+      Constants.PortMap.SwervePortMap.leftFrontDriveID,
+      Constants.PortMap.SwervePortMap.leftFrontTurningID,
+      Constants.PortMap.SwervePortMap.leftFrontAbsoluteEncoder,
       SwerveConstants.frontLeftModuleIsDriveMotorReversed,
       SwerveConstants.frontLeftModuleIsTurningMotorReversed,
       SwerveConstants.frontLeftModuleIsAbsoluteEncoderReversed,
@@ -109,9 +109,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule frontRightModule = new SwerveModuleTalonFX(
       "frontRightModule",
-      SwervePortMap.rightFrontDriveID,
-      SwervePortMap.rightFrontTurningID,
-      SwervePortMap.rightFrontAbsoluteEncoder,
+      Constants.PortMap.SwervePortMap.rightFrontDriveID,
+      Constants.PortMap.SwervePortMap.rightFrontTurningID,
+      Constants.PortMap.SwervePortMap.rightFrontAbsoluteEncoder,
       SwerveConstants.frontRightModuleIsDriveMotorReversed,
       SwerveConstants.frontRightModuleIsTurningMotorReversed,
       SwerveConstants.frontRightModuleIsAbsoluteEncoderReversed,
@@ -119,9 +119,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule rearLeftModule = new SwerveModuleTalonFX(
       "rearLeftModule",
-      SwervePortMap.leftBackDriveID,
-      SwervePortMap.leftBackTurningID,
-      SwervePortMap.leftBackAbsoluteEncoder,
+      Constants.PortMap.SwervePortMap.leftBackDriveID,
+      Constants.PortMap.SwervePortMap.leftBackTurningID,
+      Constants.PortMap.SwervePortMap.leftBackAbsoluteEncoder,
       SwerveConstants.rearLeftModuleIsDriveMotorReversed,
       SwerveConstants.rearLeftModuleIsTurningMotorReversed,
       SwerveConstants.rearLeftModuleIsAbsoluteEncoderReversed,
@@ -129,9 +129,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule rearRightModule = new SwerveModuleTalonFX(
       "rearRightModule",
-      SwervePortMap.rightBackDriveID,
-      SwervePortMap.rightBackTurningID,
-      SwervePortMap.rightBackAbsoluteEncoder,
+      Constants.PortMap.SwervePortMap.rightBackDriveID,
+      Constants.PortMap.SwervePortMap.rightBackTurningID,
+      Constants.PortMap.SwervePortMap.rightBackAbsoluteEncoder,
       SwerveConstants.rearRightModuleIsDriveMotorReversed,
       SwerveConstants.rearRightModuleIsTurningMotorReversed,
       SwerveConstants.rearRightModuleIsAbsoluteEncoderReversed,

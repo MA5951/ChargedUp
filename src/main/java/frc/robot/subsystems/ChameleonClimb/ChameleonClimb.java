@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ChameleonClimb extends SubsystemBase {
   /** Creates a new ChameleonClimb. */
@@ -15,7 +16,8 @@ public class ChameleonClimb extends SubsystemBase {
   private CANSparkMax graspingMotor;
 
   public ChameleonClimb() {
-    graspingMotor = new CANSparkMax(ChameleonClimbConstants.GRASPING_MOTOR_ID, MotorType.kBrushless);
+    graspingMotor = new CANSparkMax(
+      Constants.PortMap.ChameleonClimbPortMap.GRASPING_MOTOR_ID, MotorType.kBrushless);
   }
 
   public void setMotor(double power){

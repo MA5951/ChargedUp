@@ -15,14 +15,14 @@ import frc.robot.subsystems.arm.ArmConstants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IntakeAutomation extends SequentialCommandGroup {
   /** Creates a new IntakeAutomation. */
-  public IntakeAutomation(double lowerPower, double upperPower) {
+  public IntakeAutomation(double power) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetArmAutomation(0, ArmConstants.armRotationStartPose),
       new OpenIntake(),
       new ParallelDeadlineGroup(
-        new IntakeCommand(lowerPower, upperPower),
+        new IntakeCommand(power),
         new OpenIntake().repeatedly()
       )
     );

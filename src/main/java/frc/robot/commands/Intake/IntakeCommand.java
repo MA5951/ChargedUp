@@ -12,7 +12,7 @@ public class IntakeCommand extends CommandBase {
   /** Creates a new IntakeCommand. */
   private Intake intake;
   private double power;
-  public IntakeCommand(double power, double upperPower) {
+  public IntakeCommand(double power) {
     this.power = power;
     intake = Intake.getInstance();
     addRequirements(intake);

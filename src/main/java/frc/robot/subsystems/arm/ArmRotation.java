@@ -5,6 +5,7 @@
 package frc.robot.subsystems.arm;
 
 import com.ma5951.utils.MAShuffleboard;
+import com.ma5951.utils.RobotConstants;
 import com.ma5951.utils.subsystem.ControlSubsystemInSubsystemControl;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -16,6 +17,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
@@ -39,8 +41,8 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   private static ArmRotation armRotation;
 
   private ArmRotation() {
-    motor = new CANSparkMax(ArmPortMap.rotationMotorID, MotorType.kBrushless);
-    hallEffect = new DigitalInput(ArmPortMap.rotationHallEffectID);
+    motor = new CANSparkMax(Constants.PortMap.ArmPortMap.rotationMotorID, MotorType.kBrushless);
+    hallEffect = new DigitalInput(Constants.PortMap.ArmPortMap.rotationHallEffectID);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
     motor.setIdleMode(IdleMode.kBrake);
@@ -77,7 +79,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void setVoltage(double voltage) {
-    motor.set(voltage / 12.0);
+    motor.set(voltage / RobotConstants.MAX_VOLTAGE);
   }
 
   public boolean isAbleToChangePose(double setPoint) {
@@ -138,9 +140,10 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
     double FR = (aR * mass) * Math.sin(getRotation());
     double TR = FR * dis;
-    double GT = (mass * 9.8) * Math.cos(getRotation()) * dis;
+    double GT = (mass * RobotConstants.KGRAVITY_ACCELERATION) * Math.cos(getRotation()) * dis;
     double angularMomentum = ArmConstants.armMass * getAngularVelocity();
-    return (GT - TR + dis * (-angularMomentum / 0.02))
+    return (GT - TR + dis * (-angularMomentum / 
+    RobotConstants.KDELTA_TIME))
       * ArmConstants.armRotationkT;
   }
 
