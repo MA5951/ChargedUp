@@ -1,5 +1,6 @@
 package frc.robot.subsystems.gripper;
 
+import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -11,34 +12,28 @@ public class GripperSubsystem extends SubsystemBase {
   private CANSparkMax gripperMotor;
   private RelativeEncoder encoder;
 
-  public GripperSubsystem() {
-    // Initialize the motor
-    gripperMotor = new CANSparkMax(1, MotorType.kBrushless);
+  private MAShuffleboard board;
+
+  private GripperSubsystem() {
+    gripperMotor = new CANSparkMax(GripperPortMap.GripperMotorId,
+      MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
-  }
-
-  //TODO: add some logic to prevent over opening (and closing) or just merge to one function: setPower
-
-  public void closeGripper(double power) {
-    gripperMotor.set(power);
-  }
-
-  public void openGripper(double power) {
-    gripperMotor.set(-power);
+    encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
+      * GripperConstants.gear * 2 * Math.PI);
+    board = new MAShuffleboard("gripper");
   }
 
   public void setPower(double power){
     gripperMotor.set(power);
   }
   
-  public double getMotorTicks() {
-    return gripperMotor.getEncoder().getPosition();
-  }
-
   public double getMotorCurrent() {
     return gripperMotor.getOutputCurrent();
   }
 
+  /**
+   * @return radians
+   */
   public double getCurrentEncoderPosition(){
     return encoder.getPosition();
   }
@@ -52,6 +47,7 @@ public class GripperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    board.addNum("position radians", getCurrentEncoderPosition());
+    board.addNum("MotorCurrent", getMotorCurrent());
   }
 }

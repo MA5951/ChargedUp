@@ -23,26 +23,26 @@ public class SwerveConstants {
      
     // front left module
     public final static double frontLeftModuleOffsetEncoder = 349;
-    public final static boolean frontLeftModuleIsDriveMotorReversed = true;
+    public final static boolean frontLeftModuleIsDriveMotorReversed = false;
     public final static boolean frontLeftModuleIsTurningMotorReversed = true;
     public final static boolean frontLeftModuleIsAbsoluteEncoderReversed = false;
  
     // front right module
     public final static double frontRightModuleOffsetEncoder = 147;
-    public final static boolean frontRightModuleIsDriveMotorReversed = false;
+    public final static boolean frontRightModuleIsDriveMotorReversed = true;
     public final static boolean frontRightModuleIsTurningMotorReversed = true;
     public final static boolean frontRightModuleIsAbsoluteEncoderReversed = false;
  
     // rear left module
     public final static double rearLeftModuleOffsetEncoder = 179;
-    public final static boolean rearLeftModuleIsDriveMotorReversed = true;
+    public final static boolean rearLeftModuleIsDriveMotorReversed = false;
     public final static boolean rearLeftModuleIsTurningMotorReversed = true;
     public final static boolean rearLeftModuleIsAbsoluteEncoderReversed = false;
 
  
     // rear right module
     public final static double rearRightModuleOffsetEncoder = 302;
-    public final static boolean rearRightModuleIsDriveMotorReversed = false;
+    public final static boolean rearRightModuleIsDriveMotorReversed = true;
     public final static boolean rearRightModuleIsTurningMotorReversed = true;
     public final static boolean rearRightModuleIsAbsoluteEncoderReversed = false;
 

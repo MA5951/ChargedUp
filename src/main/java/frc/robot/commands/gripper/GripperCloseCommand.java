@@ -4,26 +4,18 @@
 
 package frc.robot.commands.gripper;
 
-import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class GripperCloseCommand extends CommandBase {
   /** Creates a new GripperCommand. */
   // Declare the subsystem
-  GripperSubsystem gripperSubsystem;
-  // create "lastCurrent" variable
-  double lastCurrent;
-  // create "motorCurrent" variable
-  double motorCurrent;
-  // create "motorTicks" variable
-  double motorTicks;
+  private GripperSubsystem gripperSubsystem;
 
-  boolean touched;
-
-  double currentPosition;
+  private double lastCurrent;
+  private boolean tachedGamePice;
 
   public GripperCloseCommand() {
     gripperSubsystem = GripperSubsystem.getInstance();
@@ -32,41 +24,33 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    touched = false;
+    lastCurrent = 0;
+    tachedGamePice = false;
   }
 
   @Override
   public void execute() {
-    motorTicks = gripperSubsystem.getMotorTicks();
-    motorCurrent = gripperSubsystem.getMotorCurrent();
-    currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    if(Math.abs(currentPosition - GripperConstants.closePosition) > GripperConstants.gripperTolerance){
-      //checks if the gripper touched an object
-      if (motorCurrent - lastCurrent > GripperConstants.currentJump) {
-        touched = true;
-      }
-      if(touched){
-        if (motorTicks >= 1500) {
-          gripperSubsystem.setPower(GripperConstants.conePower);
-        } else if (motorTicks >= 1000) {
-          gripperSubsystem.setPower(GripperConstants.cubePower);
-        }
-      }
-      else{
-        gripperSubsystem.setPower(GripperConstants.closingPower);
-      }
-      lastCurrent = gripperSubsystem.getMotorCurrent();
+    double current = gripperSubsystem.getMotorCurrent();
+    if (Math.abs(lastCurrent - current) >= GripperConstants.currentJump) {
+      tachedGamePice = true;
     }
-  }
+    lastCurrent = current;
+    }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    gripperSubsystem.setPower(0);
+    if (gripperSubsystem.getCurrentEncoderPosition()
+     <= GripperConstants.coneAngle) {
+      gripperSubsystem.setPower(GripperConstants.conePower);
+      ArmConstants.isThereCone = true;
+    } else {
+      gripperSubsystem.setPower(GripperConstants.cubePower);
+    }
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return tachedGamePice;
   }
 }

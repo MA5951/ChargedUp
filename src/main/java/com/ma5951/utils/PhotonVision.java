@@ -26,13 +26,11 @@ public class PhotonVision {
     private PhotonPoseEstimator photonPoseEstimator;
 
     public PhotonVision(String cameraName, 
-        double cameraHeightMeters, 
-        double cameraPitchRadians,
         Transform3d robotToCam,
         AprilTagFieldLayout layout) {
         camera = new PhotonCamera(cameraName);
-        this.cameraHeightMeters = cameraHeightMeters;
-        this.cameraPitchRadians = cameraPitchRadians;
+        this.cameraHeightMeters = robotToCam.getZ();
+        this.cameraPitchRadians = robotToCam.getRotation().getY();
         this.layout = layout;
         photonPoseEstimator = new PhotonPoseEstimator(
             layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, robotToCam);

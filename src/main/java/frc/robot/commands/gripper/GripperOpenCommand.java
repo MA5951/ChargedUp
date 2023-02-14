@@ -5,14 +5,15 @@
 package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class GripperOpenCommand extends CommandBase {
   /** Creates a new GripperOpenCommand. */
-  GripperSubsystem gripperSubsystem;
+  private GripperSubsystem gripperSubsystem;
 
-  double currentPosition;
+  private double currentPosition;
 
   public GripperOpenCommand(GripperSubsystem gripperSubsystem) {
     this.gripperSubsystem = gripperSubsystem;
@@ -28,20 +29,22 @@ public class GripperOpenCommand extends CommandBase {
   @Override
   public void execute() {
     currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    if(Math.abs(currentPosition - GripperConstants.openPosition) > GripperConstants.gripperTolerance){
-      gripperSubsystem.setPower(GripperConstants.openingPower);
-    }
+    gripperSubsystem.setPower(GripperConstants.openingPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     gripperSubsystem.setPower(0);
+    ArmConstants.isThereCone = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return 
+    Math.abs(
+      currentPosition - GripperConstants.openPosition
+      ) < GripperConstants.gripperTolerance;
   }
 }

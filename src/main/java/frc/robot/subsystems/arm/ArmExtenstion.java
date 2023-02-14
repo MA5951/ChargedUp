@@ -13,9 +13,9 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
   /** Creates a new TelescopicArm. */
@@ -24,7 +24,6 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private DigitalInput hallEffect;
 
   private SparkMaxPIDController pidController;
-  private ArmFeedforward feed;
   
   private MAShuffleboard board;
   private String kp = "kp";
@@ -35,15 +34,13 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   private static ArmExtenstion armExtenstion;
 
-  public ArmExtenstion() {
+  private ArmExtenstion() {
     motor = new CANSparkMax(ArmPortMap.extenstionMotorID, MotorType.kBrushless);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
     hallEffect = new DigitalInput(ArmPortMap.extenstionHallEffectID);
 
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
-
-    feed = new ArmFeedforward(0, ArmConstants.armExtenstionKg, 0);
     
     encoder.setPositionConversionFactor(ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
 
@@ -71,9 +68,22 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void calculate(double setPoint) {
-    pidController.setReference(setPoint, ControlType.kPosition,
-    0, feed.calculate((0.5 * Math.PI) - ArmRotation.getInstance().getRotation(), 
-    0), ArbFFUnits.kPercentOut);
+    pidController.setReference(setPoint, ControlType.kPosition,0,
+    getFeed(), ArbFFUnits.kPercentOut);
+  }
+
+  public double getFeed() {
+    double mass =
+      ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.coneMass :
+      ArmConstants.armExtestionMass;
+    double dis = ArmRotation.getInstance().getCenterOfMass();
+    double r = ArmConstants.armDistanceFromTheCenter + 
+      Math.cos(ArmRotation.getInstance().getRotation()) * dis;
+    double aR = 
+      Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
+    double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
+    return (Math.sin(ArmRotation.getInstance().getRotation()) * 
+      mass * 9.8 + FR) * ArmConstants.armExtenstionKn;
   }
 
   @Override
