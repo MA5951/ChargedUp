@@ -7,8 +7,7 @@ package frc.robot.subsystems.Intake;
 /** Add your docs here. */
 public class IntakePortMap {
     
-    public final static  int UpperMotorID = 1;
-    public final static int LowerMotorID = 2;
+    public final static  int IntakemotorID = 1;
     public final static int OpenAndCloseIntakeMotorID = 3;
 
     public final static int isCloseHallEffectChanelle = 0;
