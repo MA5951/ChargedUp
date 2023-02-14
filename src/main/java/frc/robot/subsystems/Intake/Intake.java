@@ -13,8 +13,8 @@ public class Intake extends SubsystemBase{
 
 
   private Intake() {
-    upperMotor = new CANSparkMax(IntakePortMap.UpperMotorID,MotorType.kBrushless);
-    lowerMotor = new CANSparkMax(IntakePortMap.LowerMotorID,MotorType.kBrushless);
+    upperMotor = new CANSparkMax(IntakePortMap.UpperMotorID, MotorType.kBrushless);
+    lowerMotor = new CANSparkMax(IntakePortMap.LowerMotorID, MotorType.kBrushless);
   }
 
   public void setUpperMotorPower(double power){
