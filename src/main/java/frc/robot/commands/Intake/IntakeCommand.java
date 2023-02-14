@@ -11,10 +11,9 @@ import frc.robot.subsystems.Spinner.Spinner;
 public class IntakeCommand extends CommandBase {
   /** Creates a new IntakeCommand. */
   private Intake intake;
-  double lowerPower, upperPower;
-  public IntakeCommand(double lowerPower, double upperPower) {
-    this.lowerPower = lowerPower;
-    this.upperPower = upperPower;
+  private double power;
+  public IntakeCommand(double power, double upperPower) {
+    this.power = power;
     intake = Intake.getInstance();
     addRequirements(intake);
   }
@@ -26,15 +25,13 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setLowerMotorPower(lowerPower);
-    intake.setUpperMotorPower(upperPower);
+    intake.setPower(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setLowerMotorPower(0);
-    intake.setUpperMotorPower(0);
+    intake.setPower(0);
   }
 
   // Returns true when the command should end.

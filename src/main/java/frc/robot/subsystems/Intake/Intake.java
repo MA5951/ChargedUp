@@ -8,21 +8,15 @@ public class Intake extends SubsystemBase{
 
   private static Intake intake;
 
-  private CANSparkMax upperMotor;
-  private CANSparkMax lowerMotor;
+  private CANSparkMax motor;
 
 
   private Intake() {
-    upperMotor = new CANSparkMax(IntakePortMap.UpperMotorID, MotorType.kBrushless);
-    lowerMotor = new CANSparkMax(IntakePortMap.LowerMotorID, MotorType.kBrushless);
+    motor = new CANSparkMax(IntakePortMap.IntakemotorID, MotorType.kBrushless);
   }
 
-  public void setUpperMotorPower(double power){
-    upperMotor.set(power);
-  }
-
-  public void setLowerMotorPower(double power){
-    lowerMotor.set(power);
+  public void setPower(double power){
+    motor.set(power);
   }
 
   public static Intake getInstance() {
