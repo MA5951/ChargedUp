@@ -15,6 +15,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
