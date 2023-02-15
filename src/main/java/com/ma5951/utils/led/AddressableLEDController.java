@@ -21,6 +21,8 @@ public class AddressableLEDController {
         addressableLED.setLength(length);
         addressableLED.setData(addressableLEDBuffer);
         addressableLED.start();
+        timer = new Timer();
+        animationDelay = 50;
     }
 
     public void setAddressableLEDPattern(AddressableLEDPattern newPattern) {
