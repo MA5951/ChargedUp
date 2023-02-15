@@ -52,7 +52,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setP(ArmConstants.armExtenstionKp);
     pidController.setI(ArmConstants.armExtenstionKi);
     pidController.setD(ArmConstants.armExtenstionKd);
+
     board = new MAShuffleboard("ArmExtenstion");
+    
     board.addNum(kp, ArmConstants.armExtenstionKp);
     board.addNum(ki, ArmConstants.armExtenstionKi);
     board.addNum(kd, ArmConstants.armExtenstionKd);
