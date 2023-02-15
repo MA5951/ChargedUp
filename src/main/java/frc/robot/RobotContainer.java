@@ -53,13 +53,13 @@ public class RobotContainer {
       "ma5951",
       new Transform3d(
        new Translation3d(
-        Constants.cammera.cammeraDisFromCenterInX,
-        Constants.cammera.cammeraDisFromCenterInY,
-        Constants.cammera.cammeraDisFromCenterInZ
+        Constants.Camera.cameraDisFromCenterInX,
+        Constants.Camera.cameraDisFromCenterInY,
+        Constants.Camera.cameraDisFromCenterInZ
        ), new Rotation3d(
-        Constants.cammera.cammeraRoll,
-        Constants.cammera.cammeraPitch,
-        Constants.cammera.cammeraYaw
+        Constants.Camera.cameraRoll,
+        Constants.Camera.cameraPitch,
+        Constants.Camera.cameraYaw
        )),
       aprilTagFieldLayout
        );

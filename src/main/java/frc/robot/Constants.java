@@ -88,67 +88,17 @@ public final class Constants {
       )
     }; // need to check
   }
-  public static class pipeLines{
+  public static class PipeLines{
     public static final int apriltagPipeLine = 0; // TODO
     public static final int reflectiveLightPipeLine = 0; //TODO
   }
-  public static class cammera {
-    public static final double cammeraDisFromCenterInX = 0.2;
-    public static final double cammeraDisFromCenterInY = 0.022;
-    public static final double cammeraDisFromCenterInZ = 0.7;
-    public static final double cammeraRoll = 0;
-    public static final double cammeraPitch = Math.PI * 0.5;
-    public static final double cammeraYaw = Math.PI;
+  public static class Camera {
+    public static final double cameraDisFromCenterInX = 0.2;
+    public static final double cameraDisFromCenterInY = 0.022;
+    public static final double cameraDisFromCenterInZ = 0.7;
+    public static final double cameraRoll = 0;
+    public static final double cameraPitch = Math.PI * 0.5;
+    public static final double cameraYaw = Math.PI;
 
-  }
-
-  public static class PortMap{
-
-    public static class IntakePortMap {
-      public final static  int IntakemotorID = 13;//TODO
-      public final static int OpenAndCloseIntakeMotorID = 14;//TODO
-  
-      public final static int isCloseHallEffectChanelle = 1;//TODO
-    }
-
-    public static class SpinnerPortMap {
-      public static final int stuckIRChanlle = 2;//TODO
-      public static final int buttomIRChanlle = 3;//TODO
-  
-      public static final int motorID = 15;//TODO
-    }
-
-    public static class GripperPortMap {
-      public static final int GripperMotorId = 16;//TODO
-    }
-
-    public static class ChameleonClimbPortMap {
-      public static final int GRASPING_MOTOR_ID = 17;//TODO
-    }
-
-    public static class ArmPortMap {
-      public static final int extenstionMotorID = 18;//TODO
-      public static final int extenstionHallEffectID = 4;//TODO
-      public static final int rotationMotorID = 19;//TODO
-      public static final int rotationHallEffectID = 5;//TODO
-    }
-
-    public static class SwervePortMap {
-      public final static int leftFrontAbsoluteEncoder = 9;
-      public final static int leftFrontDriveID = 1;
-      public final static int leftFrontTurningID = 2;
-  
-      public final static int leftBackAbsoluteEncoder = 10;
-      public final static int leftBackDriveID = 3;
-      public final static int leftBackTurningID = 4;
-  
-      public final static int rightFrontAbsoluteEncoder = 11;
-      public final static int rightFrontDriveID = 6;
-      public final static int rightFrontTurningID = 5;
-  
-      public final static int rightBackAbsoluteEncoder = 12;
-      public final static int rightBackDriveID = 7;
-      public final static int rightBackTurningID = 8;
-    }
   }
 }

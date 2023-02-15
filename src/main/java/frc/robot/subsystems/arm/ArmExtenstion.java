@@ -16,7 +16,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.PortMap;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
@@ -37,9 +37,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private static ArmExtenstion armExtenstion;
 
   private ArmExtenstion() {
-    motor = new CANSparkMax(Constants.PortMap.ArmPortMap.extenstionMotorID, MotorType.kBrushless);
+    motor = new CANSparkMax(PortMap.Arm.extenstionMotorID, MotorType.kBrushless);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
-    hallEffect = new DigitalInput(Constants.PortMap.ArmPortMap.extenstionHallEffectID);
+    hallEffect = new DigitalInput(PortMap.Arm.extenstionHallEffectPort);
 
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
