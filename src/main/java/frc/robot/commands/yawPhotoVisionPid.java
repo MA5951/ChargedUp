@@ -44,7 +44,7 @@ public class yawPhotoVisionPid extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.photonVision.
-      changePipeline(Constants.pipeLines.apriltagPipeLine);
+      changePipeline(Constants.PipeLines.apriltagPipeLine);
   }
 
   // Returns true when the command should end.

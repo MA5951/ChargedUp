@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.PortMap;
 
 public class IntakePosition extends SubsystemBase {
 
@@ -27,13 +27,13 @@ public class IntakePosition extends SubsystemBase {
 
   public IntakePosition(){
     motor = new CANSparkMax(
-      Constants.PortMap.IntakePortMap.OpenAndCloseIntakeMotorID,
+      PortMap.Intake.intakePositionMotorID,
       MotorType.kBrushless);
 
     encoder = motor.getEncoder();
 
     hallEffect = new DigitalInput(
-      Constants.PortMap.IntakePortMap.isCloseHallEffectChanelle);
+      PortMap.Intake.closingHallEffectPort);
 
     motor.setIdleMode(IdleMode.kCoast);
     encoder.setPositionConversionFactor(

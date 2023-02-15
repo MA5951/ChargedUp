@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.PortMap;
 
 public class Spinner extends SubsystemBase {
   private static Spinner spinnerSubsystem;
@@ -27,9 +27,9 @@ public class Spinner extends SubsystemBase {
 
   public Spinner() {
     spinnerMotor = new CANSparkMax(
-      Constants.PortMap.SpinnerPortMap.motorID, MotorType.kBrushless);
-    buttomIR = new DigitalInput(Constants.PortMap.SpinnerPortMap.buttomIRChanlle);
-    stuckIR = new DigitalInput(Constants.PortMap.SpinnerPortMap.stuckIRChanlle);
+      PortMap.Spinner.spinnerMotorID, MotorType.kBrushless);
+    buttomIR = new DigitalInput(PortMap.Spinner.buttomIRPort);
+    stuckIR = new DigitalInput(PortMap.Spinner.stuckIRPort);
 
     encoder = spinnerMotor.getEncoder();
 

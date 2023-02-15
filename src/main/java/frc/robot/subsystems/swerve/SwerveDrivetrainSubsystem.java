@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.PortMap;
 import frc.robot.RobotContainer;
 
 public class SwerveDrivetrainSubsystem extends SubsystemBase {
@@ -99,9 +100,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule frontLeftModule = new SwerveModuleTalonFX(
       "frontLeftModule",
-      Constants.PortMap.SwervePortMap.leftFrontDriveID,
-      Constants.PortMap.SwervePortMap.leftFrontTurningID,
-      Constants.PortMap.SwervePortMap.leftFrontAbsoluteEncoder,
+      PortMap.Swerve.leftFrontDriveID,
+      PortMap.Swerve.leftFrontTurningID,
+      PortMap.Swerve.leftFrontAbsoluteEncoder,
       SwerveConstants.frontLeftModuleIsDriveMotorReversed,
       SwerveConstants.frontLeftModuleIsTurningMotorReversed,
       SwerveConstants.frontLeftModuleIsAbsoluteEncoderReversed,
@@ -109,9 +110,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule frontRightModule = new SwerveModuleTalonFX(
       "frontRightModule",
-      Constants.PortMap.SwervePortMap.rightFrontDriveID,
-      Constants.PortMap.SwervePortMap.rightFrontTurningID,
-      Constants.PortMap.SwervePortMap.rightFrontAbsoluteEncoder,
+      PortMap.Swerve.rightFrontDriveID,
+      PortMap.Swerve.rightFrontTurningID,
+      PortMap.Swerve.rightFrontAbsoluteEncoder,
       SwerveConstants.frontRightModuleIsDriveMotorReversed,
       SwerveConstants.frontRightModuleIsTurningMotorReversed,
       SwerveConstants.frontRightModuleIsAbsoluteEncoderReversed,
@@ -119,9 +120,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule rearLeftModule = new SwerveModuleTalonFX(
       "rearLeftModule",
-      Constants.PortMap.SwervePortMap.leftBackDriveID,
-      Constants.PortMap.SwervePortMap.leftBackTurningID,
-      Constants.PortMap.SwervePortMap.leftBackAbsoluteEncoder,
+      PortMap.Swerve.leftBackDriveID,
+      PortMap.Swerve.leftBackTurningID,
+      PortMap.Swerve.leftBackAbsoluteEncoder,
       SwerveConstants.rearLeftModuleIsDriveMotorReversed,
       SwerveConstants.rearLeftModuleIsTurningMotorReversed,
       SwerveConstants.rearLeftModuleIsAbsoluteEncoderReversed,
@@ -129,9 +130,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule rearRightModule = new SwerveModuleTalonFX(
       "rearRightModule",
-      Constants.PortMap.SwervePortMap.rightBackDriveID,
-      Constants.PortMap.SwervePortMap.rightBackTurningID,
-      Constants.PortMap.SwervePortMap.rightBackAbsoluteEncoder,
+      PortMap.Swerve.rightBackDriveID,
+      PortMap.Swerve.rightBackTurningID,
+      PortMap.Swerve.rightBackAbsoluteEncoder,
       SwerveConstants.rearRightModuleIsDriveMotorReversed,
       SwerveConstants.rearRightModuleIsTurningMotorReversed,
       SwerveConstants.rearRightModuleIsAbsoluteEncoderReversed,

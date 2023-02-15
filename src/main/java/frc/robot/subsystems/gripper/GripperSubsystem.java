@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.PortMap;
 
 public class GripperSubsystem extends SubsystemBase {
 
@@ -17,7 +17,7 @@ public class GripperSubsystem extends SubsystemBase {
 
   private GripperSubsystem() {
     gripperMotor = new CANSparkMax(
-      Constants.PortMap.GripperPortMap.GripperMotorId, MotorType.kBrushless);
+      PortMap.Gripper.gripperMotorID, MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
     encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
       * GripperConstants.gear * 2 * Math.PI);

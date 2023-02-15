@@ -17,7 +17,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
@@ -41,8 +41,8 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   private static ArmRotation armRotation;
 
   private ArmRotation() {
-    motor = new CANSparkMax(Constants.PortMap.ArmPortMap.rotationMotorID, MotorType.kBrushless);
-    hallEffect = new DigitalInput(Constants.PortMap.ArmPortMap.rotationHallEffectID);
+    motor = new CANSparkMax(PortMap.Arm.rotationMotorID, MotorType.kBrushless);
+    hallEffect = new DigitalInput(PortMap.Arm.rotationHallEffectPort);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
     motor.setIdleMode(IdleMode.kBrake);
