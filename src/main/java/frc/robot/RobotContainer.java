@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Automations.AfterIntakeAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
@@ -81,7 +82,10 @@ public class RobotContainer {
 
     COMMAND_PS4_CONTROLLER.button(
       RobotConstants.PS5.Buttons.cross).whileTrue(
-        new IntakeAutomation(IntakeConstants.intakePower));
+        new IntakeAutomation(IntakeConstants.intakePower))
+        .whileFalse(
+          new AfterIntakeAutomation()
+        );
     
 
 

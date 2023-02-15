@@ -44,7 +44,10 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
     
-    encoder.setPositionConversionFactor(ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
+    encoder.setPositionConversionFactor(
+      ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
+    encoder.setVelocityConversionFactor((2 * Math.PI / 60)
+      * ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
 
     pidController.setP(ArmConstants.armExtenstionKp);
     pidController.setI(ArmConstants.armExtenstionKi);
@@ -60,6 +63,13 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
    */
   public double getExtenstion() {
     return encoder.getPosition();
+  }
+
+  /**
+   * @return m/s
+   */
+  public double getVelocity() {
+    return encoder.getVelocity();
   }
 
   @Override
@@ -103,7 +113,8 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
       Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
     double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
     return (Math.sin(ArmRotation.getInstance().getRotation()) * 
-      mass * RobotConstants.KGRAVITY_ACCELERATION + FR)
+      mass * RobotConstants.KGRAVITY_ACCELERATION + FR
+      + (getVelocity() * mass) / RobotConstants.KDELTA_TIME)
       * ArmConstants.armExtenstionKn;
   }
 

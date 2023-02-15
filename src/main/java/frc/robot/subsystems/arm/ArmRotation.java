@@ -18,6 +18,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
@@ -83,8 +84,9 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   }
 
   public boolean isAbleToChangePose(double setPoint) {
-    return (IntakePosition.getInstance().isMiddle() || 
-      IntakePosition.getInstance().isOpen() || (
+    return (IntakePosition.getInstance().getPosition() 
+            < IntakeConstants.MiddlePosition +
+            IntakeConstants.positionTolorance || (
         getRotation() > ArmConstants.minRotationForExtenstionSaftyBuffer
         && setPoint > ArmConstants.minRotationForExtenstionSaftyBuffer
       ))
@@ -143,7 +145,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     double GT = (mass * RobotConstants.KGRAVITY_ACCELERATION) * Math.cos(getRotation()) * dis;
     double angularMomentum = ArmConstants.armMass * getAngularVelocity();
     return (GT - TR + dis * (-angularMomentum / 
-    RobotConstants.KDELTA_TIME))
+      RobotConstants.KDELTA_TIME))
       * ArmConstants.armRotationkT;
   }
 

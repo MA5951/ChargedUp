@@ -386,25 +386,17 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       navx.setAngleAdjustment((getPose().getRotation().getDegrees()) - 180);
       resetNavx();
       resetOdometry(
-      new Pose2d(
-        new Translation2d(
-          Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
-          Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
-        ),
-        getRotation2d()
-      )
-    );
-    updateOffset();
+        new Pose2d(
+          new Translation2d(
+            Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
+            Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
+          ),
+          getRotation2d()
+        )
+      );
+      updateOffset();
+    }
   }
-}
-public void setTuRL(double power) {
-  frontLeftModule.turningMotorSetPower(power);
-}
-
-public void setTuRR(double power) {
-  frontRightModule.turningMotorSetPower(power);
-}
-
 
   public static SwerveDrivetrainSubsystem getInstance() {
     if (swerve == null) {
