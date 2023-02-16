@@ -16,8 +16,6 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Intake.IntakePosition;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 import frc.robot.PortMap;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
@@ -75,20 +73,6 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     return encoder.getVelocity();
   }
 
-  public void setSetpoint(double setPoint) {
-    this.setPoint = setPoint;
-  }
-
-  public double getSetpoint() {
-    return setPoint;
-  }
-
-  public boolean isAbleToChangePose() {
-    return ArmRotation.getInstance().getRotation() >
-      ArmConstants.minRotationForExtenstion;
-  }
-
-
   @Override
   public void setVoltage(double voltage) {
     motor.set(voltage / RobotConstants.MAX_VOLTAGE);
@@ -131,7 +115,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     // double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
     return (Math.sin(ArmRotation.getInstance().getRotation()) * 
       mass * RobotConstants.KGRAVITY_ACCELERATION
-      + (getVelocity() * mass) / RobotConstants.KDELTA_TIME)
+      + (-getVelocity() * mass) / RobotConstants.KDELTA_TIME)
       * ArmConstants.armExtenstionKn;
   }
 
