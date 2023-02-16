@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PortMap;
 
 public class Intake extends SubsystemBase{
 
@@ -18,7 +19,7 @@ public class Intake extends SubsystemBase{
   }
 
   public void setPower(double power){
-    motor.set(ControlMode.PercentOutput, power);;
+    motor.set(ControlMode.PercentOutput, power);
   }
 
   public static Intake getInstance() {

@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PortMap;
 
 public class GripperSubsystem extends SubsystemBase {
 
@@ -15,8 +16,8 @@ public class GripperSubsystem extends SubsystemBase {
   private MAShuffleboard board;
 
   private GripperSubsystem() {
-    gripperMotor = new CANSparkMax(GripperPortMap.GripperMotorId,
-      MotorType.kBrushless);
+    gripperMotor = new CANSparkMax(
+      PortMap.Gripper.gripperMotorID, MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
     encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
       * GripperConstants.gear * 2 * Math.PI);

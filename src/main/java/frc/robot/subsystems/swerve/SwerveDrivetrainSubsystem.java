@@ -9,10 +9,9 @@ import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 
-// import org.littletonrobotics.junction.Logger;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
+import com.ma5951.utils.Logger;
 import com.ma5951.utils.MAShuffleboard;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -44,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.PortMap;
 import frc.robot.RobotContainer;
 
 public class SwerveDrivetrainSubsystem extends SubsystemBase {
@@ -99,9 +99,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule frontLeftModule = new SwerveModuleTalonFX(
       "frontLeftModule",
-      SwervePortMap.leftFrontDriveID,
-      SwervePortMap.leftFrontTurningID,
-      SwervePortMap.leftFrontAbsoluteEncoder,
+      PortMap.Swerve.leftFrontDriveID,
+      PortMap.Swerve.leftFrontTurningID,
+      PortMap.Swerve.leftFrontAbsoluteEncoder,
       SwerveConstants.frontLeftModuleIsDriveMotorReversed,
       SwerveConstants.frontLeftModuleIsTurningMotorReversed,
       SwerveConstants.frontLeftModuleIsAbsoluteEncoderReversed,
@@ -109,9 +109,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule frontRightModule = new SwerveModuleTalonFX(
       "frontRightModule",
-      SwervePortMap.rightFrontDriveID,
-      SwervePortMap.rightFrontTurningID,
-      SwervePortMap.rightFrontAbsoluteEncoder,
+      PortMap.Swerve.rightFrontDriveID,
+      PortMap.Swerve.rightFrontTurningID,
+      PortMap.Swerve.rightFrontAbsoluteEncoder,
       SwerveConstants.frontRightModuleIsDriveMotorReversed,
       SwerveConstants.frontRightModuleIsTurningMotorReversed,
       SwerveConstants.frontRightModuleIsAbsoluteEncoderReversed,
@@ -119,9 +119,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule rearLeftModule = new SwerveModuleTalonFX(
       "rearLeftModule",
-      SwervePortMap.leftBackDriveID,
-      SwervePortMap.leftBackTurningID,
-      SwervePortMap.leftBackAbsoluteEncoder,
+      PortMap.Swerve.leftBackDriveID,
+      PortMap.Swerve.leftBackTurningID,
+      PortMap.Swerve.leftBackAbsoluteEncoder,
       SwerveConstants.rearLeftModuleIsDriveMotorReversed,
       SwerveConstants.rearLeftModuleIsTurningMotorReversed,
       SwerveConstants.rearLeftModuleIsAbsoluteEncoderReversed,
@@ -129,9 +129,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private final static SwerveModule rearRightModule = new SwerveModuleTalonFX(
       "rearRightModule",
-      SwervePortMap.rightBackDriveID,
-      SwervePortMap.rightBackTurningID,
-      SwervePortMap.rightBackAbsoluteEncoder,
+      PortMap.Swerve.rightBackDriveID,
+      PortMap.Swerve.rightBackTurningID,
+      PortMap.Swerve.rightBackAbsoluteEncoder,
       SwerveConstants.rearRightModuleIsDriveMotorReversed,
       SwerveConstants.rearRightModuleIsTurningMotorReversed,
       SwerveConstants.rearRightModuleIsAbsoluteEncoderReversed,
@@ -386,25 +386,17 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       navx.setAngleAdjustment((getPose().getRotation().getDegrees()) - 180);
       resetNavx();
       resetOdometry(
-      new Pose2d(
-        new Translation2d(
-          Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
-          Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
-        ),
-        getRotation2d()
-      )
-    );
-    updateOffset();
+        new Pose2d(
+          new Translation2d(
+            Constants.FieldConstants.FIELD_LENGTH_METERS - getPose().getX(),
+            Constants.FieldConstants.FIELD_WIDTH_METERS - getPose().getY()
+          ),
+          getRotation2d()
+        )
+      );
+      updateOffset();
+    }
   }
-}
-public void setTuRL(double power) {
-  frontLeftModule.turningMotorSetPower(power);
-}
-
-public void setTuRR(double power) {
-  frontRightModule.turningMotorSetPower(power);
-}
-
 
   public static SwerveDrivetrainSubsystem getInstance() {
     if (swerve == null) {
@@ -428,8 +420,8 @@ public void setTuRR(double power) {
 
     field.setRobotPose(getPose());
 
-    // Logger.getInstance().recordOutput("Odometry", getPose());
-    // Logger.getInstance().recordOutput("SwervePositions", getSwerveModuleStates());
+    Logger.getInstance().logOdometry(getPose());
+    Logger.getInstance().logswerveState(getSwerveModuleStates());
 
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());

@@ -7,8 +7,8 @@ package frc.robot.subsystems.Intake;
 /** Add your docs here. */
 public class IntakeConstants {
     public final static double ClosePosition = 0;//RAD, TODO
-    public final static double OpenPosition = 100;//RAD, TODO
-    public final static double MiddlePosition = 50;//RAD, TODO
+    public final static double OpenPosition = 0;//RAD, TODO
+    public final static double MiddlePosition = 0;//RAD, TODO
 
     public final static double kG = 0;//TODO
 
@@ -20,4 +20,9 @@ public class IntakeConstants {
 
     public static final double openPower = 0;//TODO
     public static final double closePower = 0;//TODO
+
+    public static final double intakePower = -0.7;
+    public static final double outakePower = -intakePower;
+
+
 }

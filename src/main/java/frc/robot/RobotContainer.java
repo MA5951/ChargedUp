@@ -5,6 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Automations.AfterIntakeAutomation;
+import frc.robot.commands.Automations.IntakeAutomation;
+import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -50,13 +53,13 @@ public class RobotContainer {
       "ma5951",
       new Transform3d(
        new Translation3d(
-        Constants.cammera.cammeraDisFromCenterInX,
-        Constants.cammera.cammeraDisFromCenterInY,
-        Constants.cammera.cammeraDisFromCenterInZ
+        Constants.Camera.cameraDisFromCenterInX,
+        Constants.Camera.cameraDisFromCenterInY,
+        Constants.Camera.cameraDisFromCenterInZ
        ), new Rotation3d(
-        Constants.cammera.cammeraRoll,
-        Constants.cammera.cammeraPitch,
-        Constants.cammera.cammeraYaw
+        Constants.Camera.cameraRoll,
+        Constants.Camera.cameraPitch,
+        Constants.Camera.cameraYaw
        )),
       aprilTagFieldLayout
        );
@@ -77,7 +80,16 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
-    COMMAND_PS4_CONTROLLER.button(RobotConstants.Y).whileTrue(
+    COMMAND_PS4_CONTROLLER.button(
+      RobotConstants.PS5.Buttons.cross).whileTrue(
+        new IntakeAutomation(IntakeConstants.intakePower))
+        .whileFalse(
+          new AfterIntakeAutomation()
+        );
+    
+
+
+    COMMAND_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.triangle).whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
     COMMAND_PS4_CONTROLLER.R2().whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
@@ -99,6 +111,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return SwerveDrivetrainSubsystem.getInstance().getAutonomousPathCommand("From A1 to pickup 1", true);
+    return null;
   }
 }

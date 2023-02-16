@@ -8,12 +8,12 @@ public interface MotorInterfaceSubsystem extends Subsystem {
     public void setVoltage (double voltege);
     
     default void setPower(double power){
-        setVoltage(power * RobotConstants.voltage);
+        setVoltage(power * RobotConstants.MAX_VOLTAGE);
     }
 
     public double getVoltage();
 
     default double getPower(){
-        return getVoltage() * RobotConstants.voltage;
+        return getVoltage() * RobotConstants.MAX_VOLTAGE;
     }
 }
