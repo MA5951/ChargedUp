@@ -4,6 +4,18 @@
       "window": {
         "visible": true
       }
+    },
+    "Other Devices": {
+      "SPARK MAX [13]": {
+        "header": {
+          "open": true
+        }
+      }
+    },
+    "RoboRIO": {
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -18,6 +30,7 @@
         }
       },
       "/SmartDashboard/Field": {
+        "image": "C:\\Users\\eilon\\OneDrive\\Documents\\pathplanner\\data\\flutter_assets\\images\\field23.png",
         "window": {
           "visible": true
         }

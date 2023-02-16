@@ -19,9 +19,12 @@ public class BlinkingColorPattern implements  AddressableLEDPattern{
         this.interval = interval;
     }
 
-    public void setInterval(double interval) {
+    public void setParameters(Color color1, Color color2, double interval) {
         this.interval = interval;
+        this.onPattern.setColor(color1);
+        this.offPattern.setColor(color2);
     }
+
 
 
     @Override

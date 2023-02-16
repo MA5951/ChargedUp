@@ -1,45 +1,57 @@
 package com.ma5951.utils.led;
 
-import java.io.Console;
-
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 
-public class PulseColorPattern implements  AddressableLEDPattern{
-    private SolidColorPattern onPattern;
-    private SolidColorPattern offPattern;
-    private SolidColorPattern curPattern;
-    private double interval;
-    private boolean on;
-    private double lastChange;
+public class PulseColorPattern implements AddressableLEDPattern {
     private double red;
     private double green;
     private double blue;
-    private double colorAvg;
+    private double redOrigin;
+    private double greenOrigin;
+    private double blueOrigin;
+    private double biggest;
+    private double interval;
+    private double timestamp;
 
-    public PulseColorPattern(Color onColor, double interval) {
-        onPattern = new SolidColorPattern(onColor);
-        offPattern = new SolidColorPattern(Color.kBlack);
-        red = onColor.red;
-        green = onColor.green;
-        blue = onColor.blue;
-        this.interval = interval;
+    public PulseColorPattern(Color color, double interval) {
+        red = 0;
+        green = 0;
+        blue = 0;
+        setParameters(color, interval);
     }
 
-    public void setInterval(double interval) {
+    public void setParameters(Color color, double interval) {
+        red = color.red;
+        green = color.green;
+        blue = color.blue;
+        redOrigin = color.red;
+        greenOrigin = color.green;
+        blueOrigin = color.blue;
         this.interval = interval;
-    }
-
+        biggest = 1;
+    }   
 
     @Override
     public void setLEDs(AddressableLEDBuffer buffer) {
-        colorAvg = (red + green + blue) / 3;
-        curPattern = new SolidColorPattern(new Color(0, 0, 0));
-        for (double i = 0; i <= colorAvg; i = i + (colorAvg / interval)){
-            curPattern.setColor(new Color(red / i, green / i, blue / i)); 
-            curPattern.setLEDs(buffer);
-        }
+        double elapsed = Timer.getFPGATimestamp() - timestamp;
+        double pulse = Math.sin(elapsed / interval * Math.PI) * 0.5 + 0.5;
+        int newRed = (int) Math.round(red * (1 - pulse) + redOrigin * pulse);
+        int newGreen = (int) Math.round(green * (1 - pulse) + greenOrigin * pulse);
+        int newBlue = (int) Math.round(blue * (1 - pulse) + blueOrigin * pulse);
+        newRed = Math.min(255, Math.max(0, newRed));
+        newGreen = Math.min(255, Math.max(0, newGreen));
+        newBlue = Math.min(255, Math.max(0, newBlue));
+        Color color = new Color(newRed / 255.0, newGreen / 255.0, newBlue / 255.0);
+        SolidColorPattern pattern = new SolidColorPattern(color);
+        pattern.setLEDs(buffer);
+        red = newRed / 255.0;
+        green = newGreen / 255.0;
+        blue = newBlue / 255.0;
+        System.out.println("red: " + red + ", green: " + green + ", blue: " + blue);
+        System.out.println("elapsed: " + elapsed + ", pulse: " + pulse);
+        System.out.println("newRed: " + newRed + ", newGreen: " + newGreen + ", newBlue: " + newBlue);
     }
 
     @Override
