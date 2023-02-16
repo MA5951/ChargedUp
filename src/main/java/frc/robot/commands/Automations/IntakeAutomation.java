@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.spinner.SpinnerCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -23,7 +24,8 @@ public class IntakeAutomation extends SequentialCommandGroup {
       new OpenIntake(),
       new ParallelDeadlineGroup(
         new IntakeCommand(power),
-        new OpenIntake().repeatedly()
+        new OpenIntake().repeatedly(),
+        new SpinnerCommand()
       )
     );
   }

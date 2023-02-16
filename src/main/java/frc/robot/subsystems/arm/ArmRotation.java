@@ -17,13 +17,11 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -137,15 +135,15 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       ArmConstants.isThereCone ? ArmConstants.armMass + ArmConstants.coneMass :
       ArmConstants.armMass;
     double dis = getCenterOfMass();
-    double r = ArmConstants.armDistanceFromTheCenter + 
-      Math.cos(getRotation()) * dis;
-    double aR = 
-      Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
-    double FR = (aR * mass) * Math.sin(getRotation());
-    double TR = FR * dis;
+    // double r = ArmConstants.armDistanceFromTheCenter + 
+    //   Math.cos(getRotation()) * dis;
+    // double aR = 
+    //   Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
+    // double FR = (aR * mass) * Math.sin(getRotation());
+    // double TR = FR * dis;
     double GT = (mass * RobotConstants.KGRAVITY_ACCELERATION) * Math.cos(getRotation()) * dis;
     double angularMomentum = ArmConstants.armMass * getAngularVelocity();
-    return (GT - TR + dis * (-angularMomentum / 
+    return (GT + dis * (-angularMomentum / 
       RobotConstants.KDELTA_TIME))
       * ArmConstants.armRotationkT;
   }

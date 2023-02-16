@@ -38,8 +38,10 @@ public class SpinnerCommand extends CommandBase {
         isReversed = true;
       }
       if(spinnerSubsystem.isStuck()){
-        spinnerSubsystem.setPower(+SpinnerConstants.spinnerSpeed);
+        spinnerSubsystem.setPower(-SpinnerConstants.spinnerSpeed);
       }
+    } else {
+      spinnerSubsystem.setPower(SpinnerConstants.spinnerSpeed);
     }
   }
 
@@ -51,6 +53,7 @@ public class SpinnerCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished(){
-    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() >= 360;
+    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() >= 360
+    && spinnerSubsystem.isGamePiceEntered();
   }
 }

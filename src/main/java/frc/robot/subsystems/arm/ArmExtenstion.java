@@ -17,7 +17,6 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
   /** Creates a new TelescopicArm. */
@@ -108,14 +107,14 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     double mass =
       ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.coneMass :
       ArmConstants.armExtestionMass;
-    double dis = ArmRotation.getInstance().getCenterOfMass();
-    double r = ArmConstants.armDistanceFromTheCenter + 
-      Math.cos(ArmRotation.getInstance().getRotation()) * dis;
-    double aR = 
-      Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
-    double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
+    // double dis = ArmRotation.getInstance().getCenterOfMass();
+    // double r = ArmConstants.armDistanceFromTheCenter + 
+    //   Math.cos(ArmRotation.getInstance().getRotation()) * dis;
+    // double aR = 
+    //   Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
+    // double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
     return (Math.sin(ArmRotation.getInstance().getRotation()) * 
-      mass * RobotConstants.KGRAVITY_ACCELERATION + FR
+      mass * RobotConstants.KGRAVITY_ACCELERATION
       + (getVelocity() * mass) / RobotConstants.KDELTA_TIME)
       * ArmConstants.armExtenstionKn;
   }
