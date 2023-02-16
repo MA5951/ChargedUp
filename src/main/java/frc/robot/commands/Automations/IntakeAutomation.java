@@ -23,8 +23,8 @@ public class IntakeAutomation extends SequentialCommandGroup {
       new SetArmAutomation(0, ArmConstants.armRotationStartPose),
       new OpenIntake(),
       new ParallelDeadlineGroup(
-        new IntakeCommand(lowerPower, upperPower),
-        new OpenIntake().repeatedly()
+        new IntakeCommand(power),
+        new OpenIntake().repeatedly(),
         new IntakeCommand(power),
         new OpenIntake().repeatedly(),
         new SpinnerCommand()

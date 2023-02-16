@@ -2,7 +2,8 @@ package frc.robot;
 
 public class PortMap {
     public static class Intake {
-        public static final int intakeMotorID = 13; //TODO
+        public static final int intakeMotor1ID = 13; //TODO
+        public static final int intakeMotor2ID = 18; //TODO
         public static final int intakePositionMotorID = 14; //TODO
     
         public static final int closingHallEffectPort = 1; //TODO
