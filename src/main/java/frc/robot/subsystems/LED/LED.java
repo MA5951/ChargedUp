@@ -25,7 +25,7 @@ public class LED extends SubsystemBase {
     ledController = new AddressableLEDController(PortMap.ledPort, 300);
     solidColorPattern = new SolidColorPattern(Color.kRed);
     rainbowColorPattern = new RainbowColorPattern();
-    blinkingColorPattern = new BlinkingColorPattern(Color.kRed, 0);
+    blinkingColorPattern = new BlinkingColorPattern(Color.kRed, Color.kGreen,0);
   }
 
   public void setSolidColor(Color color) {
@@ -37,7 +37,7 @@ public class LED extends SubsystemBase {
     ledController.setAddressableLEDPattern(rainbowColorPattern);
   }
 
-  public void setBlinking(Color color, double interval) {
+  public void setBlinking(Color color, Color color2, double interval) {
     blinkingColorPattern.setInterval(interval);
     ledController.setAddressableLEDPattern(blinkingColorPattern);
   }

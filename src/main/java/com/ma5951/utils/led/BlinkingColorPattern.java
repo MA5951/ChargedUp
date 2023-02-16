@@ -9,21 +9,13 @@ import edu.wpi.first.wpilibj.util.Color;
 public class BlinkingColorPattern implements  AddressableLEDPattern{
     private SolidColorPattern onPattern;
     private SolidColorPattern offPattern;
-    private SolidColorPattern curPattern;
     private double interval;
     private boolean on;
     private double lastChange;
-    private double red;
-    private double green;
-    private double blue;
-    private double colorAvg;
 
-    public BlinkingColorPattern(Color onColor, double interval) {
+    public BlinkingColorPattern(Color onColor, Color offColor, double interval) {
         onPattern = new SolidColorPattern(onColor);
-        offPattern = new SolidColorPattern(Color.kBlack);
-        red = onColor.red;
-        green = onColor.green;
-        blue = onColor.blue;
+        offPattern = new SolidColorPattern(offColor);
         this.interval = interval;
     }
 
@@ -34,23 +26,17 @@ public class BlinkingColorPattern implements  AddressableLEDPattern{
 
     @Override
     public void setLEDs(AddressableLEDBuffer buffer) {
-        colorAvg = (red + green + blue) / 3;
-        curPattern = new SolidColorPattern(new Color(0, 0, 0));
-        for (double i = 0; i <= colorAvg; i = i + (colorAvg / interval)){
-            curPattern.setColor(new Color(red / i, green / i, blue / i)); 
-            curPattern.setLEDs(buffer);
+        double timestamp = Timer.getFPGATimestamp();
+        if (timestamp - lastChange > interval) {
+            on = !on;
+            lastChange = timestamp;
         }
-        // double timestamp = Timer.getFPGATimestamp();
-        // if (timestamp - lastChange > interval) {
-        //     on = !on;
-        //     lastChange = timestamp;
-        // }
-        // if (on) {
-        //     onPattern.setLEDs(buffer);
-        // }
-        // else {
-        //     offPattern.setLEDs(buffer);
-        // }
+        if (on) {
+            onPattern.setLEDs(buffer);
+        }
+        else {
+            offPattern.setLEDs(buffer);
+        }
     }
 
     @Override
