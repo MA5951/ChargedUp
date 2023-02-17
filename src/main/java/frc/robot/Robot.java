@@ -10,7 +10,7 @@ import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveSwerveCommand;
+import frc.robot.commands.Swerve.DriveSwerveCommand;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
@@ -105,13 +105,13 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().setDefaultCommand(
       ArmExtenstion.getInstance(),
       new ControlCommandInsubsystemControl(
-        ArmExtenstion.getInstance(), ArmExtenstion.getInstance().getSetpoint())
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
     );
 
     CommandScheduler.getInstance().setDefaultCommand(
       ArmRotation.getInstance(),
       new ControlCommandInsubsystemControl(
-        ArmRotation.getInstance(), ArmRotation.getInstance().getSetPoint())
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
     );
     
 

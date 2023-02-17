@@ -16,7 +16,7 @@ public class ChameleonClimb extends SubsystemBase {
   private static ChameleonClimb chameleonClimb;
   private CANSparkMax graspingMotor;
 
-  public ChameleonClimb() {
+  private ChameleonClimb() {
     graspingMotor = new CANSparkMax(
       PortMap.ChameleonClimb.graspingMotorID, MotorType.kBrushless);
   }

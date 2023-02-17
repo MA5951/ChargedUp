@@ -88,7 +88,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   public boolean isAbleToChangePose() {
     return ArmRotation.getInstance().getRotation() >
-      ArmConstants.minRotationForExtenstion;
+      ArmConstants.minRotationForExtenstion
+      && setPoint > 0
+      && setPoint < ArmConstants.armMaxExtenstion;
   }
 
 

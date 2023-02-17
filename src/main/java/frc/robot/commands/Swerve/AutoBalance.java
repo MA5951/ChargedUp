@@ -2,54 +2,53 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Swerve;
 
-import java.util.function.Supplier;
+import com.ma5951.utils.controllers.PIDController;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
-public class yawPhotoVisionPid extends CommandBase {
-  /** Creates a new yawPhotoVisionPid. */
+public class AutoBalance extends CommandBase {
+  /** Creates a new AutoBallance. */
   private SwerveDrivetrainSubsystem swerve;
-  private PIDController pidController;
-  private Supplier<Integer> getPipeline;
-  public yawPhotoVisionPid(Supplier<Integer> getPipeline) {
-    this.getPipeline = getPipeline;
+  private ArmFeedforward feed;
+  private PIDController pid;
+
+  public AutoBalance() {
+    // Use addRequirements() here to declare subsystem dependencies.
     swerve = SwerveDrivetrainSubsystem.getInstance();
-    pidController = new PIDController(0, 0, 0);
-    pidController.setTolerance(0);
-    pidController.setSetpoint(0);
     addRequirements(swerve);
+    feed = new ArmFeedforward(0, 0, 0);
+    pid = new PIDController(0, 0, 0, 0, 0, -1, 1);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.photonVision.changePipeline(getPipeline.get());
+    pid.setSetpoint(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerve.drive(0, pidController.calculate(
-      RobotContainer.photonVision.getYaw()
-    ), 0, false);
+    swerve.drive(
+    pid.calculate(
+      swerve.getPitch()) + 
+      feed.calculate((Math.PI / 2.0) - Math.toRadians(swerve.getPitch()), 0),
+      0, 0, true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.photonVision.
-      changePipeline(Constants.PipeLines.apriltagPipeLine);
+    swerve.drive(0, 0, 0, false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return pidController.atSetpoint();
+    return false;
   }
 }
