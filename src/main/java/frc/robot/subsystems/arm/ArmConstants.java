@@ -19,10 +19,12 @@ public class ArmConstants {
     public static final double armRotationTolerance = 0; // TODO radians
 
     public static final double armRotationStartPose = 0; // TODO radians
+    public static final double armRotationMaxPose = 0; // TODO radians
     public static final double armDistanceFromTheCenter = 0; // TODO
     public static final double armHight = 0; // TODO
 
     public static final double armExtenstionDiameterOfTheWheel = 0.0323342; // meters
+    public static final double armMaxExtenstion = 0.42;
 
     public static final double armRotationGear = 1d / 400;
 

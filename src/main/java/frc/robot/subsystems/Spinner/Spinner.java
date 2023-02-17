@@ -25,7 +25,7 @@ public class Spinner extends SubsystemBase {
 
   private MAShuffleboard board;
 
-  public Spinner() {
+  private Spinner() {
     spinnerMotor = new CANSparkMax(
       PortMap.Spinner.spinnerMotorID, MotorType.kBrushless);
     buttomIR = new DigitalInput(PortMap.Spinner.buttomIRPort);

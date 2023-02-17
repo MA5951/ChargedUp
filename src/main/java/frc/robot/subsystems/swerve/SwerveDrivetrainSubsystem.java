@@ -163,7 +163,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   /** Creates a new DrivetrainSubsystem. */
-  public SwerveDrivetrainSubsystem() {
+  private SwerveDrivetrainSubsystem() {
 
     resetNavx();
    

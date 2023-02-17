@@ -155,18 +155,18 @@ public class SwerveModuleTalonFX extends SwerveModule{
     }
 
     public void turningUsingPID(double setPoint) {
-        // turningMotor.config_kP(0, board.getNum(turningKP));
-        // turningMotor.config_kI(0, board.getNum(turningKI));
-        // turningMotor.config_kD(0, board.getNum(turningKD));
+        turningMotor.config_kP(0, board.getNum(turningKP));
+        turningMotor.config_kI(0, board.getNum(turningKI));
+        turningMotor.config_kD(0, board.getNum(turningKD));
         board.addNum("Turning Position", getTurningPosition());
         turningMotor.set(ControlMode.Position, setPoint /
                 SwerveConstants.anglePerPulse);
     }
 
     public void driveUsingPID(double setPoint) {
-        // driveMotor.config_kP(0, board.getNum(driveKP));
-        // driveMotor.config_kI(0, board.getNum(driveKI));
-        // driveMotor.config_kD(0, board.getNum(driveKD));
+        driveMotor.config_kP(0, board.getNum(driveKP));
+        driveMotor.config_kI(0, board.getNum(driveKI));
+        driveMotor.config_kD(0, board.getNum(driveKD));
         board.addNum("Drive Velocity", getDriveVelocity());
         driveMotor.set(ControlMode.Velocity,
                 setPoint / SwerveConstants.distancePerPulse *

@@ -61,34 +61,22 @@ public abstract class SwerveModule {
 
     private static SwerveModuleState optimize(SwerveModuleState desiredState, 
     double currentAngle, double currV) {
-        // desired angle diff in [-360, +360]
-        double _angleDiff = (desiredState.angle.getDegrees() - currentAngle) % 360;
-
-        double targetAngle = currentAngle + _angleDiff;
+        double angleDiff = (desiredState.angle.getDegrees() - currentAngle) % 360;
+        double targetAngle = currentAngle + angleDiff;
         double targetSpeed = desiredState.speedMetersPerSecond;
 
-        // Q1 undershot. We expect a CW turn.
-        if (_angleDiff <= -270)
+        if (angleDiff <= -270) {
             targetAngle += 360;
-
-        // Q2 undershot. We expect a CCW turn to Q4 & reverse direction.
-        // Q3. We expect a CW turn to Q1 & reverse direction.
-        else if (-90 > _angleDiff && _angleDiff > -270) {
+        } else if (-90 > angleDiff && angleDiff > -270) {
             targetAngle += 180;
             targetSpeed = -targetSpeed;
-        }
-
-        // Q2. We expect a CCW turn to Q4 & reverse direction.
-        // Q3 overshot. We expect a CW turn to Q1 & reverse direction.
-        else if (90 < _angleDiff && _angleDiff < 270) {
+        } else if (90 < angleDiff && angleDiff < 270) {
             targetAngle -= 180;
             targetSpeed = -targetSpeed;
-        }
-
-        // Q4 overshot. We expect a CCW turn.
-        else if (_angleDiff >= 270)
+        } else if (angleDiff >= 270) {
             targetAngle -= 360;
-
+        }
+        
         return new SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle));
     }
 }
