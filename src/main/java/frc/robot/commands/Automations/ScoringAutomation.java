@@ -24,8 +24,8 @@ public class ScoringAutomation extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         SwerveDrivetrainSubsystem.getInstance().getTelopPathCommand(),
-        new SetArmAutomation(ArmConstants.extenstionForMidScoring, 
-                              ArmConstants.rotationForMidScoring)
+        new SetArmAutomation(ArmConstants.EXTENSTION_FOT_MID_SCORING, 
+                              ArmConstants.ROTATION_FOR_MID_SCORING)
       ),
       new ParallelDeadlineGroup(
         new GripperOpenCommand(),

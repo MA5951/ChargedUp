@@ -17,7 +17,7 @@ public class ResetArmAutomation extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetArmAutomation(0, ArmConstants.armRotationStartPose),
+      new SetArmAutomation(0, ArmConstants.ARM_ROTATION_START_POSE),
       new CloseIntake()
     );
   }

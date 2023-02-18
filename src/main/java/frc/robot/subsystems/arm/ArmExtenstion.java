@@ -44,19 +44,19 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setFeedbackDevice(encoder);
     
     encoder.setPositionConversionFactor(
-      ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
+      ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * Math.PI);
     encoder.setVelocityConversionFactor((2 * Math.PI / 60)
-      * ArmConstants.armExtenstionDiameterOfTheWheel * 0.5);
+      * ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * 0.5);
 
-    pidController.setP(ArmConstants.armExtenstionKp);
-    pidController.setI(ArmConstants.armExtenstionKi);
-    pidController.setD(ArmConstants.armExtenstionKd);
+    pidController.setP(ArmConstants.ARM_EXUTENSTION_KP);
+    pidController.setI(ArmConstants.ARM_EXTENSTION_KI);
+    pidController.setD(ArmConstants.ARM_EXTENSTION_KD);
 
     board = new MAShuffleboard("ArmExtenstion");
     
-    board.addNum(kp, ArmConstants.armExtenstionKp);
-    board.addNum(ki, ArmConstants.armExtenstionKi);
-    board.addNum(kd, ArmConstants.armExtenstionKd);
+    board.addNum(kp, ArmConstants.ARM_EXUTENSTION_KP);
+    board.addNum(ki, ArmConstants.ARM_EXTENSTION_KI);
+    board.addNum(kd, ArmConstants.ARM_EXTENSTION_KD);
   }
 
   /**
@@ -88,9 +88,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   public boolean isAbleToChangeExtenstion() {
     return ArmRotation.getInstance().getRotation() >
-      ArmConstants.minRotationForExtenstion
+      ArmConstants.MIN_ROTATION_FOR_EXTENSTION
       && setPoint > 0
-      && setPoint < ArmConstants.armMaxExtenstion;
+      && setPoint < ArmConstants.ARM_MASS_EXTENSTION;
   }
 
 
@@ -107,8 +107,11 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   public double getFeed() {
     double mass =
-      ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.coneMass :
-      ArmConstants.armExtestionMass;
+      (ArmConstants.armExtestionMass + ArmConstants.CONE_MASS
+      + ArmConstants.armExtestionMass);
+    // double mass =
+    //   ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.CONE_MASS :
+    //   ArmConstants.armExtestionMass;
     // double dis = ArmRotation.getInstance().getCenterOfMass();
     // double r = ArmConstants.armDistanceFromTheCenter + 
     //   Math.cos(ArmRotation.getInstance().getRotation()) * dis;
@@ -118,12 +121,12 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     return (Math.sin(ArmRotation.getInstance().getRotation()) * 
       mass * RobotConstants.KGRAVITY_ACCELERATION
       + (-getVelocity() * mass) / RobotConstants.KDELTA_TIME)
-      * ArmConstants.armExtenstionKn;
+      * ArmConstants.ARM_EXTENSTION_KN;
   }
 
   public boolean atPoint() {
     return Math.abs(encoder.getPosition() - setPoint)
-    < ArmConstants.armExtenstionTolerance;
+    < ArmConstants.ARM_EXTENSTION_TOLERANCE;
   }
 
   public static ArmExtenstion getInstance() {

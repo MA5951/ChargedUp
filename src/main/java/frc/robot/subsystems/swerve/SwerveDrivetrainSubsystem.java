@@ -58,12 +58,12 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public boolean isXYReversed = true;
   public double offsetAngle = 0;
 
-  public double maxVelocity = SwerveConstants.maxVelocity;
-  public double maxAngularVelocity = SwerveConstants.maxAngularVelocity;
+  public double maxVelocity = SwerveConstants.MAX_VELOCITY;
+  public double maxAngularVelocity = SwerveConstants.MAX_ANGULAR_VELOCITY;
 
   private static final TrajectoryConfig configForTelopPathCommand = 
     new TrajectoryConfig(
-      SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration);
+      SwerveConstants.MAX_VELOCITY, SwerveConstants.MAX_ACCELERATION);
   
   private ProfiledPIDController thetaProfiledPID;
 
@@ -80,17 +80,17 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public final MAShuffleboard board;
 
   private final Translation2d frontLeftLocation = new Translation2d(
-      -SwerveConstants.width / 2,
-      SwerveConstants.length / 2);
+      -SwerveConstants.WIDTH / 2,
+      SwerveConstants.LENGTH / 2);
   private final Translation2d frontRightLocation = new Translation2d(
-      SwerveConstants.width / 2,
-      SwerveConstants.length / 2);
+      SwerveConstants.WIDTH / 2,
+      SwerveConstants.LENGTH / 2);
   private final Translation2d rearLeftLocation = new Translation2d(
-      -SwerveConstants.width / 2,
-      -SwerveConstants.length / 2);
+      -SwerveConstants.WIDTH / 2,
+      -SwerveConstants.LENGTH / 2);
   private final Translation2d rearRightLocation = new Translation2d(
-      SwerveConstants.width / 2,
-      -SwerveConstants.length / 2);
+      SwerveConstants.WIDTH / 2,
+      -SwerveConstants.LENGTH / 2);
 
   private final AHRS navx = new AHRS(Port.kMXP);
 
@@ -102,40 +102,40 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       PortMap.Swerve.leftFrontDriveID,
       PortMap.Swerve.leftFrontTurningID,
       PortMap.Swerve.leftFrontAbsoluteEncoder,
-      SwerveConstants.frontLeftModuleIsDriveMotorReversed,
-      SwerveConstants.frontLeftModuleIsTurningMotorReversed,
-      SwerveConstants.frontLeftModuleIsAbsoluteEncoderReversed,
-      SwerveConstants.frontLeftModuleOffsetEncoder);
+      SwerveConstants.FRONT_LEFT_MOUDLE_IS_DRIVE_MOTOR_REVERSED,
+      SwerveConstants.FRONT_LEFT_MODULES_IS_TURNING_MOTOR_REVERSED,
+      SwerveConstants.FRONF_LEFT_MODULE_IS_ABSOLUTE_ENCODER_REVERSED,
+      SwerveConstants.FRONT_LEFT_MODULE_OFFSET_ENCODER);
 
   private final static SwerveModule frontRightModule = new SwerveModuleTalonFX(
       "frontRightModule",
       PortMap.Swerve.rightFrontDriveID,
       PortMap.Swerve.rightFrontTurningID,
       PortMap.Swerve.rightFrontAbsoluteEncoder,
-      SwerveConstants.frontRightModuleIsDriveMotorReversed,
-      SwerveConstants.frontRightModuleIsTurningMotorReversed,
-      SwerveConstants.frontRightModuleIsAbsoluteEncoderReversed,
-      SwerveConstants.frontRightModuleOffsetEncoder);
+      SwerveConstants.FRONT_RIGHT_MOUDLE_IS_DRIVE_MOTOR_REVERSED,
+      SwerveConstants.FRONT_RIGHT_MODULES_IS_TURNING_MOTOR_REVERSED,
+      SwerveConstants.FRONF_RIGHT_MODULE_IS_ABSOLUTE_ENCODER_REVERSED,
+      SwerveConstants.FRONT_RIGHT_MODULE_OFFSET_ENCODER);
 
   private final static SwerveModule rearLeftModule = new SwerveModuleTalonFX(
       "rearLeftModule",
       PortMap.Swerve.leftBackDriveID,
       PortMap.Swerve.leftBackTurningID,
       PortMap.Swerve.leftBackAbsoluteEncoder,
-      SwerveConstants.rearLeftModuleIsDriveMotorReversed,
-      SwerveConstants.rearLeftModuleIsTurningMotorReversed,
-      SwerveConstants.rearLeftModuleIsAbsoluteEncoderReversed,
-      SwerveConstants.rearLeftModuleOffsetEncoder);
+      SwerveConstants.REAR_LEFT_MOUDLE_IS_DRIVE_MOTOR_REVERSED,
+      SwerveConstants.REAR_LEFT_MODULES_IS_TURNING_MOTOR_REVERSED,
+      SwerveConstants.REAR_LEFT_MODULE_IS_ABSOLUTE_ENCODER_REVERSED,
+      SwerveConstants.REAR_LEFT_MODULE_OFFSET_ENCODER);
 
   private final static SwerveModule rearRightModule = new SwerveModuleTalonFX(
       "rearRightModule",
       PortMap.Swerve.rightBackDriveID,
       PortMap.Swerve.rightBackTurningID,
       PortMap.Swerve.rightBackAbsoluteEncoder,
-      SwerveConstants.rearRightModuleIsDriveMotorReversed,
-      SwerveConstants.rearRightModuleIsTurningMotorReversed,
-      SwerveConstants.rearRightModuleIsAbsoluteEncoderReversed,
-      SwerveConstants.rearRightModuleOffsetEncoder);
+      SwerveConstants.REAR_RIGHT_MOUDLE_IS_DRIVE_MOTOR_REVERSED,
+      SwerveConstants.REAR_RIGHT_MODULES_IS_TURNING_MOTOR_REVERSED,
+      SwerveConstants.REAR_RIGHT_MODULE_IS_ABSOLUTE_ENCODER_REVERSED,
+      SwerveConstants.REAR_RIGHT_MODULE_OFFSET_ENCODER);
 
   private final SwerveDrivePoseEstimator odometry = new SwerveDrivePoseEstimator(kinematics,
     new Rotation2d(0), getSwerveModulePositions(),
@@ -177,22 +177,22 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     P_CONTROLLER_Y = new PIDController(board.getNum(KP_Y), 0, 0);
 
-    board.addNum(theta_KP, SwerveConstants.theta_KP);
-    board.addNum(theta_KI, SwerveConstants.theta_KI);
-    board.addNum(theta_KD, SwerveConstants.theta_KD);
+    board.addNum(theta_KP, SwerveConstants.THATA_KP);
+    board.addNum(theta_KI, SwerveConstants.THATA_KI);
+    board.addNum(theta_KD, SwerveConstants.THATA_KD);
 
     thetaPID = new PIDController(board.getNum(theta_KP),
      board.getNum(theta_KI), board.getNum(theta_KD));
     
-    board.addNum(profiled_theta_KP, SwerveConstants.Profiled_theta_KP);
-    board.addNum(profiled_theta_KI, SwerveConstants.Profiled_theta_KI);
-    board.addNum(profiled_theta_KD, SwerveConstants.Profiled_theta_KD);
+    board.addNum(profiled_theta_KP, SwerveConstants.PROFILED_THATA_KP);
+    board.addNum(profiled_theta_KI, SwerveConstants.PROFILED_THATA_KI);
+    board.addNum(profiled_theta_KD, SwerveConstants.PROFILED_THATA_KD);
 
     thetaProfiledPID = new ProfiledPIDController(
       board.getNum(profiled_theta_KP), board.getNum(profiled_theta_KI),
       board.getNum(profiled_theta_KD), 
-      new TrapezoidProfile.Constraints(SwerveConstants.maxAngularVelocity,
-      SwerveConstants.maxAngularAcceleration));
+      new TrapezoidProfile.Constraints(SwerveConstants.MAX_ANGULAR_VELOCITY,
+      SwerveConstants.MAX_ANGULAR_ACCELERATION));
     
     SmartDashboard.putData("Field", field);
   }
@@ -216,7 +216,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getRadialAcceleration() {
-    return Math.pow(getAngularVelocity(), 2) * SwerveConstants.radius;
+    return Math.pow(getAngularVelocity(), 2) * SwerveConstants.RADIUS;
   }
 
   public void updateOffset() {
@@ -259,7 +259,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public void setModules(SwerveModuleState[] states) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.maxVelocity);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_VELOCITY);
     rearLeftModule.setDesiredState(states[0]);
     frontLeftModule.setDesiredState(states[1]);
     rearRightModule.setDesiredState(states[2]);
@@ -278,21 +278,21 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void lowerVelocityTo40() {
     maxVelocity = 
-      SwerveConstants.maxVelocity * 0.4;
+      SwerveConstants.MAX_VELOCITY * 0.4;
     maxAngularVelocity = 
-      SwerveConstants.maxAngularVelocity * 0.4;
+      SwerveConstants.MAX_ANGULAR_VELOCITY * 0.4;
   }
 
   public void lowerVelocityTo22() {
     maxVelocity = 
-      SwerveConstants.maxVelocity * 0.22;
+      SwerveConstants.MAX_VELOCITY * 0.22;
     maxAngularVelocity = 
-      SwerveConstants.maxAngularVelocity * 0.22;
+      SwerveConstants.MAX_ANGULAR_VELOCITY * 0.22;
   }
 
   public void returnVelocityToNormal() {
-    maxVelocity = SwerveConstants.maxVelocity;
-    maxAngularVelocity = SwerveConstants.maxAngularVelocity;
+    maxVelocity = SwerveConstants.MAX_VELOCITY;
+    maxAngularVelocity = SwerveConstants.MAX_ANGULAR_VELOCITY;
   }
 
   public Pose2d getClosestScoringPose() {
