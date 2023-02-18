@@ -4,7 +4,10 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Automations.AfterScoringAutomation;
+import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
@@ -18,8 +21,15 @@ public class B1Climb extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      swerve.getAutonomousPathCommand("from B1 to climb", true),
-      new AutoBalance()
+      new ScoringAutomationForAutonomous(),
+      new ParallelCommandGroup(
+        new SequentialCommandGroup(
+          swerve.getAutonomousPathCommand("from B1 to climb", true),
+          new AutoBalance()
+        ),
+        new AfterScoringAutomation()
+      )
+      
     );
   }
 }

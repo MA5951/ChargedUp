@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.subsystems.arm.ArmConstants;
@@ -33,7 +34,8 @@ public class AfterHPIntakeAutomation extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
         new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
         new MiddleIntake()
-      )
+      ),
+      new CloseIntake()
     );
   }
 }

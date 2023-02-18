@@ -343,10 +343,14 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     navx.setAngleAdjustment(getPose().getRotation().getDegrees());
   }
 
+  public PathPlannerTrajectory getTrajectory(String pathName) {
+    return PathPlanner.loadPath(pathName, new PathConstraints(
+      2,1));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
+  }
+
   public Command getAutonomousPathCommand(
     String pathName, boolean isFirst) {
-    PathPlannerTrajectory trajectory  = PathPlanner.loadPath(pathName, new PathConstraints(
-      2,1));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
+    PathPlannerTrajectory trajectory = getTrajectory(pathName);
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         if (isFirst) {

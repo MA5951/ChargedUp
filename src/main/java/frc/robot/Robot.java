@@ -78,6 +78,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmExtenstion.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    );
+
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmRotation.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    );
   }
 
   /** This function is called periodically during autonomous. */
@@ -114,7 +125,6 @@ public class Robot extends TimedRobot {
         ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
     );
     
-
     //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }
 
