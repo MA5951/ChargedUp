@@ -6,14 +6,13 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.Spinner.Spinner;
 
 public class IntakeCommand extends CommandBase {
   /** Creates a new IntakeCommand. */
   private Intake intake;
-  private double power;
-  public IntakeCommand(double power) {
-    this.power = power;
+  public IntakeCommand() {
     intake = Intake.getInstance();
     addRequirements(intake);
   }
@@ -25,7 +24,7 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setPower(power);
+    intake.setPower(IntakeConstants.INTAKE_POWER);
   }
 
   // Called once the command ends or is interrupted.

@@ -19,7 +19,7 @@ public class SwerveModuleTalonFX extends SwerveModule{
     private final TalonFX turningMotor;
 
     private final SimpleMotorFeedforward feedforward  = 
-        new SimpleMotorFeedforward(SwerveConstants.driveKS, SwerveConstants.driveKV);
+        new SimpleMotorFeedforward(SwerveConstants.DRIVE_KS, SwerveConstants.DRIVE_KV);
 
     private final CANCoder absoluteEcoder;
 
@@ -59,9 +59,9 @@ public class SwerveModuleTalonFX extends SwerveModule{
         configDriveMotor();
         resetEncoders();
 
-        board.addNum(driveKP, SwerveConstants.drivePIDKP);
-        board.addNum(driveKI, SwerveConstants.drivePIDKI);
-        board.addNum(driveKD, SwerveConstants.drivePIDKD);
+        board.addNum(driveKP, SwerveConstants.DRIVE_PID_KP);
+        board.addNum(driveKI, SwerveConstants.DRIVE_PID_KI);
+        board.addNum(driveKD, SwerveConstants.DRIVE_PID_KD);
 
         board.addNum(turningKP, SwerveConstants.turningPIDKP);
         board.addNum(turningKI, SwerveConstants.turningPIDKI);
@@ -87,15 +87,15 @@ public class SwerveModuleTalonFX extends SwerveModule{
     private void configDriveMotor() {
         TalonFXConfiguration driveConfiguration = new TalonFXConfiguration();
 
-        driveConfiguration.slot0.kP = SwerveConstants.drivePIDKP;
-        driveConfiguration.slot0.kI = SwerveConstants.drivePIDKI;
-        driveConfiguration.slot0.kD = SwerveConstants.drivePIDKD;
+        driveConfiguration.slot0.kP = SwerveConstants.DRIVE_PID_KP;
+        driveConfiguration.slot0.kI = SwerveConstants.DRIVE_PID_KI;
+        driveConfiguration.slot0.kD = SwerveConstants.DRIVE_PID_KD;
         driveConfiguration.slot0.kF = 0;
         driveConfiguration.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
-                SwerveConstants.driveEnableCurrentLimit,
-                SwerveConstants.driveContinuousCurrentLimit,
-                SwerveConstants.drivePeakCurrentLimit,
-                SwerveConstants.drivePeakCurrentDuration);
+                SwerveConstants.DRIVE_ENBLE_CURRENT_LIMIT,
+                SwerveConstants.DRIVE_CONTINUOS_CURRENT_LIMIT,
+                SwerveConstants.DRIVE_PEAK_CURRENT_LIMIT,
+                SwerveConstants.DRIVE_PEAK_CURRENT_DURATION);
         driveConfiguration.initializationStrategy = SensorInitializationStrategy.BootToZero;
         driveConfiguration.openloopRamp = SwerveConstants.openloopRamp;
         driveConfiguration.closedloopRamp = SwerveConstants.closedloopRamp;
@@ -115,31 +115,31 @@ public class SwerveModuleTalonFX extends SwerveModule{
 
     public double getDrivePosition() {
         return driveMotor.getSelectedSensorPosition()
-                * SwerveConstants.distancePerPulse;
+                * SwerveConstants.DISTANCE_PER_PULSE;
     }
 
     public double getTurningPosition() {
         return turningMotor.getSelectedSensorPosition()
-                * SwerveConstants.anglePerPulse;
+                * SwerveConstants.ANGLE_PER_PULSE;
     }
 
     public double getDriveVelocity() {
         return (driveMotor.getSelectedSensorVelocity()
-                * SwerveConstants.distancePerPulse) /
-                SwerveConstants.velocityTimeUnitInSeconds;
+                * SwerveConstants.DISTANCE_PER_PULSE) /
+                SwerveConstants.VELOCITY_TIME_UNIT_IN_SECONDS;
     }
 
     public double getTurningVelocity() {
         return (turningMotor.getSelectedSensorVelocity()
-                * SwerveConstants.anglePerPulse) /
-                SwerveConstants.velocityTimeUnitInSeconds;
+                * SwerveConstants.ANGLE_PER_PULSE) /
+                SwerveConstants.VELOCITY_TIME_UNIT_IN_SECONDS;
     }
 
     public void resetEncoders() {
         driveMotor.setSelectedSensorPosition(0);
         turningMotor.setSelectedSensorPosition(
             (getAbsoluteEncoderPosition() - offsetEncoder) /
-                        SwerveConstants.anglePerPulse);
+                        SwerveConstants.ANGLE_PER_PULSE);
     }
 
     public void turningMotorSetPower(double power) {
@@ -155,22 +155,22 @@ public class SwerveModuleTalonFX extends SwerveModule{
     }
 
     public void turningUsingPID(double setPoint) {
-        // turningMotor.config_kP(0, board.getNum(turningKP));
-        // turningMotor.config_kI(0, board.getNum(turningKI));
-        // turningMotor.config_kD(0, board.getNum(turningKD));
+        turningMotor.config_kP(0, board.getNum(turningKP));
+        turningMotor.config_kI(0, board.getNum(turningKI));
+        turningMotor.config_kD(0, board.getNum(turningKD));
         board.addNum("Turning Position", getTurningPosition());
         turningMotor.set(ControlMode.Position, setPoint /
-                SwerveConstants.anglePerPulse);
+                SwerveConstants.ANGLE_PER_PULSE);
     }
 
     public void driveUsingPID(double setPoint) {
-        // driveMotor.config_kP(0, board.getNum(driveKP));
-        // driveMotor.config_kI(0, board.getNum(driveKI));
-        // driveMotor.config_kD(0, board.getNum(driveKD));
+        driveMotor.config_kP(0, board.getNum(driveKP));
+        driveMotor.config_kI(0, board.getNum(driveKI));
+        driveMotor.config_kD(0, board.getNum(driveKD));
         board.addNum("Drive Velocity", getDriveVelocity());
         driveMotor.set(ControlMode.Velocity,
-                setPoint / SwerveConstants.distancePerPulse *
-                        SwerveConstants.velocityTimeUnitInSeconds, 
+                setPoint / SwerveConstants.DISTANCE_PER_PULSE *
+                        SwerveConstants.VELOCITY_TIME_UNIT_IN_SECONDS, 
                         DemandType.ArbitraryFeedForward,
                         feedforward.calculate(setPoint));
     }

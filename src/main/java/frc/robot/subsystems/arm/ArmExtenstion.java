@@ -17,7 +17,6 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSubsystemControl {
   /** Creates a new TelescopicArm. */
@@ -44,15 +43,20 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
     
-    encoder.setPositionConversionFactor(ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
+    encoder.setPositionConversionFactor(
+      ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * Math.PI);
+    encoder.setVelocityConversionFactor((2 * Math.PI / 60)
+      * ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * 0.5);
 
-    pidController.setP(ArmConstants.armExtenstionKp);
-    pidController.setI(ArmConstants.armExtenstionKi);
-    pidController.setD(ArmConstants.armExtenstionKd);
+    pidController.setP(ArmConstants.ARM_EXUTENSTION_KP);
+    pidController.setI(ArmConstants.ARM_EXTENSTION_KI);
+    pidController.setD(ArmConstants.ARM_EXTENSTION_KD);
+
     board = new MAShuffleboard("ArmExtenstion");
-    board.addNum(kp, ArmConstants.armExtenstionKp);
-    board.addNum(ki, ArmConstants.armExtenstionKi);
-    board.addNum(kd, ArmConstants.armExtenstionKd);
+    
+    board.addNum(kp, ArmConstants.ARM_EXUTENSTION_KP);
+    board.addNum(ki, ArmConstants.ARM_EXTENSTION_KI);
+    board.addNum(kd, ArmConstants.ARM_EXTENSTION_KD);
   }
 
   /**
@@ -60,6 +64,13 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
    */
   public double getExtenstion() {
     return encoder.getPosition();
+  }
+
+  /**
+   * @return m/s
+   */
+  public double getVelocity() {
+    return encoder.getVelocity();
   }
 
   @Override
@@ -75,9 +86,11 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     return setPoint;
   }
 
-  public boolean isAbleToChangePose() {
+  public boolean isAbleToChangeExtenstion() {
     return ArmRotation.getInstance().getRotation() >
-      ArmConstants.minRotationForExtenstion;
+      ArmConstants.MIN_ROTATION_FOR_EXTENSTION
+      && setPoint > 0
+      && setPoint < ArmConstants.ARM_MASS_EXTENSTION;
   }
 
 
@@ -85,7 +98,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
     double useSetPoint = this.setPoint;
-    if (!isAbleToChangePose()) {
+    if (!isAbleToChangeExtenstion()) {
       useSetPoint = getExtenstion();
     }
     pidController.setReference(useSetPoint, ControlType.kPosition,0,
@@ -94,22 +107,26 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   public double getFeed() {
     double mass =
-      ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.coneMass :
-      ArmConstants.armExtestionMass;
-    double dis = ArmRotation.getInstance().getCenterOfMass();
-    double r = ArmConstants.armDistanceFromTheCenter + 
-      Math.cos(ArmRotation.getInstance().getRotation()) * dis;
-    double aR = 
-      Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
-    double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
+      (ArmConstants.armExtestionMass + ArmConstants.CONE_MASS
+      + ArmConstants.armExtestionMass);
+    // double mass =
+    //   ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.CONE_MASS :
+    //   ArmConstants.armExtestionMass;
+    // double dis = ArmRotation.getInstance().getCenterOfMass();
+    // double r = ArmConstants.armDistanceFromTheCenter + 
+    //   Math.cos(ArmRotation.getInstance().getRotation()) * dis;
+    // double aR = 
+    //   Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
+    // double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
     return (Math.sin(ArmRotation.getInstance().getRotation()) * 
-      mass * RobotConstants.KGRAVITY_ACCELERATION + FR)
-      * ArmConstants.armExtenstionKn;
+      mass * RobotConstants.KGRAVITY_ACCELERATION
+      + (-getVelocity() * mass) / RobotConstants.KDELTA_TIME)
+      * ArmConstants.ARM_EXTENSTION_KN;
   }
 
   public boolean atPoint() {
     return Math.abs(encoder.getPosition() - setPoint)
-    < ArmConstants.armExtenstionTolerance;
+    < ArmConstants.ARM_EXTENSTION_TOLERANCE;
   }
 
   public static ArmExtenstion getInstance() {

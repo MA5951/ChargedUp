@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Swerve;
 
 import java.util.function.Supplier;
 
@@ -12,12 +12,13 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
-public class yawPhotoVisionPid extends CommandBase {
+public class YawPhotoVisionPid extends CommandBase {
   /** Creates a new yawPhotoVisionPid. */
   private SwerveDrivetrainSubsystem swerve;
   private PIDController pidController;
   private Supplier<Integer> getPipeline;
-  public yawPhotoVisionPid(Supplier<Integer> getPipeline) {
+  
+  public YawPhotoVisionPid(Supplier<Integer> getPipeline) {
     this.getPipeline = getPipeline;
     swerve = SwerveDrivetrainSubsystem.getInstance();
     pidController = new PIDController(0, 0, 0);
@@ -44,7 +45,7 @@ public class yawPhotoVisionPid extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.photonVision.
-      changePipeline(Constants.PipeLines.apriltagPipeLine);
+      changePipeline(Constants.PipeLines.APRIL_TAG_PIPELINE);
   }
 
   // Returns true when the command should end.
