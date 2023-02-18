@@ -30,7 +30,7 @@ public class ResetArmFromHpAutomation extends SequentialCommandGroup {
       new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint),
       new InstantCommand(
         () -> 
-        ArmRotation.getInstance().setSetpoint(ArmConstants.armRotationStartPose)),
+        ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)),
       new ParallelDeadlineGroup(
         new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
         new MiddleIntake()

@@ -6,44 +6,44 @@ public class ArmConstants {
 
     public static final int kCPR = 4096;
 
-    public static final double armExtenstionKn = 0; // TODO
-    public static final double armExtenstionKp = 0; // TODO
-    public static final double armExtenstionKi = 0; // TODO
-    public static final double armExtenstionKd = 0; // TODO
-    public static final double armExtenstionTolerance = 0; // TODO meters
+    public static final double ARM_EXTENSTION_KN = 0; // TODO
+    public static final double ARM_EXUTENSTION_KP = 0; // TODO
+    public static final double ARM_EXTENSTION_KI = 0; // TODO
+    public static final double ARM_EXTENSTION_KD = 0; // TODO
+    public static final double ARM_EXTENSTION_TOLERANCE = 0; // TODO meters
 
 
-    public static final double armRotationKp = 0; // TODO
-    public static final double armRotationKi = 0; // TODO
-    public static final double armRotationKd = 0; // TODO
-    public static final double armRotationTolerance = 0; // TODO radians
+    public static final double ARM_ROTATION_KP = 0; // TODO
+    public static final double ARM_ROTATION_KI = 0; // TODO
+    public static final double ARM_ROTATION_KD = 0; // TODO
+    public static final double ARM_ROTATION_TOLERANCE = 0; // TODO radians
 
-    public static final double armRotationStartPose = 0; // TODO radians
-    public static final double armRotationMaxPose = 0; // TODO radians
-    public static final double armDistanceFromTheCenter = 0; // TODO
-    public static final double armHight = 0; // TODO
+    public static final double ARM_ROTATION_START_POSE = 0; // TODO radians
+    public static final double ARM_ROTATION_MAX_POSE = 0; // TODO radians
+    // public static final double ARM_DISTANCE_FROM_THE_CENTER = 0; // TODO
+    // public static final double ARM_HIGHT = 0; // TODO
 
-    public static final double armExtenstionDiameterOfTheWheel = 0.0323342; // meters
-    public static final double armMaxExtenstion = 0.42;
+    public static final double ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL = 0.0323342; // meters
+    public static final double ARM_MASS_EXTENSTION = 0.42;
 
-    public static final double armRotationGear = 1d / 400;
+    public static final double ARM_ROTATION_GEAR = 1d / 400;
 
-    public static final double neoArmRotationKV = 473;
-    public static final double neoArmRotationKT =
-        60 / (2 * Math.PI * neoArmRotationKV);
-    public static final double armRotationkT = 
-        neoArmRotationKT * armRotationGear;
+    public static final double NEO_ARM_ROTATION_KV = 473;
+    public static final double NEA_ARM_ROTATION_KT =
+        60 / (2 * Math.PI * NEO_ARM_ROTATION_KV);
+    public static final double ARM_ROTATION_KT = 
+        NEA_ARM_ROTATION_KT * ARM_ROTATION_GEAR;
 
-    public static final double armMass = 6.8; // kg
-    public static final double coneMass = 0.653; // kg
+    public static final double ARM_MASS = 6.8; // kg
+    public static final double CONE_MASS = 0.653; // kg
     public static final double armExtestionMass = 2.9; // kg
 
-    public static final double minRotationForExtenstion = 0; // TODO radians
-    public static final double minExtenstionForRotation = 0; // TODO meters
-    public static final double minRotationForExtenstionSaftyBuffer = 0; // TODO radians
+    public static final double MIN_ROTATION_FOR_EXTENSTION = 0; // TODO radians
+    public static final double MIN_EXTENSTION_FOR_ROTATION = 0; // TODO meters
+    public static final double MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR = 0; // TODO radians
 
-    public static final double rotationForMidScoring = 0; //TODO
-    public static final double extenstionForMidScoring = 0; //TODO
-    public static final double rotationForHP = 0; //TODO
-    public static final double extenstionForHP = 0; //TODO
+    public static final double ROTATION_FOR_MID_SCORING = 0; //TODO
+    public static final double EXTENSTION_FOT_MID_SCORING = 0; //TODO
+    public static final double ROTATION_FOR_HP = 0; //TODO
+    public static final double EXTENSTION_FOR_HP = 0; //TODO
 }
