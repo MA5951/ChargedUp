@@ -6,29 +6,29 @@ public class PortMap {
         public static final int intakeMotor2ID = 15;
         public static final int intakePositionMotorID = 13;
     
-        public static final int closingHallEffectPort = 1; //TODO
+        public static final int closingHallEffectPort = 0;
       }
   
       public static class Spinner {
-        public static final int stuckIRPort = 2; //TODO
-        public static final int buttomIRPort = 3; //TODO
+        public static final int stuckIRPort = 4;
+        public static final int buttomIRPort = 1;
     
-        public static final int spinnerMotorID = 16; //TODO
+        public static final int spinnerMotorID = 16;
       }
   
       public static class Gripper {
-        public static final int gripperMotorID = 17; //TODO
+        public static final int gripperMotorID = 17;
       }
   
       public static class ChameleonClimb {
-        public static final int graspingMotorID = 20; //TODO
+        public static final int graspingMotorID = 20;
       }
   
       public static class Arm {
-        public static final int extenstionMotorID = 18; //TODO
-        public static final int extenstionHallEffectPort = 4; //TODO
-        public static final int rotationMotorID = 19; //TODO
-        public static final int rotationHallEffectPort = 5; //TODO
+        public static final int extenstionMotorID = 18;
+        public static final int extenstionHallEffectPort = 8;
+        public static final int rotationMotorID = 19;
+        public static final int rotationHallEffectPort = 9;
       }
   
       public static class Swerve {
