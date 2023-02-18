@@ -120,5 +120,7 @@ public class IntakePosition extends SubsystemBase {
     board.addBoolean("isMiddle", isMiddle());
 
     board.addNum("position", encoder.getPosition());
+
+    board.addBoolean("hall effect", hallEffect.get());
   }
 }

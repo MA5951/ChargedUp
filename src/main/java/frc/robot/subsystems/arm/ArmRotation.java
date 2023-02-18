@@ -165,12 +165,17 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void periodic() {
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
-    board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
     if (hallEffect.get()) {
       encoder.setPosition(ArmConstants.ARM_ROTATION_START_POSE);
     }
+
+    pidController.setP(board.getNum(kp));
+    pidController.setI(board.getNum(ki));
+    pidController.setD(board.getNum(kd));
+
+    board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
+    board.addNum("rotation in radians", getRotation());
+
+    board.addBoolean("hallEffect", hallEffect.get());
   }
 }

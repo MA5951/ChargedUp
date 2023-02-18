@@ -5,8 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Automations.SpinnerAutomation;
-import frc.robot.commands.Automations.IntakeAutomation;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeConstants;
+import frc.robot.subsystems.Spinner.Spinner;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -80,12 +81,23 @@ public class RobotContainer {
 
     COMMAND_PS4_CONTROLLER.button(
       RobotConstants.PS5.Buttons.CROSS).whileTrue(
-        new IntakeAutomation())
+        new InstantCommand(
+          () -> Intake.getInstance().setPower(IntakeConstants.INTAKE_POWER)
+        ))
         .whileFalse(
-          new SpinnerAutomation()
-        );
-    
+          new InstantCommand(
+          () -> Intake.getInstance().setPower(0)
+        ));
 
+    COMMAND_PS4_CONTROLLER.button(
+      RobotConstants.PS5.Buttons.CIRCLE).whileTrue(
+        new InstantCommand(
+          () -> Spinner.getInstance().setPower(-0.3)
+        ))
+        .whileFalse(
+          new InstantCommand(
+            () -> Spinner.getInstance().setPower(0)
+        ));
 
     COMMAND_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
