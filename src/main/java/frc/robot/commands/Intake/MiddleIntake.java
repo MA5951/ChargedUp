@@ -14,6 +14,7 @@ public class MiddleIntake extends CommandBase {
   public MiddleIntake() {
     intakePosition = IntakePosition.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intakePosition);
   }
 
   // Called when the command is initially scheduled.

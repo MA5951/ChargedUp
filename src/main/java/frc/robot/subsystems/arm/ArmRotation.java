@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
-import frc.robot.subsystems.gripper.GripperConstants;
-import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -113,19 +111,22 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   }
 
   public double getCenterOfMass() {
-    if (ArmConstants.isThereCone) {
-      return 0.475 * ArmExtenstion.getInstance().getExtenstion() + 0.248;
-    }
-    double mu1 = 
-      ((GripperConstants.openPosition
-      - GripperSubsystem.getInstance().getCurrentEncoderPosition()) / 
-      (GripperConstants.openPosition - GripperConstants.closePosition));
-    double mu2 = (1 - Math.cos(mu1 * Math.PI)) / 2;
+    // if (ArmConstants.isThereCone) {
+    //   return 0.475 * ArmExtenstion.getInstance().getExtenstion() + 0.248;
+    // }
+    // double mu1 = 
+    //   ((GripperConstants.openPosition
+    //   - GripperSubsystem.getInstance().getCurrentEncoderPosition()) / 
+    //   (GripperConstants.openPosition - GripperConstants.closePosition));
+    // double mu2 = (1 - Math.cos(mu1 * Math.PI)) / 2;
+    // double x = ArmExtenstion.getInstance().getExtenstion();
+    // double close = 0.4311 * x + 0.2035;
+    // double open = 0.4226 * x + 0.1732;
+    // double y = close - open;
+    // return open + y * mu2;
     double x = ArmExtenstion.getInstance().getExtenstion();
-    double close = 0.4311 * x + 0.2035;
-    double open = 0.4226 * x + 0.1732;
-    double y = close - open;
-    return open + y * mu2;
+    return (0.475 * x + 0.248
+      + 0.4226 * x + 0.1732) / 2.0;
   }
 
   public double getAngularVelocity() {

@@ -25,8 +25,6 @@ public class IntakeAutomation extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
         new IntakeCommand(power),
         new OpenIntake().repeatedly(),
-        new IntakeCommand(power),
-        new OpenIntake().repeatedly(),
         new SpinnerCommand()
       )
     );
