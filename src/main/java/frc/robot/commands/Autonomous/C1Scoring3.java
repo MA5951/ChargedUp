@@ -29,7 +29,7 @@ public class C1Scoring3 extends SequentialCommandGroup {
   }
   public C1Scoring3() {
     addCommands(
-      new C1Scoring3(),
+      new C1Scoring2(),
       new ParallelCommandGroup(
         swerve.getAutonomousPathCommand("from C1 to pickup 4",true),
         new InstantCommand(() -> time = Timer.getFPGATimestamp()),
