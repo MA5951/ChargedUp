@@ -22,8 +22,8 @@ public final class Constants {
   public static final class FieldConstants {
     public static final double FIELD_WIDTH_METERS = 8.02;
     public static final double FIELD_LENGTH_METERS = 16.54;
-    private static final double blueX = 1.80;
-    private static final double redX = 14.74;
+    private static final double BLUE_X = 1.80;
+    private static final double RED_X = 14.74;
     private static final double A1Y = 0.5;
     private static final double A2Y = 1.10;
     private static final double A3Y = 1.60;
@@ -35,70 +35,70 @@ public final class Constants {
     private static final double C3Y = 4.92;
     public static final Pose2d[] ScoringPoses = {
       new Pose2d(
-        blueX, C3Y, new Rotation2d(Math.toRadians(0))),
+        BLUE_X, C3Y, new Rotation2d(Math.toRadians(0))),
       new Pose2d(
-        blueX, C2Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, C2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, C1Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, C1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, B3Y, new Rotation2d(Math.toRadians(0)) 
+        BLUE_X, B3Y, new Rotation2d(Math.toRadians(0)) 
       ),
       new Pose2d(
-        blueX, B2Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, B2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, B1Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, B1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, A3Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, A3Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, A2Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, A2Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        blueX, A1Y, new Rotation2d(Math.toRadians(0))
+        BLUE_X, A1Y, new Rotation2d(Math.toRadians(0))
       ),
       new Pose2d(
-        redX, C3Y, new Rotation2d(Math.toRadians(180))),
+        RED_X, C3Y, new Rotation2d(Math.toRadians(180))),
       new Pose2d(
-        redX, C2Y, new Rotation2d(Math.toRadians(180))
+        RED_X, C2Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, C1Y, new Rotation2d(Math.toRadians(180))
+        RED_X, C1Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, B3Y, new Rotation2d(Math.toRadians(180)) 
+        RED_X, B3Y, new Rotation2d(Math.toRadians(180)) 
       ),
       new Pose2d(
-        redX, B2Y, new Rotation2d(Math.toRadians(180))
+        RED_X, B2Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, B1Y, new Rotation2d(Math.toRadians(180))
+        RED_X, B1Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, A3Y, new Rotation2d(Math.toRadians(180))
+        RED_X, A3Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, A2Y, new Rotation2d(Math.toRadians(180))
+        RED_X, A2Y, new Rotation2d(Math.toRadians(180))
       ),
       new Pose2d(
-        redX, A1Y, new Rotation2d(Math.toRadians(180))
+        RED_X, A1Y, new Rotation2d(Math.toRadians(180))
       )
     }; // need to check
   }
   public static class PipeLines{
-    public static final int apriltagPipeLine = 0; // TODO
-    public static final int reflectiveLightPipeLine = 0; //TODO
+    public static final int APRIL_TAG_PIPELINE = 0; // TODO
+    public static final int REFLECTIVE_TAPE_PIPELINE = 0; //TODO
   }
   public static class Camera {
-    public static final double cameraDisFromCenterInX = 0.2;
-    public static final double cameraDisFromCenterInY = 0.022;
-    public static final double cameraDisFromCenterInZ = 0.7;
-    public static final double cameraRoll = 0;
-    public static final double cameraPitch = Math.PI * 0.5;
-    public static final double cameraYaw = Math.PI;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_X = 0.2;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = 0.022;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Z = 0.7;
+    public static final double CAMERA_ROLL = 0;
+    public static final double CAMERA_PITCH = Math.PI * 0.5;
+    public static final double CAMERA_YAW = Math.PI;
 
   }
 }

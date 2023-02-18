@@ -14,7 +14,6 @@ import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -39,7 +38,7 @@ public class A3Scoring2Cube extends SequentialCommandGroup {
           new WaitUntilCommand(
             this::shouldIOpenTheIntake
           ),
-          new IntakeAutomation(IntakeConstants.intakePower),
+          new IntakeAutomation(),
           new CloseIntake()
         )
       ),

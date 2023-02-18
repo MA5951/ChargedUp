@@ -19,8 +19,8 @@ public class GripperSubsystem extends SubsystemBase {
     gripperMotor = new CANSparkMax(
       PortMap.Gripper.gripperMotorID, MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
-    encoder.setPositionConversionFactor((1 / GripperConstants.kCPR)
-      * GripperConstants.gear * 2 * Math.PI);
+    encoder.setPositionConversionFactor((1 / GripperConstants.TICKS_PER_ROUND)
+      * GripperConstants.GEAR * 2 * Math.PI);
     board = new MAShuffleboard("gripper");
   }
 

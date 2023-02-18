@@ -46,12 +46,12 @@ public class IntakePosition extends SubsystemBase {
 
     motor.setIdleMode(IdleMode.kCoast);
     encoder.setPositionConversionFactor(
-      2 * Math.PI * (1 / IntakeConstants.ticksPerRound) * IntakeConstants.gear
+      2 * Math.PI * (1 / IntakeConstants.TICKS_PER_ROUND) * IntakeConstants.GEAR
     );
 
-    board.addNum(kp, IntakeConstants.kp);
-    board.addNum(ki, IntakeConstants.ki);
-    board.addNum(kd, IntakeConstants.kd);
+    board.addNum(kp, IntakeConstants.KP);
+    board.addNum(ki, IntakeConstants.KI);
+    board.addNum(kd, IntakeConstants.KD);
 
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
@@ -68,7 +68,7 @@ public class IntakePosition extends SubsystemBase {
     pidController.setReference(
       setPoint, ControlType.kPosition,
       0, Math.cos(
-        getPosition()) * IntakeConstants.kG, ArbFFUnits.kPercentOut);
+        getPosition()) * IntakeConstants.KG, ArbFFUnits.kPercentOut);
   }
 
   public void setPower(double power){
@@ -85,18 +85,18 @@ public class IntakePosition extends SubsystemBase {
 
   public boolean isOpen(){
     return Math.abs(
-      encoder.getPosition() - IntakeConstants.ClosePosition) < 
-      IntakeConstants.positionTolorance;
+      encoder.getPosition() - IntakeConstants.CLOSE_POSITION) < 
+      IntakeConstants.POSITION_TOLORANCE;
   }
 
   public boolean isClose(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.ClosePosition) < 
-    IntakeConstants.positionTolorance;
+    return Math.abs(encoder.getPosition()-IntakeConstants.CLOSE_POSITION) < 
+    IntakeConstants.POSITION_TOLORANCE;
   }
 
   public boolean isMiddle(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.MiddlePosition) < 
-    IntakeConstants.positionTolorance;
+    return Math.abs(encoder.getPosition()-IntakeConstants.MIDDLE_POSITION) < 
+    IntakeConstants.POSITION_TOLORANCE;
   }
 
   public static IntakePosition getInstance() {
@@ -109,7 +109,7 @@ public class IntakePosition extends SubsystemBase {
   @Override
   public void periodic() {
     if (hallEffect.get()) {
-      encoder.setPosition(IntakeConstants.ClosePosition);
+      encoder.setPosition(IntakeConstants.CLOSE_POSITION);
     }
     pidController.setP(board.getNum(kp));
     pidController.setI(board.getNum(ki));
