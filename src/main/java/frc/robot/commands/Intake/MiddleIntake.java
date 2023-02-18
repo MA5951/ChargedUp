@@ -24,13 +24,7 @@ public class MiddleIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intakePosition.getPosition() > 
-      IntakeConstants.MiddlePosition + IntakeConstants.positionTolorance){
-      intakePosition.setPower(IntakeConstants.closePower);
-    } else if(intakePosition.getPosition() < 
-      IntakeConstants.MiddlePosition - IntakeConstants.positionTolorance){
-      intakePosition.setPower(IntakeConstants.openPower);
-    }
+    intakePosition.calculate(IntakeConstants.MiddlePosition);
   }
 
   // Called once the command ends or is interrupted.
