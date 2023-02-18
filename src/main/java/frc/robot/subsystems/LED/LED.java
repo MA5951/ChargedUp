@@ -80,9 +80,9 @@ public class LED extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // if (DriverStation.isDisabled()) {
-    //   setAllianceColor();
-    // }
+    if (DriverStation.isDisabled()) {
+      setAllianceColor();
+    }
     // This method will be called once per scheduler run
   }
 }
