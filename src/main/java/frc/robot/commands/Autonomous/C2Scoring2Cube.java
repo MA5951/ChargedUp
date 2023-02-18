@@ -14,7 +14,6 @@ import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Automations.SpinnerAutomation;
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -39,7 +38,7 @@ public class C2Scoring2Cube extends SequentialCommandGroup {
             this::shouldIOpenTheIntake
           )
         ),
-        new IntakeAutomation(IntakeConstants.intakePower),
+        new IntakeAutomation(),
         new CloseIntake()
       ),
       swerve.getAutonomousPathCommand("from pickup 4 to C2").alongWith(

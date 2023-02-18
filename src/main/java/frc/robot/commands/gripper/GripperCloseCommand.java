@@ -31,7 +31,7 @@ public class GripperCloseCommand extends CommandBase {
   @Override
   public void execute() {
     double current = gripperSubsystem.getMotorCurrent();
-    if (Math.abs(lastCurrent - current) >= GripperConstants.currentJump) {
+    if (Math.abs(lastCurrent - current) >= GripperConstants.CURRENT_JUMP) {
       tachedGamePice = true;
     }
     lastCurrent = current;
@@ -41,11 +41,11 @@ public class GripperCloseCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (gripperSubsystem.getCurrentEncoderPosition()
-     <= GripperConstants.coneAngle) {
-      gripperSubsystem.setPower(GripperConstants.conePower);
+     <= GripperConstants.CONE_ANGLE) {
+      gripperSubsystem.setPower(GripperConstants.CONE_POWER);
       ArmConstants.isThereCone = true;
     } else {
-      gripperSubsystem.setPower(GripperConstants.cubePower);
+      gripperSubsystem.setPower(GripperConstants.CUBE_POWER);
     }
   }
 

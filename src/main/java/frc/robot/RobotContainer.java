@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Automations.SpinnerAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
-import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -52,13 +51,13 @@ public class RobotContainer {
       "ma5951",
       new Transform3d(
        new Translation3d(
-        Constants.Camera.cameraDisFromCenterInX,
-        Constants.Camera.cameraDisFromCenterInY,
-        Constants.Camera.cameraDisFromCenterInZ
+        Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_X,
+        Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_Y,
+        Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_Z
        ), new Rotation3d(
-        Constants.Camera.cameraRoll,
-        Constants.Camera.cameraPitch,
-        Constants.Camera.cameraYaw
+        Constants.Camera.CAMERA_ROLL,
+        Constants.Camera.CAMERA_PITCH,
+        Constants.Camera.CAMERA_YAW
        )),
       aprilTagFieldLayout
        );
@@ -80,15 +79,15 @@ public class RobotContainer {
     // cancelling on release.
 
     COMMAND_PS4_CONTROLLER.button(
-      RobotConstants.PS5.Buttons.cross).whileTrue(
-        new IntakeAutomation(IntakeConstants.intakePower))
+      RobotConstants.PS5.Buttons.CROSS).whileTrue(
+        new IntakeAutomation())
         .whileFalse(
           new SpinnerAutomation()
         );
     
 
 
-    COMMAND_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.triangle).whileTrue(
+    COMMAND_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
     COMMAND_PS4_CONTROLLER.R2().whileTrue(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
