@@ -441,5 +441,21 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addNum("rearLeft drive pose", rearLeftModule.getDrivePosition());
     board.addNum("frontRight drive pose", frontRightModule.getDrivePosition());
     board.addNum("rearRight drive pose", rearRightModule.getDrivePosition());
+
+    board.addNum(
+      "front left module absolute encoder position",
+      frontLeftModule.getAbsoluteEncoderPosition());
+    
+    board.addNum(
+      "front right module absolute encoder position",
+      frontRightModule.getAbsoluteEncoderPosition());
+    
+    board.addNum(
+      "rear left module absolute encoder position",
+      rearLeftModule.getAbsoluteEncoderPosition());
+    
+    board.addNum(
+      "rear right module absolute encoder position",
+      rearRightModule.getAbsoluteEncoderPosition());
   }
 }
