@@ -49,13 +49,13 @@ public class BreathingColorPattern implements  AddressableLEDPattern{
         // if (timestamp - lastChange > 0) {
         if (direction) {
             if (pattern.red > 0) {
-                pattern = new Color(pattern.red - (interval/0.05/255.0), pattern.green, pattern.blue);
+                pattern = new Color(pattern.red - (interval/0.05/(255.0 * (maxColor / originalRed))), pattern.green, pattern.blue); // (interval/0.05/255.0)
             }
             if (pattern.green > 0) {
-                pattern = new Color(pattern.red, pattern.green - (interval/0.05/255.0), pattern.blue);
+                pattern = new Color(pattern.red, pattern.green - (interval/0.05/(255.0 * (maxColor / originalGreen))), pattern.blue);
             }
             if (pattern.blue > 0) {
-                pattern = new Color(pattern.red, pattern.green, pattern.blue - (interval/0.05/255.0));
+                pattern = new Color(pattern.red, pattern.green, pattern.blue - (interval/0.05/(255.0 * (maxColor / originalBlue))));
             }
             if (pattern.red <= 4.9E-4 && pattern.green <= 4.9E-4 && pattern.blue <= 4.9E-4) {
                 direction = false;
@@ -64,13 +64,13 @@ public class BreathingColorPattern implements  AddressableLEDPattern{
         }
         else {
             if (pattern.red < originalRed) {
-                pattern = new Color(pattern.red + (interval/0.05/255.0), pattern.green, pattern.blue);
+                pattern = new Color(pattern.red + (interval/0.05/(255.0 * (maxColor / originalRed))), pattern.green, pattern.blue); // TODO: switch 255 to original color devided by the maxColor
             }
             if (pattern.green < originalGreen) {
-                pattern = new Color(pattern.red, pattern.green + (interval/0.05/255.0), pattern.blue);
+                pattern = new Color(pattern.red, pattern.green + (interval/0.05/(255.0 * (maxColor / originalGreen))), pattern.blue);
             }
             if (pattern.blue < originalBlue) {
-                pattern = new Color(pattern.red, pattern.green, pattern.blue + (interval/0.05/255.0));
+                pattern = new Color(pattern.red, pattern.green, pattern.blue + (interval/0.05/(255.0 * (maxColor / originalBlue))));
             }
             if (pattern.red >= originalRed && pattern.green >= originalGreen && pattern.blue >= originalBlue) {
                 direction = true;
