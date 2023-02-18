@@ -11,7 +11,7 @@ public class AddressableLEDController {
     private AddressableLEDBuffer addressableLEDBuffer;
     private AddressableLEDPattern addressableLEDPattern;
 
-    private Timer timer;
+    private static Timer timer;
     private TimerTask task;
     private int animationDelay;
 
@@ -23,6 +23,10 @@ public class AddressableLEDController {
         addressableLED.start();
         timer = new Timer();
         animationDelay = 50;
+    }
+
+    public static Timer getTimer() {
+        return timer;
     }
 
     public void setAddressableLEDPattern(AddressableLEDPattern newPattern) {

@@ -1,7 +1,5 @@
 package com.ma5951.utils.led;
 
-import java.io.Console;
-
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
