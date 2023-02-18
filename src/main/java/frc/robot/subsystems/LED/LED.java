@@ -6,6 +6,7 @@ package frc.robot.subsystems.LED;
 
 import com.ma5951.utils.led.AddressableLEDController;
 import com.ma5951.utils.led.BlinkingColorPattern;
+import com.ma5951.utils.led.BreathingColorPattern;
 import com.ma5951.utils.led.PulseColorPattern;
 import com.ma5951.utils.led.RainbowColorPattern;
 import com.ma5951.utils.led.SolidColorPattern;
@@ -23,12 +24,14 @@ public class LED extends SubsystemBase {
   RainbowColorPattern rainbowColorPattern;
   BlinkingColorPattern blinkingColorPattern;
   PulseColorPattern pulseColorPattern;
+  BreathingColorPattern breathingColorPattern;
   public LED() {
     ledController = new AddressableLEDController(PortMap.ledPort, 300);
     solidColorPattern = new SolidColorPattern(Color.kRed);
     rainbowColorPattern = new RainbowColorPattern();
     blinkingColorPattern = new BlinkingColorPattern(Color.kRed, Color.kRed,0);
     pulseColorPattern = new PulseColorPattern(Color.kRed, 0);
+    breathingColorPattern = new BreathingColorPattern(Color.kRed, 0);
   }
 
   public void setSolidColor(Color color) {
@@ -48,6 +51,11 @@ public class LED extends SubsystemBase {
   public void setPulse(Color color, double interval){
     pulseColorPattern.setParameters(color, interval);
     ledController.setAddressableLEDPattern(pulseColorPattern);
+  }
+
+  public void setBreathing(Color color, double interval){
+    breathingColorPattern.setParameters(color, interval);
+    ledController.setAddressableLEDPattern(breathingColorPattern);
   }
 
   public void setAllianceColor() {

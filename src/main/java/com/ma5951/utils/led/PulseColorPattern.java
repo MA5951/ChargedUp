@@ -11,7 +11,6 @@ public class PulseColorPattern implements AddressableLEDPattern {
     private double redOrigin;
     private double greenOrigin;
     private double blueOrigin;
-    private double biggest;
     private double interval;
     private double timestamp;
 
@@ -30,7 +29,6 @@ public class PulseColorPattern implements AddressableLEDPattern {
         greenOrigin = color.green;
         blueOrigin = color.blue;
         this.interval = interval;
-        biggest = 1;
     }   
 
     @Override
