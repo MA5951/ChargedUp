@@ -8,8 +8,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LED.LED;
 import frc.robot.commands.Swerve.DriveSwerveCommand;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
@@ -23,7 +25,6 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    
+    LED.getInstance().setBreathing(new Color(255, 133, 55), 1);
     // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
     // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
@@ -73,7 +74,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

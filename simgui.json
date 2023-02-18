@@ -1,8 +1,15 @@
 {
   "HALProvider": {
-    "DIO": {
+    "Addressable LEDs": {
       "window": {
         "visible": true
+      }
+    },
+    "Other Devices": {
+      "SPARK MAX [13]": {
+        "header": {
+          "open": true
+        }
       }
     },
     "RoboRIO": {
