@@ -60,28 +60,28 @@ public class RobotConstants {
 
     public static class PS5 {
         public static class Buttons{
-            public static final int cross = 2;
-            public static final int circle = 3;
-            public static final int square = 1;
-            public static final int triangle = 4;
+            public static final int CROSS = 2;
+            public static final int CIRCLE = 3;
+            public static final int SQUARE = 1;
+            public static final int TRIANGLE = 4;
             public static final int L1 = 5;
             public static final int R1 = 6;
             public static final int L2 = 7;
             public static final int R2 = 8;
-            public static final int share = 9;
-            public static final int options = 10;
+            public static final int SHARE = 9;
+            public static final int OPTIONS = 10;
             public static final int L3 = 11;
             public static final int R3 = 12;
             public static final int PS = 13;
-            public static final int touchpad = 14;
+            public static final int TOUCHPAD = 14;
         }
         public static class Axis {
-            public static final int Left_stick_X = 0;
-            public static final int Right_stick_x = 2;
-            public static final int Left_stick_Y = 1;
-            public static final int Right_stick_y = 5;
-            public static final int PS_L2 = 3;
-            public static final int PS_R2 = 4;
+            public static final int LEFT_STICK_X = 0;
+            public static final int RIGHT_STICK_X = 2;
+            public static final int LEFT_STICK_Y = 1;
+            public static final int RIGHT_STICK_Y = 5;
+            public static final int L2 = 3;
+            public static final int R2 = 4;
         }
     }
 

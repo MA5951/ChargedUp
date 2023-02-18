@@ -19,8 +19,8 @@ public class HPIntakeAutomation extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new SetArmAutomation(ArmConstants.extenstionForHP,
-                              ArmConstants.rotationForHP),
+        new SetArmAutomation(ArmConstants.EXTENSTION_FOR_HP,
+                              ArmConstants.ROTATION_FOR_HP),
         new GripperOpenCommand())
     );
   }

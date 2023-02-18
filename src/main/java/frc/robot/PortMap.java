@@ -2,8 +2,9 @@ package frc.robot;
 
 public class PortMap {
     public static class Intake {
-        public static final int intakeMotorID = 13; //TODO
-        public static final int intakePositionMotorID = 14; //TODO
+        public static final int intakeMotor1ID = 14;
+        public static final int intakeMotor2ID = 15;
+        public static final int intakePositionMotorID = 13;
     
         public static final int closingHallEffectPort = 1; //TODO
       }
@@ -12,15 +13,15 @@ public class PortMap {
         public static final int stuckIRPort = 2; //TODO
         public static final int buttomIRPort = 3; //TODO
     
-        public static final int spinnerMotorID = 15; //TODO
+        public static final int spinnerMotorID = 16; //TODO
       }
   
       public static class Gripper {
-        public static final int gripperMotorID = 16; //TODO
+        public static final int gripperMotorID = 17; //TODO
       }
   
       public static class ChameleonClimb {
-        public static final int graspingMotorID = 17; //TODO
+        public static final int graspingMotorID = 20; //TODO
       }
   
       public static class Arm {

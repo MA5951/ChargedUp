@@ -25,7 +25,7 @@ public class Spinner extends SubsystemBase {
 
   private MAShuffleboard board;
 
-  public Spinner() {
+  private Spinner() {
     spinnerMotor = new CANSparkMax(
       PortMap.Spinner.spinnerMotorID, MotorType.kBrushless);
     buttomIR = new DigitalInput(PortMap.Spinner.buttomIRPort);
@@ -33,7 +33,7 @@ public class Spinner extends SubsystemBase {
 
     encoder = spinnerMotor.getEncoder();
 
-    encoder.setPositionConversionFactor(360*(1/SpinnerConstants.ticksPerRound));
+    encoder.setPositionConversionFactor(360 * (1 / SpinnerConstants.TICKS_PER_ROUND));
     board = new MAShuffleboard("Spinner");
   }
 

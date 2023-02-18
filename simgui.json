@@ -30,6 +30,11 @@
         }
       },
       "/SmartDashboard/Field": {
+        "Robot": {
+          "length": 0.9150000214576721,
+          "width": 0.9150000214576721
+        },
+        "image": "C:\\Users\\User\\Desktop\\PathPlanner-Windows (2)\\data\\flutter_assets\\images\\field23.png",
         "window": {
           "visible": true
         }
@@ -37,12 +42,21 @@
     }
   },
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
+    "Retained Values": {
+      "open": false
+    },
     "transitory": {
       "Shuffleboard": {
         "frontLeftModule": {
           "open": true
         },
-        "open": true
+        "open": true,
+        "swerve": {
+          "open": true
+        }
       },
       "SmartDashboard": {
         "Field": {
@@ -55,6 +69,21 @@
           "open": true
         },
         "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 338
+        }
+      ],
+      "window": {
+        "visible": false
       }
     }
   }

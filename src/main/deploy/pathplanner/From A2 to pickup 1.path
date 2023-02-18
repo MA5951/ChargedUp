@@ -48,5 +48,12 @@
   "maxVelocity": 4.97,
   "maxAcceleration": 26.46,
   "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 0.7909090909090907,
+      "names": [
+        "event"
+      ]
+    }
+  ]
 }

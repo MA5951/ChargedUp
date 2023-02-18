@@ -14,6 +14,7 @@ public class MiddleIntake extends CommandBase {
   public MiddleIntake() {
     intakePosition = IntakePosition.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intakePosition);
   }
 
   // Called when the command is initially scheduled.
@@ -23,20 +24,14 @@ public class MiddleIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intakePosition.getPosition() > 
-      IntakeConstants.MiddlePosition + IntakeConstants.positionTolorance){
-      intakePosition.setPower(IntakeConstants.closePower);
-    } else if(intakePosition.getPosition() < 
-      IntakeConstants.MiddlePosition - IntakeConstants.positionTolorance){
-      intakePosition.setPower(IntakeConstants.openPower);
-    }
+    intakePosition.calculate(IntakeConstants.MIDDLE_POSITION);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intakePosition.setPower(Math.cos(
-      intakePosition.getPosition()) * IntakeConstants.kG);
+      intakePosition.getPosition()) * IntakeConstants.KG);
   }
 
   // Returns true when the command should end.

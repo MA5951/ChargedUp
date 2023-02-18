@@ -29,7 +29,7 @@ public class GripperOpenCommand extends CommandBase {
   @Override
   public void execute() {
     currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    gripperSubsystem.setPower(GripperConstants.openingPower);
+    gripperSubsystem.setPower(GripperConstants.OPENING_POWER);
   }
 
   // Called once the command ends or is interrupted.
@@ -44,7 +44,7 @@ public class GripperOpenCommand extends CommandBase {
   public boolean isFinished() {
     return 
     Math.abs(
-      currentPosition - GripperConstants.openPosition
-      ) < GripperConstants.gripperTolerance;
+      currentPosition - GripperConstants.OPEN_POSITION
+      ) < GripperConstants.GRIPPER_TOLERANCE;
   }
 }
