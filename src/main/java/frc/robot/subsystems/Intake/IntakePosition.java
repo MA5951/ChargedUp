@@ -48,6 +48,7 @@ public class IntakePosition extends SubsystemBase {
     encoder.setPositionConversionFactor(
       2 * Math.PI * (1 / IntakeConstants.TICKS_PER_ROUND) * IntakeConstants.GEAR
     );
+    board = new MAShuffleboard("IntakePosition");
 
     board.addNum(kp, IntakeConstants.KP);
     board.addNum(ki, IntakeConstants.KI);
@@ -60,7 +61,6 @@ public class IntakePosition extends SubsystemBase {
     pidController.setI(board.getNum(ki));
     pidController.setD(board.getNum(kd));
 
-    board = new MAShuffleboard("IntakePosition");
     resetEncoder();
   }
 
