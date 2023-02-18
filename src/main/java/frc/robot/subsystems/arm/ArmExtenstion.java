@@ -86,7 +86,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     return setPoint;
   }
 
-  public boolean isAbleToChangePose() {
+  public boolean isAbleToChangeExtenstion() {
     return ArmRotation.getInstance().getRotation() >
       ArmConstants.minRotationForExtenstion
       && setPoint > 0
@@ -98,7 +98,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
     double useSetPoint = this.setPoint;
-    if (!isAbleToChangePose()) {
+    if (!isAbleToChangeExtenstion()) {
       useSetPoint = getExtenstion();
     }
     pidController.setReference(useSetPoint, ControlType.kPosition,0,

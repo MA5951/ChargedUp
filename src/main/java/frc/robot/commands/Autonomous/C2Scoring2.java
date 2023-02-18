@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.Automations.AfterIntakeAutomation;
-import frc.robot.commands.Automations.AfterScoringAutomation;
+import frc.robot.commands.Automations.SpinnerAutomation;
+import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Intake.CloseIntake;
@@ -34,7 +34,7 @@ public class C2Scoring2 extends SequentialCommandGroup {
         swerve.getAutonomousPathCommand("from C2 to pickup 4", true),
         new InstantCommand(() -> time = Timer.getFPGATimestamp()),
         new SequentialCommandGroup(
-          new AfterScoringAutomation(),
+          new ResetArmAutomation(),
           new WaitUntilCommand(
             this::shouldIOpenTheIntake
           )
@@ -43,10 +43,10 @@ public class C2Scoring2 extends SequentialCommandGroup {
         new CloseIntake()
       ),
       swerve.getAutonomousPathCommand("from pickup 4 to C3").alongWith(
-        new AfterIntakeAutomation()
+        new SpinnerAutomation()
       ),
       new ScoringAutomationForAutonomous(),
-      new AfterScoringAutomation()
+      new ResetArmAutomation()
     );
   }
 }

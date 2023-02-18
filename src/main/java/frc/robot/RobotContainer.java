@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Automations.AfterIntakeAutomation;
+import frc.robot.commands.Automations.SpinnerAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
@@ -83,7 +83,7 @@ public class RobotContainer {
       RobotConstants.PS5.Buttons.cross).whileTrue(
         new IntakeAutomation(IntakeConstants.intakePower))
         .whileFalse(
-          new AfterIntakeAutomation()
+          new SpinnerAutomation()
         );
     
 
