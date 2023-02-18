@@ -4,21 +4,26 @@
 
 package frc.robot.commands.Automations;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.commands.gripper.GripperCloseCommand;
+import frc.robot.commands.spinner.SpinnerCommand;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AfterScoringAutomation extends SequentialCommandGroup {
-  /** Creates a new AfterScoringAutomation. */
-  public AfterScoringAutomation() {
+public class SpinnerAutomation extends SequentialCommandGroup {
+  /** Creates a new AfterIntakeAutomation. */
+  public SpinnerAutomation() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetArmAutomation(0, ArmConstants.armRotationStartPose),
-      new CloseIntake()
+      new SpinnerCommand(),
+      new ParallelCommandGroup(
+        new GripperCloseCommand(),
+        new CloseIntake()
+      )
     );
   }
 }

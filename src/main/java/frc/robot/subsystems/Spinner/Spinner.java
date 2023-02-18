@@ -33,7 +33,7 @@ public class Spinner extends SubsystemBase {
 
     encoder = spinnerMotor.getEncoder();
 
-    encoder.setPositionConversionFactor(360*(1/SpinnerConstants.ticksPerRound));
+    encoder.setPositionConversionFactor(360 * (1 / SpinnerConstants.ticksPerRound));
     board = new MAShuffleboard("Spinner");
   }
 

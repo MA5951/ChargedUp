@@ -80,7 +80,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     motor.set(voltage / RobotConstants.MAX_VOLTAGE);
   }
 
-  public boolean isAbleToChangePose() {
+  public boolean isAbleToChangeRotation() {
     return (IntakePosition.getInstance().getPosition() 
             < IntakeConstants.MiddlePosition +
             IntakeConstants.positionTolorance || (
@@ -98,7 +98,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
     double useSetPoint = this.setPoint;
-    if (!isAbleToChangePose()) {
+    if (!isAbleToChangeRotation()) {
       useSetPoint = getRotation();
     }
     pidController.setReference(useSetPoint, ControlType.kPosition,

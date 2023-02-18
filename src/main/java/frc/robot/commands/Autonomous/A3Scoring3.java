@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Automations.AfterIntakeAutomation;
 import frc.robot.commands.Automations.AfterScoringAutomation;
+import frc.robot.commands.Automations.SpinnerAutomation;
+import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Intake.CloseIntake;
@@ -44,10 +46,10 @@ public class A3Scoring3 extends SequentialCommandGroup {
       ),
       new ParallelCommandGroup(
         swerve.getAutonomousPathCommand("from pickup 2 to A1"),
-        new AfterIntakeAutomation()
+        new SpinnerAutomation()
       ),
       new ScoringAutomationForAutonomous(),
-      new AfterScoringAutomation()
+      new ResetArmAutomation()
     );
   }
 }

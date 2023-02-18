@@ -8,6 +8,6 @@ package frc.robot.subsystems.Spinner;
 public class SpinnerConstants {
     public static final double spinnerSpeed = 0;//TODO
 
-    public static final double ticksPerRound = 42;
+    public static final double ticksPerRound = 42; // TODO
     
 }
