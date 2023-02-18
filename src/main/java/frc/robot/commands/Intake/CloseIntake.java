@@ -23,7 +23,7 @@ public class CloseIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakePosition.setPower(IntakeConstants.closePower);;
+    intakePosition.calculate(IntakeConstants.ClosePosition);
   }
 
   // Called once the command ends or is interrupted.

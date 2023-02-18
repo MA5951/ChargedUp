@@ -46,7 +46,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     encoder.setPositionConversionFactor(
       ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
     encoder.setVelocityConversionFactor((2 * Math.PI / 60)
-      * ArmConstants.armExtenstionDiameterOfTheWheel * Math.PI);
+      * ArmConstants.armExtenstionDiameterOfTheWheel * 0.5);
 
     pidController.setP(ArmConstants.armExtenstionKp);
     pidController.setI(ArmConstants.armExtenstionKi);

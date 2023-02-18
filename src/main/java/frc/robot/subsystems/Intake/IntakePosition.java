@@ -7,8 +7,12 @@ package frc.robot.subsystems.Intake;
 import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
@@ -22,7 +26,12 @@ public class IntakePosition extends SubsystemBase {
 
   private DigitalInput hallEffect;
 
-  private MAShuffleboard openIntakeShuffleboard;
+  private MAShuffleboard board;
+  private String kp = "kp";
+  private String ki = "ki";
+  private String kd = "kd";
+
+  private SparkMaxPIDController pidController;
 
 
   public IntakePosition(){
@@ -40,8 +49,26 @@ public class IntakePosition extends SubsystemBase {
       2 * Math.PI * (1 / IntakeConstants.ticksPerRound) * IntakeConstants.gear
     );
 
-    openIntakeShuffleboard = new MAShuffleboard("IntakePosition");
+    board.addNum(kp, IntakeConstants.kp);
+    board.addNum(ki, IntakeConstants.ki);
+    board.addNum(kd, IntakeConstants.kd);
+
+    pidController = motor.getPIDController();
+    pidController.setFeedbackDevice(encoder);
+
+    pidController.setP(board.getNum(kp));
+    pidController.setI(board.getNum(ki));
+    pidController.setD(board.getNum(kd));
+
+    board = new MAShuffleboard("IntakePosition");
     resetEncoder();
+  }
+
+  public void calculate(double setPoint) {
+    pidController.setReference(
+      setPoint, ControlType.kPosition,
+      0, Math.cos(
+        getPosition()) * IntakeConstants.kG, ArbFFUnits.kPercentOut);
   }
 
   public void setPower(double power){
@@ -84,10 +111,14 @@ public class IntakePosition extends SubsystemBase {
     if (hallEffect.get()) {
       encoder.setPosition(IntakeConstants.ClosePosition);
     }
-    openIntakeShuffleboard.addBoolean("isClose", isClose());
-    openIntakeShuffleboard.addBoolean("isOpen", isOpen());
-    openIntakeShuffleboard.addBoolean("isMiddle", isMiddle());
+    pidController.setP(board.getNum(kp));
+    pidController.setI(board.getNum(ki));
+    pidController.setD(board.getNum(kd));
 
-    openIntakeShuffleboard.addNum("position", encoder.getPosition());
+    board.addBoolean("isClose", isClose());
+    board.addBoolean("isOpen", isOpen());
+    board.addBoolean("isMiddle", isMiddle());
+
+    board.addNum("position", encoder.getPosition());
   }
 }
