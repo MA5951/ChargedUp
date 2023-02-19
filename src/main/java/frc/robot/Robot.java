@@ -35,7 +35,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    LED.getInstance().setBreathing(new Color(255, 133, 55), 1);
+
+  LED.getInstance().setBreathing(new Color(255, 255, 255), 1);
+    // LED.getInstance().setPulse(new Color(255, 0, 0), new Color(0, 0, 255), 1);
+    // LED.getInstance().setBreathingTriple(Color.kPurple,Color.kYellow , 1);
+    // LED.getInstance().setWaveBlink(new Color(255, 0, 0), new Color(0, 0, 255), 5);
+
     // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
     // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick

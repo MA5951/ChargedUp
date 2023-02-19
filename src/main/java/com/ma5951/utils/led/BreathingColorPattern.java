@@ -49,13 +49,13 @@ public class BreathingColorPattern implements  AddressableLEDPattern{
         // if (timestamp - lastChange > 0) {
         if (direction) {
             if (pattern.red > 0) {
-                pattern = new Color(pattern.red - (interval/0.05/(255.0 * (maxColor / originalRed))), pattern.green, pattern.blue); // (interval/0.05/255.0)
+                pattern = new Color(pattern.red - (originalRed / (interval/0.05)), pattern.green, pattern.blue); // (interval/0.05/255.0)
             }
             if (pattern.green > 0) {
-                pattern = new Color(pattern.red, pattern.green - (interval/0.05/(255.0 * (maxColor / originalGreen))), pattern.blue);
+                pattern = new Color(pattern.red, pattern.green - (originalGreen / (interval/0.05)), pattern.blue);
             }
             if (pattern.blue > 0) {
-                pattern = new Color(pattern.red, pattern.green, pattern.blue - (interval/0.05/(255.0 * (maxColor / originalBlue))));
+                pattern = new Color(pattern.red, pattern.green, pattern.blue - (originalBlue / (interval/0.05)));
             }
             if (pattern.red <= 4.9E-4 && pattern.green <= 4.9E-4 && pattern.blue <= 4.9E-4) {
                 direction = false;
@@ -64,13 +64,13 @@ public class BreathingColorPattern implements  AddressableLEDPattern{
         }
         else {
             if (pattern.red < originalRed) {
-                pattern = new Color(pattern.red + (interval/0.05/(255.0 * (maxColor / originalRed))), pattern.green, pattern.blue); // TODO: switch 255 to original color devided by the maxColor
+                pattern = new Color(pattern.red + (originalRed / (interval/0.05)), pattern.green, pattern.blue); // TODO: switch 255 to original color devided by the maxColor
             }
             if (pattern.green < originalGreen) {
-                pattern = new Color(pattern.red, pattern.green + (interval/0.05/(255.0 * (maxColor / originalGreen))), pattern.blue);
+                pattern = new Color(pattern.red, pattern.green + (originalGreen / (interval/0.05)), pattern.blue);
             }
             if (pattern.blue < originalBlue) {
-                pattern = new Color(pattern.red, pattern.green, pattern.blue + (interval/0.05/(255.0 * (maxColor / originalBlue))));
+                pattern = new Color(pattern.red, pattern.green, pattern.blue + (originalBlue / (interval/0.05)));
             }
             if (pattern.red >= originalRed && pattern.green >= originalGreen && pattern.blue >= originalBlue) {
                 direction = true;
@@ -86,44 +86,6 @@ public class BreathingColorPattern implements  AddressableLEDPattern{
         System.out.println("timestamp: " + timestamp + ", lastChange: " + lastChange + ", interval: " + interval);
         System.out.println("direction: " + direction);
         System.out.println("originalRed: " + originalRed + ", originalGreen: " + originalGreen + ", originalBlue: " + originalBlue);
-
-
-
-        // TimerTask task1 = new TimerTask() {
-        //     @Override
-        //     public void run() {
-        //         if (pattern.red > 0 || pattern.green > 0 || pattern.blue > 0) {
-        //             pattern = new Color(pattern.red - 1, pattern.green - 1, pattern.blue - 1);
-        //             color.setColor(pattern);
-        //             color.setLEDs(buffer);
-        //             System.out.println("red: " + pattern.red + ", green: " + pattern.green + ", blue: " + pattern.blue);
-        //         }
-        //     }
-        // };
-        // // color.setLEDs(buffer);
-        // System.out.println("outside: "+"red: " + pattern.red + ", green: " + pattern.green + ", blue: " + pattern.blue);
-        // // Timer timer = new Timer();
-        // timer = AddressableLEDController.getTimer();
-        // timer.scheduleAtFixedRate(task1, 0, (long) interval);
-
-
-        // if (pattern.red <= 0 && pattern.green <= 0 && pattern.blue <= 0) {
-        //     TimerTask task2 = new TimerTask() {
-        //         @Override
-        //         public void run() {
-        //             if (pattern.red > 0 || pattern.green > 0 || pattern.blue > 0) {
-        //                 pattern = new Color(pattern.red - 1, pattern.green - 1, pattern.blue - 1);
-        //                 color.setColor(pattern);
-        //                 color.setLEDs(buffer);
-        //                 System.out.println("red: " + pattern.red + ", green: " + pattern.green + ", blue: " + pattern.blue);
-        //             }
-        //         }
-        //     };
-        //     // color.setLEDs(buffer);
-        //     System.out.println("outside: "+"red: " + pattern.red + ", green: " + pattern.green + ", blue: " + pattern.blue);
-        //     // Timer timer = new Timer();
-        //     timer.scheduleAtFixedRate(task2, 0, (long) interval);
-        // }
     }
 
     @Override
