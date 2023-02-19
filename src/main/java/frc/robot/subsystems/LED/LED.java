@@ -10,7 +10,6 @@ import com.ma5951.utils.led.AddressableLEDController;
 import com.ma5951.utils.led.BlinkingColorPattern;
 import com.ma5951.utils.led.BreathingColorPattern;
 import com.ma5951.utils.led.BreathingTripleColorPattern;
-import com.ma5951.utils.led.PulseColorPattern;
 import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
 import com.ma5951.utils.led.SolidColorPattern;
@@ -30,7 +29,6 @@ public class LED extends SubsystemBase {
   RainbowColorPattern rainbowColorPattern;
   RainbowColorPatterSimultaneously rainbowColorPatterSimultaneously;
   BlinkingColorPattern blinkingColorPattern;
-  PulseColorPattern pulseColorPattern;
   BreathingColorPattern breathingColorPattern;
   BreathingTripleColorPattern breathingTripleColorPattern;
   WaveBlinkColorPattern waveBlinkColorPattern;
@@ -39,7 +37,6 @@ public class LED extends SubsystemBase {
     solidColorPattern = new SolidColorPattern(Color.kRed);
     rainbowColorPattern = new RainbowColorPattern();
     blinkingColorPattern = new BlinkingColorPattern(Color.kRed, Color.kRed,0);
-    pulseColorPattern = new PulseColorPattern(Color.kRed, Color.kBlue, 0);
     breathingColorPattern = new BreathingColorPattern(Color.kRed, 0);
     breathingTripleColorPattern = new BreathingTripleColorPattern(Color.kRed, Color.kBlue, 0);
     rainbowColorPatterSimultaneously = new RainbowColorPatterSimultaneously();
@@ -67,11 +64,6 @@ public class LED extends SubsystemBase {
   public void setBlinking(Color color, Color color2, double interval) {
     blinkingColorPattern.setParameters(color, color2, interval);
     ledController.setAddressableLEDPattern(blinkingColorPattern);
-  }
-
-  public void setPulse(Color color, Color targetColor, double interval){
-    pulseColorPattern.setParameters(color,targetColor, interval);
-    ledController.setAddressableLEDPattern(pulseColorPattern);
   }
 
   public void setBreathing(Color color, double interval){
