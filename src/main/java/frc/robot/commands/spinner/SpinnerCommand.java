@@ -43,7 +43,7 @@ public class SpinnerCommand extends CommandBase {
     // } else {
     //   spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
     // }
-    spinnerSubsystem.setPower(0.7);
+    spinnerSubsystem.setPower(0.3);
   }
 
   // Called once the command ends or is interrupted.
