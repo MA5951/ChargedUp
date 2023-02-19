@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -100,5 +101,17 @@ public final class Constants {
     public static final double CAMERA_PITCH = Math.PI * 0.5;
     public static final double CAMERA_YAW = Math.PI;
 
+  }
+
+  public static class ColorPresets {
+    public static final Color CONE_YELLOW = new Color(255, 237, 70);
+    public static final Color CUBE_PURPLE = new Color(113, 82, 199);
+    public static final Color RED = new Color(216, 24, 24);
+    public static final Color BLUE = new Color(31, 55, 178);
+    public static final Color WHITE = new Color(255, 255, 255);
+    public static final Color BLACK = new Color(0, 0, 0);
+    public static final Color GREEN = new Color(47, 188, 52);
+    public static final Color ORANGE = new Color(246, 167, 48);
+    public static final Color Cyan = new Color(51, 204, 204);
   }
 }
