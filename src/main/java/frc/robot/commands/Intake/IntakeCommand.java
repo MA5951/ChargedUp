@@ -36,6 +36,7 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Spinner.getInstance().isGamePiceEntered();
+    // return Spinner.getInstance().isGamePiceEntered();
+    return false;
   }
 }

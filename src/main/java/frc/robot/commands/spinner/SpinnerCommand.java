@@ -29,20 +29,21 @@ public class SpinnerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute(){
-    if(spinnerSubsystem.isGamePiceEntered()){
-      if(!spinnerSubsystem.isStuck() && !isReversed){
-        spinnerSubsystem.resetEncoder();
-      }
-      if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() <= 360)){
-        spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-        isReversed = true;
-      }
-      if(spinnerSubsystem.isStuck()){
-        spinnerSubsystem.setPower(-SpinnerConstants.SPINNER_SPEED);
-      }
-    } else {
-      spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-    }
+    // if(spinnerSubsystem.isGamePiceEntered()){
+    //   if(!spinnerSubsystem.isStuck() && !isReversed){
+    //     spinnerSubsystem.resetEncoder();
+    //   }
+    //   if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() <= 360)){
+    //     spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+    //     isReversed = true;
+    //   }
+    //   if(spinnerSubsystem.isStuck()){
+    //     spinnerSubsystem.setPower(-SpinnerConstants.SPINNER_SPEED);
+    //   }
+    // } else {
+    //   spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+    // }
+    spinnerSubsystem.setPower(0.7);
   }
 
   // Called once the command ends or is interrupted.

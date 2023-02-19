@@ -6,14 +6,21 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
+import com.ma5951.utils.commands.MotorCommand;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.LED.LED;
+import frc.robot.subsystems.Spinner.Spinner;
+import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.commands.Swerve.DriveSwerveCommand;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 /**
@@ -34,7 +41,15 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    LED.getInstance();
+    // LED.getInstance();
+    Intake.getInstance();
+    IntakePosition.getInstance();
+    Spinner.getInstance();
+    GripperSubsystem.getInstance();
+    ArmRotation.getInstance();
+    ArmExtenstion.getInstance();
+    ChameleonClimb.getInstance();
+    SwerveDrivetrainSubsystem.getInstance();
     // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
     // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
@@ -63,7 +78,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    SwerveDrivetrainSubsystem.getInstance().setNeutralMode(NeutralMode.Coast);
+    // SwerveDrivetrainSubsystem.getInstance().setNeutralMode(NeutralMode.Coast);
   }
 
   @Override
@@ -77,17 +92,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    CommandScheduler.getInstance().setDefaultCommand(
-      ArmExtenstion.getInstance(),
-      new ControlCommandInsubsystemControl(
-        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    );
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmExtenstion.getInstance(),
+    //   new ControlCommandInsubsystemControl(
+    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    // );
 
-    CommandScheduler.getInstance().setDefaultCommand(
-      ArmRotation.getInstance(),
-      new ControlCommandInsubsystemControl(
-        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    );
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmRotation.getInstance(),
+    //   new ControlCommandInsubsystemControl(
+    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    // );
   }
 
   /** This function is called periodically during autonomous. */
@@ -104,26 +119,31 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    SwerveDrivetrainSubsystem.getInstance().fixOdometry();
+    // SwerveDrivetrainSubsystem.getInstance().fixOdometry();
 
-    CommandScheduler.getInstance().setDefaultCommand(
-      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
-        RobotContainer.COMMAND_PS4_CONTROLLER::getLeftX, 
-        RobotContainer.COMMAND_PS4_CONTROLLER::getLeftY,
-        RobotContainer.COMMAND_PS4_CONTROLLER::getRightX));
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
+    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
+    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
+    //     RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
+    
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmExtenstion.getInstance(),
+    //   new ControlCommandInsubsystemControl(
+    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    // );
+
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmRotation.getInstance(),
+    //   new ControlCommandInsubsystemControl(
+    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    // );
     
     CommandScheduler.getInstance().setDefaultCommand(
-      ArmExtenstion.getInstance(),
-      new ControlCommandInsubsystemControl(
-        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    );
-
-    CommandScheduler.getInstance().setDefaultCommand(
-      ArmRotation.getInstance(),
-      new ControlCommandInsubsystemControl(
-        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    );
-    
+      ArmRotation.getInstance(), new MotorCommand(ArmRotation.getInstance(),
+       RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY));
+    CommandScheduler.getInstance().setDefaultCommand(ArmExtenstion.getInstance(), 
+    new MotorCommand(ArmExtenstion.getInstance(), RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }
 

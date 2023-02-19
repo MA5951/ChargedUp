@@ -30,11 +30,13 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double current = gripperSubsystem.getMotorCurrent();
-    if (Math.abs(lastCurrent - current) >= GripperConstants.CURRENT_JUMP) {
-      tachedGamePice = true;
-    }
-    lastCurrent = current;
+    // double current = gripperSubsystem.getMotorCurrent();
+    // if (Math.abs(lastCurrent - current) >= GripperConstants.CURRENT_JUMP) {
+    //   tachedGamePice = true;
+    // }
+    // lastCurrent = current;
+    // }
+    gripperSubsystem.setPower(-0.3);
     }
 
   // Called once the command ends or is interrupted.

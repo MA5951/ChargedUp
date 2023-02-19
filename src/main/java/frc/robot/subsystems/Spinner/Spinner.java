@@ -8,6 +8,7 @@ import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,6 +36,8 @@ public class Spinner extends SubsystemBase {
 
     encoder.setPositionConversionFactor(360 * (1 / SpinnerConstants.TICKS_PER_ROUND));
     board = new MAShuffleboard("Spinner");
+
+    // spinnerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   public boolean isGamePiceEntered() {

@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -57,6 +58,8 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     board.addNum(kp, ArmConstants.ARM_EXUTENSTION_KP);
     board.addNum(ki, ArmConstants.ARM_EXTENSTION_KI);
     board.addNum(kd, ArmConstants.ARM_EXTENSTION_KD);
+
+    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   /**
@@ -143,9 +146,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void periodic() {
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
+    // pidController.setP(board.getNum(kp));
+    // pidController.setI(board.getNum(ki));
+    // pidController.setD(board.getNum(kd));
 
     board.addNum("pose in extenstion", getExtenstion());
 

@@ -13,6 +13,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -58,6 +59,8 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     board.addNum(kp, ArmConstants.ARM_ROTATION_KP);
     board.addNum(ki, ArmConstants.ARM_ROTATION_KI);
     board.addNum(kd, ArmConstants.ARM_ROTATION_KD);
+
+    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   /**
@@ -169,9 +172,9 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       encoder.setPosition(ArmConstants.ARM_ROTATION_START_POSE);
     }
 
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
+    // pidController.setP(board.getNum(kp));
+    // pidController.setI(board.getNum(ki));
+    // pidController.setD(board.getNum(kd));
 
     board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
     board.addNum("rotation in radians", getRotation());

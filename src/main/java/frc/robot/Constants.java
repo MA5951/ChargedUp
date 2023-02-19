@@ -17,7 +17,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int DRIVER_CONTROLLER_PORT = 0;
+    public static final int OPERATOR_CONTROLLER_PORT = 1;
   }
   public static final class FieldConstants {
     public static final double FIELD_WIDTH_METERS = 8.02;
@@ -85,6 +86,58 @@ public final class Constants {
       ),
       new Pose2d(
         RED_X, A1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, C3Y, new Rotation2d(Math.toRadians(180))),
+      new Pose2d(
+        BLUE_X, C2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, C1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, B3Y, new Rotation2d(Math.toRadians(180)) 
+      ),
+      new Pose2d(
+        BLUE_X, B2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, B1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, A3Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, A2Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        BLUE_X, A1Y, new Rotation2d(Math.toRadians(180))
+      ),
+      new Pose2d(
+        RED_X, C3Y, new Rotation2d(Math.toRadians(0))),
+      new Pose2d(
+        RED_X, C2Y, new Rotation2d(Math.toRadians(0))
+      ),
+      new Pose2d(
+        RED_X, C1Y, new Rotation2d(Math.toRadians(0))
+      ),
+      new Pose2d(
+        RED_X, B3Y, new Rotation2d(Math.toRadians(0)) 
+      ),
+      new Pose2d(
+        RED_X, B2Y, new Rotation2d(Math.toRadians(0))
+      ),
+      new Pose2d(
+        RED_X, B1Y, new Rotation2d(Math.toRadians(0))
+      ),
+      new Pose2d(
+        RED_X, A3Y, new Rotation2d(Math.toRadians(0))
+      ),
+      new Pose2d(
+        RED_X, A2Y, new Rotation2d(Math.toRadians(0))
+      ),
+      new Pose2d(
+        RED_X, A1Y, new Rotation2d(Math.toRadians(0))
       )
     }; // need to check
   }

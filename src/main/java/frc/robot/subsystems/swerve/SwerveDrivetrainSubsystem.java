@@ -11,7 +11,6 @@ import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
-import com.ma5951.utils.Logger;
 import com.ma5951.utils.MAShuffleboard;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -424,8 +423,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     field.setRobotPose(getPose());
 
-    Logger.getInstance().logOdometry(getPose());
-    Logger.getInstance().logswerveState(getSwerveModuleStates());
+    // Logger.getInstance().logOdometry(getPose());
+    // Logger.getInstance().logswerveState(getSwerveModuleStates());
 
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());

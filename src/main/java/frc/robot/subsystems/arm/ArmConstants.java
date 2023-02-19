@@ -44,6 +44,10 @@ public class ArmConstants {
 
     public static final double ROTATION_FOR_MID_SCORING = 0; //TODO
     public static final double EXTENSTION_FOT_MID_SCORING = 0; //TODO
+    public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = 0; //TODO
+    public static final double EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK = 0; //TODO
+    public static final double ROTATION_FOR_LOW_SCORING = 0; //TODO
+    public static final double EXTENSTION_FOT_LOW_SCORING = 0; //TODO
     public static final double ROTATION_FOR_HP = 0; //TODO
     public static final double EXTENSTION_FOR_HP = 0; //TODO
 }
