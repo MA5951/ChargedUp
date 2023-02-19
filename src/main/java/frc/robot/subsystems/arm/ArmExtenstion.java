@@ -12,7 +12,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -90,10 +89,11 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   }
 
   public boolean isAbleToChangeExtenstion() {
-    return ArmRotation.getInstance().getRotation() >
+    return (ArmRotation.getInstance().getRotation() >
       ArmConstants.MIN_ROTATION_FOR_EXTENSTION
+      || getExtenstion() < ArmConstants.MIN_EXTENSTION_FOR_ROTATION)
       && setPoint > 0
-      && setPoint < ArmConstants.ARM_MASS_EXTENSTION;
+      && setPoint < ArmConstants.ARM_EXTENTION_MAX_POSE;
   }
 
 

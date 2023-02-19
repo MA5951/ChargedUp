@@ -4,8 +4,6 @@ import com.ma5951.utils.MAShuffleboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 
@@ -41,6 +39,11 @@ public class GripperSubsystem extends SubsystemBase {
    */
   public double getCurrentEncoderPosition(){
     return encoder.getPosition();
+  }
+
+  public boolean isClosed() {
+    // if power is negative, then the gripper is closed
+    return gripperMotor.getAppliedOutput() < 0;
   }
 
   public static GripperSubsystem getInstance() {
