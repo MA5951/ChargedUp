@@ -1,8 +1,5 @@
 package com.ma5951.utils.led;
 
-import java.security.Timestamp;
-import java.sql.Time;
-
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
@@ -11,9 +8,9 @@ public class WaveBlinkColorPattern implements  AddressableLEDPattern{
     private Color color1;
     private Color color2;
     private Color color3;
-    private boolean color1on;
+    // private boolean color1on;
     private double interval;
-    private boolean cycle;
+    // private boolean cycle;
     private int ledLenght;
     private int colorNumber;
     private double lastChange;
@@ -21,8 +18,8 @@ public class WaveBlinkColorPattern implements  AddressableLEDPattern{
 
     public WaveBlinkColorPattern(Color color, Color color2, double interval) {
         colorNumber = 0;
-        color1on = true;
-        cycle = true;
+        // color1on = true;
+        // cycle = true;
         color = new Color(color.red, color.green, color.blue);
         color2 = new Color(color2.red, color2.green, color2.blue);
         this.interval = interval;
