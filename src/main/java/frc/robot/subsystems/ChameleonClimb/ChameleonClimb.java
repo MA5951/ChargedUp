@@ -6,7 +6,6 @@ package frc.robot.subsystems.ChameleonClimb;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
@@ -20,8 +19,6 @@ public class ChameleonClimb extends SubsystemBase {
   private ChameleonClimb() {
     graspingMotor = new CANSparkMax(
       PortMap.ChameleonClimb.graspingMotorID, MotorType.kBrushless);
-
-    // graspingMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   public void setMotor(double power){

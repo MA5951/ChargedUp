@@ -19,8 +19,10 @@ public class ScoringAutomationForAutonomous extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetArmAutomation(ArmConstants.EXTENSTION_FOT_MID_SCORING, 
-                              ArmConstants.ROTATION_FOR_MID_SCORING),
+      new SetArmAutomation(ArmConstants.EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK, 
+                              ArmConstants.ROTATION_MID_FOR_BEFOR_SCORING_FROM_THE_BACK),
+      new SetArmAutomation(ArmConstants.EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK, 
+                            ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK),
       new ParallelDeadlineGroup(
         new GripperOpenCommand(),
         new MiddleIntake().repeatedly()
