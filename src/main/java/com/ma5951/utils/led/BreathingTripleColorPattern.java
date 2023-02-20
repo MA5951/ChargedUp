@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.util.Color;
 public class BreathingTripleColorPattern implements  AddressableLEDPattern{
     public Color pattern = new Color(0, 0, 0);
     public SolidColorPattern color;
-    // private static Timer timer = new Timer("ledTimer");
     private double interval;
     private int direction;
 
@@ -37,15 +36,12 @@ public class BreathingTripleColorPattern implements  AddressableLEDPattern{
         pattern = new Color(originalRed, originalGreen, originalBlue);
 
         direction = 0;
-        // color = new Color(color.red, color.green, color.blue);
     }
 
 
 
     @Override
     public void setLEDs(AddressableLEDBuffer buffer) {
-        // timestamp = Timer.getFPGATimestamp();
-        // if (timestamp - lastChange > 0) {
         if (direction == 0) {
             //from color to black
             if (pattern.red > 0) {
