@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.math.geometry.Translation2d;
 
@@ -103,6 +106,7 @@ public final class Constants {
     public static final Color BLACK = new Color(0, 0, 0);
     public static final Color GREEN = new Color(47, 188, 52);
     public static final Color ORANGE = new Color(246, 167, 48);
-    public static final Color Cyan = new Color(51, 204, 204);
+    public static final Color CYAN = new Color(51, 204, 204);
+    public static final Color MAcolor = new Color(127, 0, 0);
   }
 }
