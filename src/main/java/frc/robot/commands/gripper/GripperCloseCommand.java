@@ -36,7 +36,7 @@ public class GripperCloseCommand extends CommandBase {
     // }
     // lastCurrent = current;
     // }
-      if (gripperSubsystem.getMotorCurrent() <= GripperConstants.MAX_BUS_VOLTAGE_ALLOWED) {
+      if (gripperSubsystem.getMotorCurrent() <= GripperConstants.MAX_CURRENT_ALLOWED) {
         gripperSubsystem.setPower(-0.3);
       } else {
         gripperSubsystem.setPower(0);

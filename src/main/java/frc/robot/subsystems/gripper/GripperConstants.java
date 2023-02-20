@@ -21,5 +21,5 @@ public final class GripperConstants {
 
     public static final int TICKS_PER_ROUND = 42;
 
-    public static final double MAX_BUS_VOLTAGE_ALLOWED = 13;
+    public static final double MAX_CURRENT_ALLOWED = 13;
 }

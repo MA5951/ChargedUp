@@ -4,11 +4,15 @@
 
 package frc.robot.commands.Automations;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
+import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.arm.ArmExtenstion;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,6 +25,15 @@ public class SpinnerAutomation extends SequentialCommandGroup {
     addCommands(
       new SpinnerCommand(),
       new ParallelCommandGroup(
+        new SequentialCommandGroup(
+          new InstantCommand(
+            () -> ArmExtenstion.getInstance().setSetpoint(
+              ArmConstants.ARM_EXTENSTION_FOR_GRABING)
+          ),
+          new WaitUntilCommand(
+            ArmExtenstion.getInstance()::atPoint
+          )
+        ),
         new GripperCloseCommand(),
         new CloseIntake()
       )
