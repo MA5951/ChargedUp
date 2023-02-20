@@ -13,7 +13,6 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -94,7 +94,9 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       ArmConstants.MIN_EXTENSTION_FOR_ROTATION
       || getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
       && setPoint < ArmConstants.ARM_ROTATION_START_POSE
-      && setPoint > ArmConstants.ARM_ROTATION_MAX_POSE;
+      && setPoint > ArmConstants.ARM_ROTATION_MAX_POSE
+      && (getRotation() >= ArmConstants.ARM_POS_FOR_INTAKE || GripperSubsystem.getInstance().isClosed())
+      && (setPoint >= ArmConstants.ARM_POS_FOR_INTAKE || GripperSubsystem.getInstance().isClosed());  
   }
 
   @Override

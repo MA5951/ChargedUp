@@ -20,6 +20,7 @@ public class ArmConstants {
 
     public static final double ARM_ROTATION_START_POSE = 0; // TODO radians
     public static final double ARM_ROTATION_MAX_POSE = 0; // TODO radians
+    public static final double ARM_EXTENTION_MAX_POSE = 0; // TODO meters
     // public static final double ARM_DISTANCE_FROM_THE_CENTER = 0; // TODO
     // public static final double ARM_HIGHT = 0; // TODO
 
@@ -41,6 +42,7 @@ public class ArmConstants {
     public static final double MIN_ROTATION_FOR_EXTENSTION = 0; // TODO radians
     public static final double MIN_EXTENSTION_FOR_ROTATION = 0; // TODO meters
     public static final double MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR = 0; // TODO radians
+    public static final double ARM_EXTENSTION_FOR_GRABING = 0; // TODO meters
 
     public static final double ROTATION_FOR_MID_SCORING = 0; //TODO
     public static final double EXTENSTION_FOT_MID_SCORING = 0; //TODO
@@ -50,4 +52,6 @@ public class ArmConstants {
     public static final double EXTENSTION_FOT_LOW_SCORING = 0; //TODO
     public static final double ROTATION_FOR_HP = 0; //TODO
     public static final double EXTENSTION_FOR_HP = 0; //TODO
+
+    public static final double ARM_POS_FOR_INTAKE = 0; //TODO
 }
