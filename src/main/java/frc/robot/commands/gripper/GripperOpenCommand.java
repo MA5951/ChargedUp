@@ -28,8 +28,9 @@ public class GripperOpenCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentPosition = gripperSubsystem.getCurrentEncoderPosition();
-    gripperSubsystem.setPower(GripperConstants.OPENING_POWER);
+    // currentPosition = gripperSubsystem.getCurrentEncoderPosition();
+    // gripperSubsystem.setPower(GripperConstants.OPENING_POWER);
+    gripperSubsystem.setPower(0.3);
   }
 
   // Called once the command ends or is interrupted.

@@ -22,7 +22,7 @@ public class IntakeConstants {
 
     public static final double POSITION_TOLORANCE = 0;//RAD, TODO
 
-    public static final double INTAKE_POWER = -0.7;
+    public static final double INTAKE_POWER = -0.8;
     public static final double OUTAKE_POWER = -INTAKE_POWER;
 
 

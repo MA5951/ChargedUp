@@ -1,6 +1,9 @@
 {
   "download": {
-    "localDir": "C:\\Users\\User\\Desktop\\ChargedUp\\logs",
+    "localDir": "C:\\Users\\eilon\\OneDrive\\Desktop",
     "serverTeam": "5951"
+  },
+  "output": {
+    "outputFolder": "C:\\Users\\eilon\\OneDrive\\Desktop"
   }
 }

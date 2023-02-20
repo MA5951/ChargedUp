@@ -22,6 +22,8 @@ public class GripperSubsystem extends SubsystemBase {
     encoder.setPositionConversionFactor((1 / GripperConstants.TICKS_PER_ROUND)
       * GripperConstants.GEAR * 2 * Math.PI);
     board = new MAShuffleboard("gripper");
+
+    // gripperMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   public void setPower(double power){
@@ -37,6 +39,11 @@ public class GripperSubsystem extends SubsystemBase {
    */
   public double getCurrentEncoderPosition(){
     return encoder.getPosition();
+  }
+
+  public boolean isClosed() {
+    // if power is negative, then the gripper is closed
+    return gripperMotor.getAppliedOutput() < 0;
   }
 
   public static GripperSubsystem getInstance() {

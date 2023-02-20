@@ -11,6 +11,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -49,6 +50,8 @@ public class IntakePosition extends SubsystemBase {
       2 * Math.PI * (1 / IntakeConstants.TICKS_PER_ROUND) * IntakeConstants.GEAR
     );
     board = new MAShuffleboard("IntakePosition");
+
+    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
 
     board.addNum(kp, IntakeConstants.KP);
     board.addNum(ki, IntakeConstants.KI);
@@ -111,14 +114,13 @@ public class IntakePosition extends SubsystemBase {
     if (hallEffect.get()) {
       encoder.setPosition(IntakeConstants.CLOSE_POSITION);
     }
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
 
     board.addBoolean("isClose", isClose());
     board.addBoolean("isOpen", isOpen());
     board.addBoolean("isMiddle", isMiddle());
 
     board.addNum("position", encoder.getPosition());
+
+    board.addBoolean("hall effect", hallEffect.get());
   }
 }
