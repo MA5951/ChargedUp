@@ -13,7 +13,7 @@ import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
 import com.ma5951.utils.led.SmoothColorTransitionPattern;
 import com.ma5951.utils.led.SolidColorPattern;
-import com.ma5951.utils.led.WaveBlinkColorPattern;
+import com.ma5951.utils.led.WavePattern;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -31,9 +31,9 @@ public class LED extends SubsystemBase {
   BlinkingColorPattern blinkingColorPattern;
   BreathingColorPattern breathingColorPattern;
   BreathingTripleColorPattern breathingTripleColorPattern;
-  WaveBlinkColorPattern waveBlinkColorPattern;
   EvenOddColorPattern evenOddColorPattern;
   SmoothColorTransitionPattern smoothColorTransitionPattern;
+  WavePattern wavePattern;
   public LED() {
     ledController = new AddressableLEDController(PortMap.ledPort, 300);
     solidColorPattern = new SolidColorPattern(Color.kRed);
@@ -42,9 +42,9 @@ public class LED extends SubsystemBase {
     breathingColorPattern = new BreathingColorPattern(Color.kRed, 0);
     breathingTripleColorPattern = new BreathingTripleColorPattern(Color.kRed, Color.kBlue, 0);
     rainbowColorPatterSimultaneously = new RainbowColorPatterSimultaneously();
-    waveBlinkColorPattern = new WaveBlinkColorPattern(Color.kRed, Color.kBlue);
     evenOddColorPattern = new EvenOddColorPattern(Color.kRed, Color.kBlue, 0);
     smoothColorTransitionPattern = new SmoothColorTransitionPattern(Color.kRed, Color.kBlue, 0);
+    wavePattern = new WavePattern(2, 5, 1, new Color [] {Color.kRed, Color.kBlue});
   }
 
   public void setSolidColor(Color color) {
@@ -65,14 +65,14 @@ public class LED extends SubsystemBase {
     ledController.setAddressableLEDPattern(rainbowColorPatterSimultaneously);
   }
 
+  public void setWave(int numColors, double period, double speed, Color[] colors) {
+    wavePattern.setParameters(numColors, period, speed, colors);
+    ledController.setAddressableLEDPattern(wavePattern);
+  }
+
   public void setEvenOdd(Color color, Color color2, double lenght) {
     evenOddColorPattern.setParameters(color, color2, lenght);
     ledController.setAddressableLEDPattern(evenOddColorPattern);
-  }
-
-  public void setWaveBlink(Color color, Color color2) {
-    waveBlinkColorPattern.setParameters(color, color2);
-    ledController.setAddressableLEDPattern(waveBlinkColorPattern);
   }
 
   public void setBlinking(Color color, Color color2, double interval) {
@@ -113,9 +113,9 @@ public class LED extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (DriverStation.isDisabled()) {
-      setAllianceColor();
-    }
+    // if (DriverStation.isDisabled()) {
+    //   setAllianceColor();
+    // }
     // This method will be called once per scheduler run
   }
 }
