@@ -11,6 +11,7 @@ import com.ma5951.utils.led.BreathingTripleColorPattern;
 import com.ma5951.utils.led.EvenOddColorPattern;
 import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
+import com.ma5951.utils.led.SmoothColorTransitionPattern;
 import com.ma5951.utils.led.SolidColorPattern;
 import com.ma5951.utils.led.WaveBlinkColorPattern;
 
@@ -32,6 +33,7 @@ public class LED extends SubsystemBase {
   BreathingTripleColorPattern breathingTripleColorPattern;
   WaveBlinkColorPattern waveBlinkColorPattern;
   EvenOddColorPattern evenOddColorPattern;
+  SmoothColorTransitionPattern smoothColorTransitionPattern;
   public LED() {
     ledController = new AddressableLEDController(PortMap.ledPort, 300);
     solidColorPattern = new SolidColorPattern(Color.kRed);
@@ -40,8 +42,9 @@ public class LED extends SubsystemBase {
     breathingColorPattern = new BreathingColorPattern(Color.kRed, 0);
     breathingTripleColorPattern = new BreathingTripleColorPattern(Color.kRed, Color.kBlue, 0);
     rainbowColorPatterSimultaneously = new RainbowColorPatterSimultaneously();
-    waveBlinkColorPattern = new WaveBlinkColorPattern(Color.kRed, Color.kBlue, 0);
+    waveBlinkColorPattern = new WaveBlinkColorPattern(Color.kRed, Color.kBlue);
     evenOddColorPattern = new EvenOddColorPattern(Color.kRed, Color.kBlue, 0);
+    smoothColorTransitionPattern = new SmoothColorTransitionPattern(Color.kRed, Color.kBlue, 0);
   }
 
   public void setSolidColor(Color color) {
@@ -53,6 +56,11 @@ public class LED extends SubsystemBase {
     ledController.setAddressableLEDPattern(rainbowColorPattern);
   }
 
+  public void setSmoothColorTransition(Color color, Color color2, double interval) {
+    smoothColorTransitionPattern.setParameters(color, color2, interval);
+    ledController.setAddressableLEDPattern(smoothColorTransitionPattern);
+  }
+
   public void setFullRainbow() {
     ledController.setAddressableLEDPattern(rainbowColorPatterSimultaneously);
   }
@@ -62,8 +70,8 @@ public class LED extends SubsystemBase {
     ledController.setAddressableLEDPattern(evenOddColorPattern);
   }
 
-  public void setWaveBlink(Color color, Color color2, double interval) {
-    waveBlinkColorPattern.setParameters(color, color2, interval);
+  public void setWaveBlink(Color color, Color color2) {
+    waveBlinkColorPattern.setParameters(color, color2);
     ledController.setAddressableLEDPattern(waveBlinkColorPattern);
   }
 
