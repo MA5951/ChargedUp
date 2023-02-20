@@ -44,8 +44,10 @@ public class ArmConstants {
     public static final double MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR = 0; // TODO radians
     public static final double ARM_EXTENSTION_FOR_GRABING = 0; // TODO meters
 
-    public static final double ROTATION_FOR_MID_SCORING = 0; //TODO
+    public static final double ROTATION_MID_FOR_BEFOR_SCORING = 0; //TODO
+    public static final double ROTATION_MID_FOR_SCORING = 0; //TODO
     public static final double EXTENSTION_FOT_MID_SCORING = 0; //TODO
+    public static final double ROTATION_MID_FOR_BEFOR_SCORING_FROM_THE_BACK = 0; // TODO
     public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = 0; //TODO
     public static final double EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK = 0; //TODO
     public static final double ROTATION_FOR_LOW_SCORING = 0; //TODO

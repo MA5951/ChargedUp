@@ -8,9 +8,11 @@ package frc.robot.commands.Automations;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.gripper.GripperOpenCommand;
-import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.arm.ArmExtenstion;
+import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,15 +20,23 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ScoringAutomation extends SequentialCommandGroup {
   /** Creates a new ScoringAutomation. */
+  private boolean atPoint() {
+    return ArmExtenstion.getInstance().atPoint() 
+      && ArmRotation.getInstance().atPoint();
+  }
   public ScoringAutomation() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
         SwerveDrivetrainSubsystem.getInstance().getTelopPathCommand(),
-        new SetArmAutomation(ArmConstants.EXTENSTION_FOT_MID_SCORING, 
-                              ArmConstants.ROTATION_FOR_MID_SCORING)
+        new SequentialCommandGroup(
+          new setArmForMid(),
+          new WaitUntilCommand(this::atPoint)
+        )
       ),
+      new ScoreArmRotation(),
+      new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
       new ParallelDeadlineGroup(
         new GripperOpenCommand(),
         new MiddleIntake().repeatedly()

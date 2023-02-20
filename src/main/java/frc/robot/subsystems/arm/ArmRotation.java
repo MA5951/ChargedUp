@@ -101,6 +101,9 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void calculate(double setPoint) {
+    pidController.setP(board.getNum(kp));
+    pidController.setI(board.getNum(ki));
+    pidController.setD(board.getNum(kd));
     this.setPoint = setPoint;
     double useSetPoint = this.setPoint;
     if (!isAbleToChangeRotation()) {

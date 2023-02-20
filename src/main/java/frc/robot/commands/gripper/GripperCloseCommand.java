@@ -36,7 +36,11 @@ public class GripperCloseCommand extends CommandBase {
     // }
     // lastCurrent = current;
     // }
-    gripperSubsystem.setPower(-0.3);
+      if (gripperSubsystem.getMotorCurrent() <= GripperConstants.MAX_CURRENT_ALLOWED) {
+        gripperSubsystem.setPower(-0.3);
+      } else {
+        gripperSubsystem.setPower(0);
+      }
     }
 
   // Called once the command ends or is interrupted.
