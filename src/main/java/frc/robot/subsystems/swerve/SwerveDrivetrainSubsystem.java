@@ -295,17 +295,27 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public Pose2d getClosestScoringPose() {
-    Pose2d[] scoringPoses = Constants.FieldConstants.ScoringPoses;
+    Translation2d[] scoringPoses = Constants.FieldConstants.ScoringPoses;
     Pose2d robotPose = getPose();
-    Pose2d closest = scoringPoses[0];
+    Translation2d closest = scoringPoses[0];
     for (int i = 1; i < scoringPoses.length; i++) {
-      Pose2d pose = scoringPoses[i];
-      if (robotPose.getTranslation().getDistance(pose.getTranslation()) < 
-          robotPose.getTranslation().getDistance(closest.getTranslation())) {
+      Translation2d pose = scoringPoses[i];
+      if (robotPose.getTranslation().getDistance(pose) < 
+          robotPose.getTranslation().getDistance(closest)) {
         closest = pose;
       }
     }
-    return closest;
+    Pose2d ClosestScoringPose;
+    double targetAngle = (Math.abs(getPose().getRotation().getDegrees()) > 90) ? 180 : 0;
+    ClosestScoringPose = new
+      Pose2d(
+        closest.getX(),
+        closest.getY(),
+        new Rotation2d(
+          Math.toRadians(targetAngle)
+        )
+      );
+    return ClosestScoringPose;
   }
 
   public Command getTelopPathCommand() {
