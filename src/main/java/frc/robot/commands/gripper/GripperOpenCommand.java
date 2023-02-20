@@ -30,7 +30,11 @@ public class GripperOpenCommand extends CommandBase {
   public void execute() {
     // currentPosition = gripperSubsystem.getCurrentEncoderPosition();
     // gripperSubsystem.setPower(GripperConstants.OPENING_POWER);
-    gripperSubsystem.setPower(0.3);
+    if (gripperSubsystem.getBusVoltage() <= GripperConstants.MAX_BUS_VOLTAGE_ALLOWED) {
+      gripperSubsystem.setPower(0.3);
+    } else {
+      gripperSubsystem.setPower(0);
+    }
   }
 
   // Called once the command ends or is interrupted.

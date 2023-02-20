@@ -46,6 +46,10 @@ public class GripperSubsystem extends SubsystemBase {
     return gripperMotor.getAppliedOutput() < 0;
   }
 
+  public double getBusVoltage() {
+    return gripperMotor.getBusVoltage();
+  }
+
   public static GripperSubsystem getInstance() {
     if (gripperSubsystem == null) {
       gripperSubsystem = new GripperSubsystem();
