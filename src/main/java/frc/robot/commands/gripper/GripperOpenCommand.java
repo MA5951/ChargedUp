@@ -30,7 +30,7 @@ public class GripperOpenCommand extends CommandBase {
   public void execute() {
     // currentPosition = gripperSubsystem.getCurrentEncoderPosition();
     // gripperSubsystem.setPower(GripperConstants.OPENING_POWER);
-    if (gripperSubsystem.getBusVoltage() <= GripperConstants.MAX_BUS_VOLTAGE_ALLOWED) {
+    if (gripperSubsystem.getMotorCurrent() <= GripperConstants.MAX_BUS_VOLTAGE_ALLOWED) {
       gripperSubsystem.setPower(0.3);
     } else {
       gripperSubsystem.setPower(0);
