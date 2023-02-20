@@ -7,9 +7,13 @@ package frc.robot.subsystems.LED;
 import com.ma5951.utils.led.AddressableLEDController;
 import com.ma5951.utils.led.BlinkingColorPattern;
 import com.ma5951.utils.led.BreathingColorPattern;
-import com.ma5951.utils.led.PulseColorPattern;
+import com.ma5951.utils.led.BreathingTripleColorPattern;
+import com.ma5951.utils.led.EvenOddColorPattern;
+import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
 import com.ma5951.utils.led.SolidColorPattern;
+import com.ma5951.utils.led.WaveBlinkColorPattern;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
@@ -22,16 +26,22 @@ public class LED extends SubsystemBase {
   AddressableLEDController ledController;
   SolidColorPattern solidColorPattern;
   RainbowColorPattern rainbowColorPattern;
+  RainbowColorPatterSimultaneously rainbowColorPatterSimultaneously;
   BlinkingColorPattern blinkingColorPattern;
-  PulseColorPattern pulseColorPattern;
   BreathingColorPattern breathingColorPattern;
+  BreathingTripleColorPattern breathingTripleColorPattern;
+  WaveBlinkColorPattern waveBlinkColorPattern;
+  EvenOddColorPattern evenOddColorPattern;
   public LED() {
     ledController = new AddressableLEDController(PortMap.ledPort, 300);
     solidColorPattern = new SolidColorPattern(Color.kRed);
     rainbowColorPattern = new RainbowColorPattern();
     blinkingColorPattern = new BlinkingColorPattern(Color.kRed, Color.kRed,0);
-    pulseColorPattern = new PulseColorPattern(Color.kRed, 0);
     breathingColorPattern = new BreathingColorPattern(Color.kRed, 0);
+    breathingTripleColorPattern = new BreathingTripleColorPattern(Color.kRed, Color.kBlue, 0);
+    rainbowColorPatterSimultaneously = new RainbowColorPatterSimultaneously();
+    waveBlinkColorPattern = new WaveBlinkColorPattern(Color.kRed, Color.kBlue, 0);
+    evenOddColorPattern = new EvenOddColorPattern(Color.kRed, Color.kBlue, 0);
   }
 
   public void setSolidColor(Color color) {
@@ -43,19 +53,33 @@ public class LED extends SubsystemBase {
     ledController.setAddressableLEDPattern(rainbowColorPattern);
   }
 
+  public void setFullRainbow() {
+    ledController.setAddressableLEDPattern(rainbowColorPatterSimultaneously);
+  }
+
+  public void setEvenOdd(Color color, Color color2, double lenght) {
+    evenOddColorPattern.setParameters(color, color2, lenght);
+    ledController.setAddressableLEDPattern(evenOddColorPattern);
+  }
+
+  public void setWaveBlink(Color color, Color color2, double interval) {
+    waveBlinkColorPattern.setParameters(color, color2, interval);
+    ledController.setAddressableLEDPattern(waveBlinkColorPattern);
+  }
+
   public void setBlinking(Color color, Color color2, double interval) {
     blinkingColorPattern.setParameters(color, color2, interval);
     ledController.setAddressableLEDPattern(blinkingColorPattern);
   }
 
-  public void setPulse(Color color, double interval){
-    pulseColorPattern.setParameters(color, interval);
-    ledController.setAddressableLEDPattern(pulseColorPattern);
-  }
-
   public void setBreathing(Color color, double interval){
     breathingColorPattern.setParameters(color, interval);
     ledController.setAddressableLEDPattern(breathingColorPattern);
+  }
+
+  public void setBreathingTriple(Color color, Color color2, double interval){
+    breathingTripleColorPattern.setParameters(color, color2, interval);
+    ledController.setAddressableLEDPattern(breathingTripleColorPattern);
   }
 
   public void setAllianceColor() {
@@ -67,7 +91,8 @@ public class LED extends SubsystemBase {
       }
     }
     else{
-    setSolidColor(Color.kPurple);
+      setBreathing(Color.kPurple, 1);
+      // setRainbow();
     }
   }
 
