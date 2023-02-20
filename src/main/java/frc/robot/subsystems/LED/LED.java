@@ -12,6 +12,7 @@ import com.ma5951.utils.led.EvenOddColorPattern;
 import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
 import com.ma5951.utils.led.SmoothColorTransitionPattern;
+import com.ma5951.utils.led.SmoothWaveColorPattern;
 import com.ma5951.utils.led.SolidColorPattern;
 import com.ma5951.utils.led.WavePattern;
 
@@ -34,6 +35,7 @@ public class LED extends SubsystemBase {
   EvenOddColorPattern evenOddColorPattern;
   SmoothColorTransitionPattern smoothColorTransitionPattern;
   WavePattern wavePattern;
+  SmoothWaveColorPattern smoothWaveColorPattern;
   public LED() {
     ledController = new AddressableLEDController(PortMap.ledPort, 300);
     solidColorPattern = new SolidColorPattern(Color.kRed);
@@ -45,11 +47,17 @@ public class LED extends SubsystemBase {
     evenOddColorPattern = new EvenOddColorPattern(Color.kRed, Color.kBlue, 0);
     smoothColorTransitionPattern = new SmoothColorTransitionPattern(Color.kRed, Color.kBlue, 0);
     wavePattern = new WavePattern(2, 5, 1, new Color [] {Color.kRed, Color.kBlue});
+    smoothWaveColorPattern = new SmoothWaveColorPattern(2, 5, 1, new Color [] {Color.kRed, Color.kBlue});
   }
 
   public void setSolidColor(Color color) {
     solidColorPattern.setColor(color);
     ledController.setAddressableLEDPattern(solidColorPattern);
+  }
+
+  public void setSmoothWave(int numColors, double period, double speed, Color[] colors) {
+    smoothWaveColorPattern.setParameters(numColors, period, speed, colors);
+    ledController.setAddressableLEDPattern(smoothWaveColorPattern);
   }
 
   public void setRainbow() {
