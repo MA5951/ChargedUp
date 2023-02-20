@@ -8,13 +8,11 @@ public class SmoothColorTransitionPattern implements AddressableLEDPattern {
     private Color startColor;
     private Color endColor;
     private double transitionTime;
-    private boolean forward;
 
     public SmoothColorTransitionPattern(Color startColor, Color endColor, double transitionTime) {
         this.startColor = startColor;
         this.endColor = endColor;
         this.transitionTime = transitionTime;
-        this.forward = true;
         setParameters(startColor, endColor, transitionTime);
     }
 
