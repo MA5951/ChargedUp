@@ -5,8 +5,17 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Automations.SpinnerAutomation;
-import frc.robot.commands.Automations.IntakeAutomation;
+import frc.robot.PortMap.Gripper;
+import frc.robot.commands.Intake.CloseIntake;
+import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.gripper.GripperCloseCommand;
+import frc.robot.commands.gripper.GripperOpenCommand;
+import frc.robot.commands.spinner.SpinnerCommand;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeConstants;
+import frc.robot.subsystems.Intake.IntakePosition;
+import frc.robot.subsystems.Spinner.Spinner;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -17,6 +26,8 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -30,8 +41,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  public final static CommandPS4Controller COMMAND_PS4_CONTROLLER = 
-    new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
+  public static final CommandPS4Controller DRIVER_PS4_CONTROLLER = 
+    new CommandPS4Controller(OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+  public static final XboxController OPERATOR_XBOX_CONTROLLER = 
+    new XboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   private static AprilTagFieldLayout aprilTagFieldLayout;
 
@@ -78,28 +92,64 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
-    COMMAND_PS4_CONTROLLER.button(
+    DRIVER_PS4_CONTROLLER.button(
       RobotConstants.PS5.Buttons.CROSS).whileTrue(
-        new IntakeAutomation())
-        .whileFalse(
-          new SpinnerAutomation()
-        );
-    
+        new IntakeCommand()
+        )
+        .onFalse(
+          new InstantCommand(
+          () -> Intake.getInstance().setPower(0)
+        ));
 
+        DRIVER_PS4_CONTROLLER.button(
+          RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
+            new CloseIntake()
+            )
+            .onFalse(
+              new InstantCommand(
+              () -> IntakePosition.getInstance().setPower(0)
+            ));
 
-    COMMAND_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
-      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
-    COMMAND_PS4_CONTROLLER.R2().whileTrue(
-      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
-    whileFalse(
-      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
-    );
+    DRIVER_PS4_CONTROLLER.button(
+      RobotConstants.PS5.Buttons.CIRCLE).whileTrue(
+        new SpinnerCommand()
+        )
+        .onFalse(
+          new InstantCommand(
+            () -> Spinner.getInstance().setPower(0)
+        ));
 
-    COMMAND_PS4_CONTROLLER.L2().whileTrue(
-      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22)
-    ).whileFalse(
-      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
-    );
+        DRIVER_PS4_CONTROLLER.button(
+          RobotConstants.PS5.Buttons.R1).whileTrue(
+            new GripperCloseCommand()
+           )
+            .onFalse(
+              new InstantCommand(
+              () -> GripperSubsystem.getInstance().setPower(0)
+            ));
+
+            DRIVER_PS4_CONTROLLER.button(
+              RobotConstants.PS5.Buttons.L1).whileTrue(
+                new GripperOpenCommand()
+                )
+                .onFalse(
+                  new InstantCommand(
+                  () -> GripperSubsystem.getInstance().setPower(0)
+                ));
+
+    // DRIVER_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
+    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
+    // DRIVER_PS4_CONTROLLER.R2().whileTrue(
+    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
+    // whileFalse(
+    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
+    // );
+
+    // DRIVER_PS4_CONTROLLER.L2().whileTrue(
+    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22)
+    // ).whileFalse(
+    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
+    // );
   }
 
   /**

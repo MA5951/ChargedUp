@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -58,6 +59,8 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     board.addNum(kp, ArmConstants.ARM_ROTATION_KP);
     board.addNum(ki, ArmConstants.ARM_ROTATION_KI);
     board.addNum(kd, ArmConstants.ARM_ROTATION_KD);
+
+    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   /**
@@ -91,7 +94,9 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       ArmConstants.MIN_EXTENSTION_FOR_ROTATION
       || getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
       && setPoint < ArmConstants.ARM_ROTATION_START_POSE
-      && setPoint > ArmConstants.ARM_ROTATION_MAX_POSE;
+      && setPoint > ArmConstants.ARM_ROTATION_MAX_POSE
+      && (getRotation() >= ArmConstants.ARM_POS_FOR_INTAKE || GripperSubsystem.getInstance().isClosed())
+      && (setPoint >= ArmConstants.ARM_POS_FOR_INTAKE || GripperSubsystem.getInstance().isClosed());  
   }
 
   @Override
@@ -165,12 +170,17 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void periodic() {
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
-    board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
     if (hallEffect.get()) {
       encoder.setPosition(ArmConstants.ARM_ROTATION_START_POSE);
     }
+
+    // pidController.setP(board.getNum(kp));
+    // pidController.setI(board.getNum(ki));
+    // pidController.setD(board.getNum(kd));
+
+    board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
+    board.addNum("rotation in radians", getRotation());
+
+    board.addBoolean("hallEffect", hallEffect.get());
   }
 }

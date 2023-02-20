@@ -57,6 +57,8 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     board.addNum(kp, ArmConstants.ARM_EXUTENSTION_KP);
     board.addNum(ki, ArmConstants.ARM_EXTENSTION_KI);
     board.addNum(kd, ArmConstants.ARM_EXTENSTION_KD);
+
+    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   /**
@@ -87,10 +89,11 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   }
 
   public boolean isAbleToChangeExtenstion() {
-    return ArmRotation.getInstance().getRotation() >
+    return (ArmRotation.getInstance().getRotation() >
       ArmConstants.MIN_ROTATION_FOR_EXTENSTION
+      || getExtenstion() < ArmConstants.MIN_EXTENSTION_FOR_ROTATION)
       && setPoint > 0
-      && setPoint < ArmConstants.ARM_MASS_EXTENSTION;
+      && setPoint < ArmConstants.ARM_EXTENTION_MAX_POSE;
   }
 
 
@@ -143,10 +146,13 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void periodic() {
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
+    // pidController.setP(board.getNum(kp));
+    // pidController.setI(board.getNum(ki));
+    // pidController.setD(board.getNum(kd));
+
     board.addNum("pose in extenstion", getExtenstion());
+
+    board.addBoolean("hallEffect", hallEffect.get());
 
     if (hallEffect.get()) {
       encoder.setPosition(0);

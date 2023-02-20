@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -34,6 +35,8 @@ public class SwerveModuleTalonFX extends SwerveModule{
     private final String turningKP = "turningKP";
     private final String turningKI = "turningKI";
     private final String turningKD = "turningKD";
+
+
 
     public SwerveModuleTalonFX(String tabName, int driveID,
             int turningID, int absoluteEncoderID, boolean isDriveMotorReversed,
@@ -66,6 +69,9 @@ public class SwerveModuleTalonFX extends SwerveModule{
         board.addNum(turningKP, SwerveConstants.turningPIDKP);
         board.addNum(turningKI, SwerveConstants.turningPIDKI);
         board.addNum(turningKD, SwerveConstants.turningPIDKD);
+
+        absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 10000);
+        absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 10000);
     }
 
     private void configTurningMotor() {
