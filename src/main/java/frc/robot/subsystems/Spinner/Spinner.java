@@ -40,11 +40,11 @@ public class Spinner extends SubsystemBase {
   }
 
   public boolean isGamePiceEntered() {
-    return buttomIR.get();
+    return !buttomIR.get();
   }
 
   public boolean isStuck() {
-    return stuckIR.get();
+    return !stuckIR.get();
   }
 
   public void setPower(double power){
