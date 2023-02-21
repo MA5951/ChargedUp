@@ -12,7 +12,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,13 +39,12 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
     hallEffect = new DigitalInput(PortMap.Arm.extenstionHallEffectPort);
 
-    pidController = motor.getPIDController();
-    pidController.setFeedbackDevice(encoder);
-    
     encoder.setPositionConversionFactor(
       ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * Math.PI);
-    encoder.setVelocityConversionFactor((2 * Math.PI / 60)
-      * ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * 0.5);
+    encoder.setInverted(true);
+    pidController = motor.getPIDController();
+
+    pidController.setFeedbackDevice(encoder);
 
     pidController.setP(ArmConstants.ARM_EXUTENSTION_KP);
     pidController.setI(ArmConstants.ARM_EXTENSTION_KI);
@@ -99,35 +97,12 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void calculate(double setPoint) {
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
     this.setPoint = setPoint;
     double useSetPoint = this.setPoint;
     if (!isAbleToChangeExtenstion()) {
       useSetPoint = getExtenstion();
     }
-    pidController.setReference(useSetPoint, ControlType.kPosition,0,
-      getFeed(), ArbFFUnits.kPercentOut);
-  }
-
-  public double getFeed() {
-    double mass =
-      (ArmConstants.armExtestionMass + ArmConstants.CONE_MASS
-      + ArmConstants.armExtestionMass);
-    // double mass =
-    //   ArmConstants.isThereCone ? ArmConstants.armExtestionMass + ArmConstants.CONE_MASS :
-    //   ArmConstants.armExtestionMass;
-    // double dis = ArmRotation.getInstance().getCenterOfMass();
-    // double r = ArmConstants.armDistanceFromTheCenter + 
-    //   Math.cos(ArmRotation.getInstance().getRotation()) * dis;
-    // double aR = 
-    //   Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
-    // double FR = (aR * mass) * Math.cos(ArmRotation.getInstance().getRotation());
-    return (Math.sin(ArmRotation.getInstance().getRotation()) * 
-      mass * RobotConstants.KGRAVITY_ACCELERATION
-      + (-getVelocity() * mass) / RobotConstants.KDELTA_TIME)
-      * ArmConstants.ARM_EXTENSTION_KN;
+    pidController.setReference(useSetPoint, ControlType.kPosition);
   }
 
   public boolean atPoint() {
@@ -149,15 +124,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   @Override
   public void periodic() {
-    // pidController.setP(board.getNum(kp));
-    // pidController.setI(board.getNum(ki));
-    // pidController.setD(board.getNum(kd));
-
     board.addNum("pose in extenstion", getExtenstion());
 
-    board.addBoolean("hallEffect", hallEffect.get());
-
-    if (hallEffect.get()) {
+    if (!hallEffect.get()) {
       encoder.setPosition(0);
     }
   }

@@ -6,21 +6,20 @@ public class ArmConstants {
 
     public static final int kCPR = 4096;
 
-    public static final double ARM_EXTENSTION_KN = 0; // TODO
-    public static final double ARM_EXUTENSTION_KP = 0; // TODO
-    public static final double ARM_EXTENSTION_KI = 0; // TODO
-    public static final double ARM_EXTENSTION_KD = 0; // TODO
+    public static final double ARM_EXUTENSTION_KP = 3;
+    public static final double ARM_EXTENSTION_KI = 0.0005;
+    public static final double ARM_EXTENSTION_KD = 0.8;
     public static final double ARM_EXTENSTION_TOLERANCE = 0; // TODO meters
 
 
-    public static final double ARM_ROTATION_KP = 0; // TODO
-    public static final double ARM_ROTATION_KI = 0; // TODO
-    public static final double ARM_ROTATION_KD = 0; // TODO
+    public static final double ARM_ROTATION_KP = 1.3;
+    public static final double ARM_ROTATION_KI = 0.000009;
+    public static final double ARM_ROTATION_KD = 0;
     public static final double ARM_ROTATION_TOLERANCE = 0; // TODO radians
 
-    public static final double ARM_ROTATION_START_POSE = 0; // TODO radians
+    public static final double ARM_ROTATION_START_POSE = -0.987;
     public static final double ARM_ROTATION_MAX_POSE = 0; // TODO radians
-    public static final double ARM_EXTENTION_MAX_POSE = 0; // TODO meters
+    public static final double ARM_EXTENTION_MAX_POSE = 0.42;
     // public static final double ARM_DISTANCE_FROM_THE_CENTER = 0; // TODO
     // public static final double ARM_HIGHT = 0; // TODO
 
@@ -29,11 +28,7 @@ public class ArmConstants {
 
     public static final double ARM_ROTATION_GEAR = 1d / 400;
 
-    public static final double NEO_ARM_ROTATION_KV = 473;
-    public static final double NEA_ARM_ROTATION_KT =
-        60 / (2 * Math.PI * NEO_ARM_ROTATION_KV);
-    public static final double ARM_ROTATION_KT = 
-        NEA_ARM_ROTATION_KT * ARM_ROTATION_GEAR;
+    public static final double ARM_ROTATION_KT = 0.0010600019920617125;
 
     public static final double ARM_MASS = 6.8; // kg
     public static final double CONE_MASS = 0.653; // kg

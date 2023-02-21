@@ -20,7 +20,7 @@ public class GripperSubsystem extends SubsystemBase {
       PortMap.Gripper.gripperMotorID, MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
     encoder.setPositionConversionFactor((1 / GripperConstants.TICKS_PER_ROUND)
-      * GripperConstants.GEAR * 2 * Math.PI);
+      * GripperConstants.GEAR);
     board = new MAShuffleboard("gripper");
 
     // gripperMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
@@ -34,9 +34,6 @@ public class GripperSubsystem extends SubsystemBase {
     return gripperMotor.getOutputCurrent();
   }
 
-  /**
-   * @return radians
-   */
   public double getCurrentEncoderPosition(){
     return encoder.getPosition();
   }
@@ -55,7 +52,7 @@ public class GripperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    board.addNum("position radians", getCurrentEncoderPosition());
+    board.addNum("position", getCurrentEncoderPosition());
     board.addNum("MotorCurrent", getMotorCurrent());
   }
 }

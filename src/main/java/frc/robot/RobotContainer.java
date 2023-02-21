@@ -14,6 +14,8 @@ import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.Spinner.Spinner;
 import frc.robot.subsystems.gripper.GripperSubsystem;
+import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
+
 
 import com.ma5951.utils.PhotonVision;
 import com.ma5951.utils.RobotConstants;
@@ -88,6 +90,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
+    //=======================================================
     DRIVER_PS4_CONTROLLER.button(
       RobotConstants.PS5.Buttons.CROSS).whileTrue(
         new IntakeCommand()
@@ -97,49 +100,51 @@ public class RobotContainer {
           () -> Intake.getInstance().setPower(0)
         ));
 
-        DRIVER_PS4_CONTROLLER.button(
-          RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
-            new CloseIntake()
-            )
-            .onFalse(
-              new InstantCommand(
-              () -> IntakePosition.getInstance().setPower(0)
-            ));
+    //     DRIVER_PS4_CONTROLLER.button(
+    //       RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
+    //         new CloseIntake()
+    //         )
+    //         .onFalse(
+    //           new InstantCommand(
+    //           () -> IntakePosition.getInstance().setPower(0)
+    //         ));
 
-    DRIVER_PS4_CONTROLLER.button(
-      RobotConstants.PS5.Buttons.CIRCLE).whileTrue(
-        new SpinnerCommand()
-        )
-        .onFalse(
-          new InstantCommand(
-            () -> Spinner.getInstance().setPower(0)
-        ));
+    // DRIVER_PS4_CONTROLLER.button(
+    //   RobotConstants.PS5.Buttons.CIRCLE).whileTrue(
+    //     new SpinnerCommand()
+    //     )
+    //     .onFalse(
+    //       new InstantCommand(
+    //         () -> Spinner.getInstance().setPower(0)
+    //     ));
 
-        DRIVER_PS4_CONTROLLER.button(
-          RobotConstants.PS5.Buttons.R1).whileTrue(
-            new GripperCloseCommand()
-           )
-            .onFalse(
-              new InstantCommand(
-              () -> GripperSubsystem.getInstance().setPower(0)
-            ));
+    //     DRIVER_PS4_CONTROLLER.button(
+    //       RobotConstants.PS5.Buttons.R1).whileTrue(
+    //         new GripperCloseCommand()
+    //        )
+    //         .onFalse(
+    //           new InstantCommand(
+    //           () -> GripperSubsystem.getInstance().setPower(0)
+    //         ));
 
-            DRIVER_PS4_CONTROLLER.button(
-              RobotConstants.PS5.Buttons.L1).whileTrue(
-                new GripperOpenCommand()
-                )
-                .onFalse(
-                  new InstantCommand(
-                  () -> GripperSubsystem.getInstance().setPower(0)
-                ));
+    //         DRIVER_PS4_CONTROLLER.button(
+    //           RobotConstants.PS5.Buttons.L1).whileTrue(
+    //             new GripperOpenCommand()
+    //             )
+    //             .onFalse(
+    //               new InstantCommand(
+      
+    //               () -> GripperSubsystem.getInstance().setPower(0)
+    //             ));
+    //// ======================================
 
-    // DRIVER_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
-    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
-    // DRIVER_PS4_CONTROLLER.R2().whileTrue(
-    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
-    // whileFalse(
-    //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
-    // );
+    DRIVER_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::updateOffset));
+    DRIVER_PS4_CONTROLLER.R2().whileTrue(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
+    whileFalse(
+      new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
+    );
 
     // DRIVER_PS4_CONTROLLER.L2().whileTrue(
     //   new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22)

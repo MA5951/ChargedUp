@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
-import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
@@ -44,12 +43,13 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     hallEffect = new DigitalInput(PortMap.Arm.rotationHallEffectPort);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
-    motor.setIdleMode(IdleMode.kBrake);
+    motor.setIdleMode(IdleMode.kCoast);
     pidController = motor.getPIDController();
-    pidController.setFeedbackDevice(encoder);
 
     encoder.setPositionConversionFactor(2 * Math.PI);
     encoder.setVelocityConversionFactor(2 * Math.PI / 60);
+
+    pidController.setFeedbackDevice(encoder);
 
     pidController.setP(ArmConstants.ARM_ROTATION_KP);
     pidController.setI(ArmConstants.ARM_ROTATION_KI);
@@ -95,22 +95,18 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       || getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
       && setPoint < ArmConstants.ARM_ROTATION_START_POSE
       && setPoint > ArmConstants.ARM_ROTATION_MAX_POSE
-      && (getRotation() >= ArmConstants.ARM_POS_FOR_INTAKE || GripperSubsystem.getInstance().isClosed())
-      && (setPoint >= ArmConstants.ARM_POS_FOR_INTAKE || GripperSubsystem.getInstance().isClosed());  
+      ; 
   }
 
   @Override
   public void calculate(double setPoint) {
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
     this.setPoint = setPoint;
     double useSetPoint = this.setPoint;
     if (!isAbleToChangeRotation()) {
       useSetPoint = getRotation();
     }
     pidController.setReference(useSetPoint, ControlType.kPosition,
-      0, getFeed(), ArbFFUnits.kVoltage);
+      0, getFeed(), ArbFFUnits.kPercentOut);
   }
 
   public boolean atPoint() {
@@ -119,19 +115,6 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   }
 
   public double getCenterOfMass() {
-    // if (ArmConstants.isThereCone) {
-    //   return 0.475 * ArmExtenstion.getInstance().getExtenstion() + 0.248;
-    // }
-    // double mu1 = 
-    //   ((GripperConstants.openPosition
-    //   - GripperSubsystem.getInstance().getCurrentEncoderPosition()) / 
-    //   (GripperConstants.openPosition - GripperConstants.closePosition));
-    // double mu2 = (1 - Math.cos(mu1 * Math.PI)) / 2;
-    // double x = ArmExtenstion.getInstance().getExtenstion();
-    // double close = 0.4311 * x + 0.2035;
-    // double open = 0.4226 * x + 0.1732;
-    // double y = close - open;
-    // return open + y * mu2;
     double x = ArmExtenstion.getInstance().getExtenstion();
     return (0.475 * x + 0.248
       + 0.4226 * x + 0.1732) / 2.0;
@@ -143,8 +126,8 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   public double getFeed() {
     double mass =
-      ArmConstants.isThereCone ? ArmConstants.ARM_MASS + ArmConstants.CONE_MASS :
-      ArmConstants.ARM_MASS;
+      (2 * ArmConstants.ARM_MASS + ArmConstants.CONE_MASS)
+      / 2.0;
     double dis = getCenterOfMass();
     // double r = ArmConstants.armDistanceFromTheCenter + 
     //   Math.cos(getRotation()) * dis;
@@ -173,7 +156,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void periodic() {
-    if (hallEffect.get()) {
+    if (!hallEffect.get()) {
       encoder.setPosition(ArmConstants.ARM_ROTATION_START_POSE);
     }
 
@@ -184,6 +167,6 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
     board.addNum("rotation in radians", getRotation());
 
-    board.addBoolean("hallEffect", hallEffect.get());
+    board.addBoolean("hallEffect", !hallEffect.get());
   }
 }

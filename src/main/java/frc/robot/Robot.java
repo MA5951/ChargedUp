@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Spinner.Spinner;
+import frc.robot.commands.Swerve.DriveSwerveCommand;
 import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
@@ -40,12 +41,12 @@ public class Robot extends TimedRobot {
     // LED.getInstance();
     Intake.getInstance();
     IntakePosition.getInstance();
-    Spinner.getInstance();
-    GripperSubsystem.getInstance();
-    ArmRotation.getInstance();
-    ArmExtenstion.getInstance();
-    ChameleonClimb.getInstance();
-    SwerveDrivetrainSubsystem.getInstance();
+    // Spinner.getInstance();
+    // GripperSubsystem.getInstance();
+    // ArmRotation.getInstance();
+    // ArmExtenstion.getInstance();
+    // ChameleonClimb.getInstance();
+    // SwerveDrivetrainSubsystem.getInstance();
     // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
     // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
@@ -115,13 +116,13 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // SwerveDrivetrainSubsystem.getInstance().fixOdometry();
+    SwerveDrivetrainSubsystem.getInstance().fixOdometry();
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
-    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
-    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
-    //     RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
+    CommandScheduler.getInstance().setDefaultCommand(
+      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
+        RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
+        RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
+        RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     
     // CommandScheduler.getInstance().setDefaultCommand(
     //   ArmExtenstion.getInstance(),
@@ -135,11 +136,11 @@ public class Robot extends TimedRobot {
     //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
     // );
     
-    CommandScheduler.getInstance().setDefaultCommand(
-      ArmRotation.getInstance(), new MotorCommand(ArmRotation.getInstance(),
-       RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY));
-    CommandScheduler.getInstance().setDefaultCommand(ArmExtenstion.getInstance(), 
-    new MotorCommand(ArmExtenstion.getInstance(), RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmRotation.getInstance(), new MotorCommand(ArmRotation.getInstance(),
+    //    RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY));
+    // CommandScheduler.getInstance().setDefaultCommand(ArmExtenstion.getInstance(), 
+    //   new MotorCommand(ArmExtenstion.getInstance(), RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }
 
