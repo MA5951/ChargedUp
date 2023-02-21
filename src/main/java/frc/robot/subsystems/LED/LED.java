@@ -33,7 +33,6 @@ public class LED extends SubsystemBase {
   BlinkingColorPattern blinkingColorPattern;
   BreathingColorPattern breathingColorPattern;
   BreathingTripleColorPattern breathingTripleColorPattern;
-  EvenOddColorPattern evenOddColorPattern;
   SmoothColorTransitionPattern smoothColorTransitionPattern;
   WavePattern wavePattern;
   SmoothWaveColorPattern smoothWaveColorPattern;
@@ -47,7 +46,6 @@ public class LED extends SubsystemBase {
     breathingColorPattern = new BreathingColorPattern(Color.kRed, 0);
     breathingTripleColorPattern = new BreathingTripleColorPattern(Color.kRed, Color.kBlue, 0);
     rainbowColorPatterSimultaneously = new RainbowColorPatterSimultaneously();
-    evenOddColorPattern = new EvenOddColorPattern(Color.kRed, Color.kBlue, 0);
     smoothColorTransitionPattern = new SmoothColorTransitionPattern(Color.kRed, Color.kBlue, 0);
     wavePattern = new WavePattern(2, 5, 1, new Color [] {Color.kRed, Color.kBlue});
     smoothWaveColorPattern = new SmoothWaveColorPattern(2, 5, 1, new Color [] {Color.kRed, Color.kBlue});
