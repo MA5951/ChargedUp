@@ -70,8 +70,8 @@ public class SwerveModuleTalonFX extends SwerveModule{
         board.addNum(turningKI, SwerveConstants.turningPIDKI);
         board.addNum(turningKD, SwerveConstants.turningPIDKD);
 
-        absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 10000);
-        absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 10000);
+        absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 15000);
+        absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 15000);
     }
 
     private void configTurningMotor() {
@@ -161,19 +161,11 @@ public class SwerveModuleTalonFX extends SwerveModule{
     }
 
     public void turningUsingPID(double setPoint) {
-        turningMotor.config_kP(0, board.getNum(turningKP));
-        turningMotor.config_kI(0, board.getNum(turningKI));
-        turningMotor.config_kD(0, board.getNum(turningKD));
-        board.addNum("Turning Position", getTurningPosition());
         turningMotor.set(ControlMode.Position, setPoint /
                 SwerveConstants.ANGLE_PER_PULSE);
     }
 
     public void driveUsingPID(double setPoint) {
-        driveMotor.config_kP(0, board.getNum(driveKP));
-        driveMotor.config_kI(0, board.getNum(driveKI));
-        driveMotor.config_kD(0, board.getNum(driveKD));
-        board.addNum("Drive Velocity", getDriveVelocity());
         driveMotor.set(ControlMode.Velocity,
                 setPoint / SwerveConstants.DISTANCE_PER_PULSE *
                         SwerveConstants.VELOCITY_TIME_UNIT_IN_SECONDS, 

@@ -9,9 +9,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
-import frc.robot.commands.gripper.GripperOpenCommand;
+import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmRotation;
+import frc.robot.subsystems.gripper.GripperConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -28,7 +29,7 @@ public class ResetArmAutomation extends SequentialCommandGroup {
           new GripperCloseCommand(),
           new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation() 
             <= ArmConstants.ARM_ROTATION_START_POSE + ArmConstants.ARM_ROTATION_TOLERANCE),
-          new GripperOpenCommand()
+          new GripperControlCommand(GripperConstants.OPEN_POSITION)
         )
       ),
       new CloseIntake()

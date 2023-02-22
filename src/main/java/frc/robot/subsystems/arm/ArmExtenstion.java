@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -26,9 +27,6 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   private SparkMaxPIDController pidController;
   
   private MAShuffleboard board;
-  private String kp = "kp";
-  private String ki = "ki";
-  private String kd = "kd";
 
   private double setPoint = 0;
 
@@ -44,6 +42,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     encoder.setInverted(true);
     pidController = motor.getPIDController();
 
+    motor.setIdleMode(IdleMode.kCoast);
     pidController.setFeedbackDevice(encoder);
 
     pidController.setP(ArmConstants.ARM_EXUTENSTION_KP);
@@ -51,12 +50,6 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
     pidController.setD(ArmConstants.ARM_EXTENSTION_KD);
 
     board = new MAShuffleboard("ArmExtenstion");
-    
-    board.addNum(kp, ArmConstants.ARM_EXUTENSTION_KP);
-    board.addNum(ki, ArmConstants.ARM_EXTENSTION_KI);
-    board.addNum(kd, ArmConstants.ARM_EXTENSTION_KD);
-
-    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   /**
@@ -89,7 +82,9 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   public boolean isAbleToChangeExtenstion() {
     return (ArmRotation.getInstance().getRotation() >
       ArmConstants.MIN_ROTATION_FOR_EXTENSTION
-      || getExtenstion() < ArmConstants.MIN_EXTENSTION_FOR_ROTATION)
+      || (getExtenstion() < ArmConstants.MIN_EXTENSTION_FOR_ROTATION
+      && setPoint < ArmConstants.MIN_EXTENSTION_FOR_ROTATION)
+      )
       && setPoint > 0
       && setPoint < ArmConstants.ARM_EXTENTION_MAX_POSE;
   }

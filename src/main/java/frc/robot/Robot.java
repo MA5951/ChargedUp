@@ -41,12 +41,13 @@ public class Robot extends TimedRobot {
     // LED.getInstance();
     Intake.getInstance();
     IntakePosition.getInstance();
-    // Spinner.getInstance();
-    // GripperSubsystem.getInstance();
-    // ArmRotation.getInstance();
-    // ArmExtenstion.getInstance();
-    // ChameleonClimb.getInstance();
-    // SwerveDrivetrainSubsystem.getInstance();
+    Spinner.getInstance();
+    ArmRotation.getInstance();
+    ArmExtenstion.getInstance();
+    ChameleonClimb.getInstance();
+    SwerveDrivetrainSubsystem.getInstance();
+    GripperSubsystem.getInstance();
+
     // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
     
     // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
@@ -116,13 +117,13 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    SwerveDrivetrainSubsystem.getInstance().fixOdometry();
+    // SwerveDrivetrainSubsystem.getInstance().fixOdometry();
 
-    CommandScheduler.getInstance().setDefaultCommand(
-      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
-        RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
-        RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
-        RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
+    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
+    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
+    //     RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     
     // CommandScheduler.getInstance().setDefaultCommand(
     //   ArmExtenstion.getInstance(),

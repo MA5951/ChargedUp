@@ -24,8 +24,7 @@ public class OpenIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // intakePosition.calculate(IntakeConstants.OPEN_POSITION);
-    intakePosition.setPower(-0.3);
+    intakePosition.calculate(IntakeConstants.OPEN_POSITION);
   }
 
   // Called once the command ends or is interrupted.

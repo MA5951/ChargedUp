@@ -8,7 +8,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.gripper.GripperCloseCommand;
-import frc.robot.commands.gripper.GripperOpenCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
@@ -91,14 +90,14 @@ public class RobotContainer {
     // cancelling on release.
 
     //=======================================================
-    DRIVER_PS4_CONTROLLER.button(
-      RobotConstants.PS5.Buttons.CROSS).whileTrue(
-        new IntakeCommand()
-        )
-        .onFalse(
-          new InstantCommand(
-          () -> Intake.getInstance().setPower(0)
-        ));
+    // DRIVER_PS4_CONTROLLER.button(
+    //   RobotConstants.PS5.Buttons.CROSS).whileTrue(
+    //     new IntakeCommand()
+    //     )
+    //     .onFalse(
+    //       new InstantCommand(
+    //       () -> Intake.getInstance().setPower(0)
+    //     ));
 
     //     DRIVER_PS4_CONTROLLER.button(
     //       RobotConstants.PS5.Buttons.TRIANGLE).whileTrue(
@@ -109,14 +108,10 @@ public class RobotContainer {
     //           () -> IntakePosition.getInstance().setPower(0)
     //         ));
 
-    // DRIVER_PS4_CONTROLLER.button(
-    //   RobotConstants.PS5.Buttons.CIRCLE).whileTrue(
-    //     new SpinnerCommand()
-    //     )
-    //     .onFalse(
-    //       new InstantCommand(
-    //         () -> Spinner.getInstance().setPower(0)
-    //     ));
+    DRIVER_PS4_CONTROLLER.button(
+      RobotConstants.PS5.Buttons.CIRCLE).whileTrue(
+        new SpinnerCommand()
+      );
 
     //     DRIVER_PS4_CONTROLLER.button(
     //       RobotConstants.PS5.Buttons.R1).whileTrue(

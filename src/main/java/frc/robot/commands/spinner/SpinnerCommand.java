@@ -29,21 +29,20 @@ public class SpinnerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute(){
-    // if(spinnerSubsystem.isGamePiceEntered()){
-    //   if(!spinnerSubsystem.isStuck() && !isReversed){
-    //     spinnerSubsystem.resetEncoder();
-    //   }
-    //   if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() <= 360)){
-    //     spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-    //     isReversed = true;
-    //   }
-    //   if(spinnerSubsystem.isStuck()){
-    //     spinnerSubsystem.setPower(-SpinnerConstants.SPINNER_SPEED);
-    //   }
-    // } else {
-    //   spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-    // }
-    spinnerSubsystem.setPower(0.3);
+    if(spinnerSubsystem.isGamePiceEntered()){
+      if(!spinnerSubsystem.isStuck() && !isReversed){
+        spinnerSubsystem.resetEncoder();
+      }
+      if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() >= -500)){
+        spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+        isReversed = true;
+      }
+      if(spinnerSubsystem.isStuck()){
+        spinnerSubsystem.setPower(-SpinnerConstants.SPINNER_SPEED);
+      }
+    } else {
+      spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -54,7 +53,7 @@ public class SpinnerCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished(){
-    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() >= 360
+    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() <= -500
     && spinnerSubsystem.isGamePiceEntered();
   }
 }

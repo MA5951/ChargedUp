@@ -27,41 +27,36 @@ public class IntakePosition extends SubsystemBase {
   private DigitalInput hallEffect;
 
   private MAShuffleboard board;
-  private String kp = "kp";
-  private String ki = "ki";
-  private String kd = "kd";
 
   private SparkMaxPIDController pidController;
-
 
   public IntakePosition(){
     motor = new CANSparkMax(
       PortMap.Intake.intakePositionMotorID,
       MotorType.kBrushless);
 
+  
     encoder = motor.getEncoder();
 
     hallEffect = new DigitalInput(
       PortMap.Intake.closingHallEffectPort);
 
     motor.setIdleMode(IdleMode.kCoast);
-    encoder.setPositionConversionFactor(
-      2 * Math.PI * (1 / IntakeConstants.TICKS_PER_ROUND) * IntakeConstants.GEAR
-    );
-    board = new MAShuffleboard("IntakePosition");
 
-    board.addNum(kp, IntakeConstants.KP);
-    board.addNum(ki, IntakeConstants.KI);
-    board.addNum(kd, IntakeConstants.KD);
+    resetEncoder();
+    encoder.setPositionConversionFactor(
+      IntakeConstants.POSITION_CONVERSION_FACTOR
+    );
+
+    board = new MAShuffleboard("IntakePosition");
 
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
 
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
+    pidController.setP(IntakeConstants.KP);
+    pidController.setI(IntakeConstants.KI);
+    pidController.setD(IntakeConstants.KD);
 
-    resetEncoder();
   }
 
   public void calculate(double setPoint) {
@@ -116,8 +111,10 @@ public class IntakePosition extends SubsystemBase {
     board.addBoolean("isOpen", isOpen());
     board.addBoolean("isMiddle", isMiddle());
 
-    board.addNum("position", encoder.getPosition());
+    board.addNum("position", getPosition());
+    board.addNum("positionn degrees", Math.toDegrees(getPosition()));
 
-    board.addBoolean("hall effect", hallEffect.get());
+
+    board.addBoolean("hall effect", !hallEffect.get());
   }
 }

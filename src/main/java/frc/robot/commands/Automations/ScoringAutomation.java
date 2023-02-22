@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.MiddleIntake;
-import frc.robot.commands.gripper.GripperOpenCommand;
+import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
+import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -38,7 +39,7 @@ public class ScoringAutomation extends SequentialCommandGroup {
       new ScoreArmRotation(),
       new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
       new ParallelDeadlineGroup(
-        new GripperOpenCommand(),
+        new GripperControlCommand(GripperConstants.OPEN_POSITION),
         new MiddleIntake().repeatedly()
       )
     );

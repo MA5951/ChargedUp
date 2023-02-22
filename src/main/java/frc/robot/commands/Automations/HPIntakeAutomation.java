@@ -6,8 +6,9 @@ package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.gripper.GripperOpenCommand;
+import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.gripper.GripperConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,7 +22,7 @@ public class HPIntakeAutomation extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SetArmAutomation(ArmConstants.EXTENSTION_FOR_HP,
                               ArmConstants.ROTATION_FOR_HP),
-        new GripperOpenCommand())
+        new GripperControlCommand(GripperConstants.OPEN_POSITION))
     );
   }
 }

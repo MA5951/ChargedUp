@@ -7,8 +7,9 @@ package frc.robot.commands.Automations;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Intake.MiddleIntake;
-import frc.robot.commands.gripper.GripperOpenCommand;
+import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.gripper.GripperConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -24,7 +25,7 @@ public class ScoringAutomationForAutonomous extends SequentialCommandGroup {
       new SetArmAutomation(ArmConstants.EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK, 
                             ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK),
       new ParallelDeadlineGroup(
-        new GripperOpenCommand(),
+        new GripperControlCommand(GripperConstants.OPEN_POSITION),
         new MiddleIntake().repeatedly()
       )
     );
