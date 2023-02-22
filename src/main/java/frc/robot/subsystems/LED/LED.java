@@ -11,11 +11,11 @@ import com.ma5951.utils.led.BreathingTripleColorPattern;
 import com.ma5951.utils.led.EvenOddColorPattern;
 import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
+import com.ma5951.utils.led.SolidColorPattern;
+import com.ma5951.utils.led.WaveBlinkColorPattern;
 import com.ma5951.utils.led.SmoothColorTransitionPattern;
 import com.ma5951.utils.led.SmoothWaveColorPattern;
-import com.ma5951.utils.led.SolidColorPattern;
 import com.ma5951.utils.led.WavePattern;
-import com.ma5951.utils.led.WaveBlinkColorPattern;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
