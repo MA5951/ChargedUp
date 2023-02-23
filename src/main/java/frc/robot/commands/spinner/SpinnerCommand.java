@@ -13,6 +13,7 @@ public class SpinnerCommand extends CommandBase {
   private Spinner spinnerSubsystem;
 
   private boolean isReversed;
+  private boolean isTurnd3;
 
   public SpinnerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,24 +25,36 @@ public class SpinnerCommand extends CommandBase {
   @Override
   public void initialize() {
     isReversed = false;
+    isTurnd3 = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute(){
     if(spinnerSubsystem.isGamePiceEntered()){
-      if(!spinnerSubsystem.isStuck() && !isReversed){
+      if(!isTurnd3){
+        if (spinnerSubsystem.getPosition() <= 500) {
+        spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
+        } else {
+          isTurnd3 = true;
+        }
+      }
+      else{
         spinnerSubsystem.resetEncoder();
+        if(!spinnerSubsystem.isStuck() && !isReversed && !isTurnd3){
+          spinnerSubsystem.resetEncoder();
+        }
+        if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() >= -500)){
+          spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+          isReversed = true;
+        }
+        if(spinnerSubsystem.isStuck()){
+          spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
+        }
       }
-      if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() >= -500)){
-        spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-        isReversed = true;
-      }
-      if(spinnerSubsystem.isStuck()){
-        spinnerSubsystem.setPower(-SpinnerConstants.SPINNER_SPEED);
-      }
+      
     } else {
-      spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+      spinnerSubsystem.setPower(SpinnerConstants.IDLE_REVERSE_SPEED);
     }
   }
 

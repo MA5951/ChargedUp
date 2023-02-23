@@ -39,7 +39,7 @@ public class setArmForMid extends InstantCommand {
     }
 
     double extensionSetpoint = isReversed ? ArmConstants.EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK : ArmConstants.EXTENSTION_FOT_MID_SCORING;
-    double rotationSetpoint = isReversed ? ArmConstants.ROTATION_MID_FOR_BEFOR_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_BEFOR_SCORING;
+    double rotationSetpoint = isReversed ? ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING;
     armExtenstion.setSetpoint(extensionSetpoint);
     armRotation.setSetpoint(rotationSetpoint);
   }

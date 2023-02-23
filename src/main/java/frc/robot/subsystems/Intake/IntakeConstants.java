@@ -6,10 +6,10 @@ package frc.robot.subsystems.Intake;
 
 /** Add your docs here. */
 public class IntakeConstants {
-    public final static double CLOSE_POSITION = Math.PI * 0.5; 
-    public final static double OPEN_POSITION = 0;
+    public final static double CLOSE_POSITION = Math.toRadians(90); 
+    public final static double OPEN_POSITION = Math.toRadians(170);
     public final static double POSITION_CONVERSION_FACTOR = ((Math.PI * 0.5) / 1229.125107485757) * 57.296;
-    public final static double MIDDLE_POSITION = Math.toRadians(30.166787224168598);
+    public final static double MIDDLE_POSITION = Math.toRadians(150);
 
     public final static double KG = 0.05 / Math.cos(MIDDLE_POSITION);
     public final static double KP = 1;

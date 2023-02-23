@@ -5,13 +5,19 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Automations.ResetArmAutomation;
+import frc.robot.commands.Automations.SetArmAutomation;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
+import frc.robot.commands.spinner.SpinnerManualCommand;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.Spinner.Spinner;
+import frc.robot.subsystems.Spinner.SpinnerConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
@@ -139,6 +145,27 @@ public class RobotContainer {
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40)).
     whileFalse(
       new InstantCommand(SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal)
+    );
+
+    DRIVER_PS4_CONTROLLER.pov(RobotConstants.POVButtons.POV_LEFT).whileTrue(
+      new SpinnerManualCommand(SpinnerConstants.REVERSED_SPINNER_SPEED)
+    );
+
+    DRIVER_PS4_CONTROLLER.pov(RobotConstants.POVButtons.POV_RIGHT).whileTrue(
+      new SpinnerManualCommand(SpinnerConstants.SPINNER_SPEED)
+    );
+
+    // DRIVER_PS4_CONTROLLER.pov(RobotConstants.POVButtons.POV_UP).whileTrue(
+    //   new InstantCommand(()-> System.out.println("CLOSEING" + IntakePosition.getInstance().isAbleToClose()))
+    //   );
+    
+
+    DRIVER_PS4_CONTROLLER.pov(RobotConstants.POVButtons.POV_DOWN).whileTrue(
+      new MiddleIntake()
+      );
+
+    DRIVER_PS4_CONTROLLER.button(RobotConstants.PS5.Buttons.CROSS).whileTrue(
+      new ResetArmAutomation()
     );
 
     // DRIVER_PS4_CONTROLLER.L2().whileTrue(

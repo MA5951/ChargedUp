@@ -16,6 +16,8 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
+import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.arm.ArmRotation;
 
 public class IntakePosition extends SubsystemBase {
 
@@ -43,9 +45,7 @@ public class IntakePosition extends SubsystemBase {
 
     motor.setIdleMode(IdleMode.kCoast);
 
-    resetEncoder();
-    encoder.setPositionConversionFactor(
-      IntakeConstants.POSITION_CONVERSION_FACTOR
+    encoder.setPositionConversionFactor(IntakeConstants.POSITION_CONVERSION_FACTOR
     );
 
     board = new MAShuffleboard("IntakePosition");
@@ -77,13 +77,7 @@ public class IntakePosition extends SubsystemBase {
   public double getPosition() {
     return encoder.getPosition();
   }
-
-  public boolean isOpen(){
-    return Math.abs(
-      encoder.getPosition() - IntakeConstants.CLOSE_POSITION) < 
-      IntakeConstants.POSITION_TOLORANCE;
-  }
-
+  
   public boolean isClose(){
     return Math.abs(encoder.getPosition()-IntakeConstants.CLOSE_POSITION) < 
     IntakeConstants.POSITION_TOLORANCE;
@@ -94,11 +88,23 @@ public class IntakePosition extends SubsystemBase {
     IntakeConstants.POSITION_TOLORANCE;
   }
 
+  public boolean isOpen(){
+    return Math.abs(encoder.getPosition()-IntakeConstants.OPEN_POSITION) < 
+    IntakeConstants.POSITION_TOLORANCE;
+  }
+
   public static IntakePosition getInstance() {
     if (openIntake == null) {
       openIntake = new IntakePosition();
     }
     return openIntake;
+  }
+
+  
+  public boolean isAbleToClose() {
+    return (
+    ArmRotation.getInstance().getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR) 
+    || (ArmRotation.getInstance().getRotation() < ArmConstants.MIN_ROTATION_FOR_CLOSING_INTAKE);
   }
 
   @Override
@@ -108,8 +114,8 @@ public class IntakePosition extends SubsystemBase {
     }
 
     board.addBoolean("isClose", isClose());
-    board.addBoolean("isOpen", isOpen());
     board.addBoolean("isMiddle", isMiddle());
+    board.addBoolean("isOpen", isOpen());
 
     board.addNum("position", getPosition());
     board.addNum("positionn degrees", Math.toDegrees(getPosition()));

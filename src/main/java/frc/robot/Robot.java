@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 import com.ma5951.utils.commands.MotorCommand;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -125,17 +126,17 @@ public class Robot extends TimedRobot {
     //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
     //     RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmExtenstion.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmExtenstion.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    );
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmRotation.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    );
     
     // CommandScheduler.getInstance().setDefaultCommand(
     //   ArmRotation.getInstance(), new MotorCommand(ArmRotation.getInstance(),

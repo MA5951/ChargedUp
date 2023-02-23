@@ -32,13 +32,14 @@ public class ArmConstants {
 
     public static final double MIN_ROTATION_FOR_EXTENSTION = -0.4448544383049011;
     public static final double MIN_EXTENSTION_FOR_ROTATION = 0.07;
-    public static final double MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR = -0.4448544383049011 + 0.05;
+    public static final double MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR = -0.448544383049011 + 0.05;
+    public static final double MIN_ROTATION_FOR_CLOSING_INTAKE = -1.1348544383049011 + 0.05;
     public static final double ARM_EXTENSTION_FOR_GRABING = 0.045;
 
-    public static final double ROTATION_MID_FOR_BEFOR_SCORING = 0; //TODO
-    public static final double ROTATION_MID_FOR_SCORING = 0; //TODO
-    public static final double EXTENSTION_FOT_MID_SCORING = 0; //TODO
-    public static final double ROTATION_MID_FOR_BEFOR_SCORING_FROM_THE_BACK = 0; // TODO
+    public static final double ROTATION_MID_FOR_BEFORE_SCORING = Math.toRadians(90); //TODO
+    public static final double ROTATION_MID_FOR_SCORING = Math.toRadians(90); //TODO
+    public static final double EXTENSTION_FOT_MID_SCORING = 43; //TODO
+    public static final double ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK = 0; // TODO
     public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = 0; //TODO
     public static final double EXTENSTION_FOT_MID_SCORING_FROM_THE_BACK = 0; //TODO
     public static final double ROTATION_FOR_LOW_SCORING = 0; //TODO
