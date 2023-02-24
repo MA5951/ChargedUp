@@ -13,7 +13,7 @@ public class ArmConstants {
     public static final double ARM_ROTATION_KP = 1.3;
     public static final double ARM_ROTATION_KI = 0.000009;
     public static final double ARM_ROTATION_KD = 0;
-    public static final double ARM_ROTATION_TOLERANCE = 0.06;
+    public static final double ARM_ROTATION_TOLERANCE = Math.toRadians(1.5);
 
     public static final double ARM_ROTATION_START_POSE = -0.987 -0.26998063921928406;
     public static final double ARM_ROTATION_MAX_POSE = 3.408505439758301;

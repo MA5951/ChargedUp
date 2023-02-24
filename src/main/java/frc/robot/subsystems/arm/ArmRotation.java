@@ -15,7 +15,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
@@ -26,7 +25,6 @@ import frc.robot.subsystems.gripper.GripperSubsystem;
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
   private CANSparkMax motor;
-  private DigitalInput hallEffect;
 
   private RelativeEncoder encoder;
   private SparkMaxPIDController pidController;
@@ -39,7 +37,6 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   private ArmRotation() {
     motor = new CANSparkMax(PortMap.Arm.rotationMotorID, MotorType.kBrushless);
-    hallEffect = new DigitalInput(PortMap.Arm.rotationHallEffectPort);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
     motor.setIdleMode(IdleMode.kCoast);
@@ -152,8 +149,6 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   public void periodic() {
     board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
     board.addNum("rotation in radians", getRotation());
-
-    board.addBoolean("hallEffect", !hallEffect.get());
 
     board.addBoolean("at point", atPoint());
   }

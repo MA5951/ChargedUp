@@ -26,9 +26,8 @@ public class PortMap {
   
       public static class Arm {
         public static final int extenstionMotorID = 18;
-        public static final int extenstionHallEffectPort = 5;
+        public static final int extenstionHallEffectPort = 9;
         public static final int rotationMotorID = 19;
-        public static final int rotationHallEffectPort = 9;
       }
   
       public static class Swerve {

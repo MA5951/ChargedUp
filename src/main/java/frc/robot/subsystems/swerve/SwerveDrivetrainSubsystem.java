@@ -62,7 +62,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   private static final TrajectoryConfig configForTelopPathCommand = 
     new TrajectoryConfig(
-      SwerveConstants.MAX_VELOCITY, SwerveConstants.MAX_ACCELERATION);
+      SwerveConstants.MAX_VELOCITY / 4.0, SwerveConstants.MAX_ACCELERATION / 25.0);
   
   private ProfiledPIDController thetaProfiledPID;
 
@@ -195,7 +195,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       new TrapezoidProfile.Constraints(SwerveConstants.MAX_ANGULAR_VELOCITY,
       SwerveConstants.MAX_ANGULAR_ACCELERATION));
 
-    thetaProfiledPID.enableContinuousInput(-Math.PI, Math.PI);
+    thetaProfiledPID.enableContinuousInput(0, 2 * Math.PI);
 
     
     SmartDashboard.putData("Field", field);
@@ -435,11 +435,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());
-    board.addNum("angle gyro", getFusedHeading());
     board.addNum("angle in radians", getPose().getRotation().getRadians());
-
-    // drive(0, 0, thetaProfiledPID.calculate(
-    //   getPose().getRotation().getRadians()
-    // , 90), false);
   }
 }

@@ -11,8 +11,10 @@ import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrbingAutomation;
 import frc.robot.commands.ChameleonClimb.ChameleonClimbCommand;
+import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.Swerve.GoToScoring;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
 import frc.robot.subsystems.Intake.IntakeConstants;
@@ -116,10 +118,12 @@ public class RobotContainer {
         new IntakeCommand()).alongWith(
         new SpinnerManualCommand(SpinnerConstants.REVERSED_SPINNER_SPEED)
       )
+    ).whileFalse(
+      new CloseIntake()
     );
 
     DRIVER_PS4_CONTROLLER.L1().whileTrue(
-      SwerveDrivetrainSubsystem.getInstance().getTelopPathCommand()
+      new GoToScoring()
     );
 
     DRIVER_PS4_CONTROLLER.triangle().whileTrue(
