@@ -31,12 +31,12 @@ public class setArmForLow extends InstantCommand {
     boolean isReversed = false;
     if (DriverStation.getAlliance() == Alliance.Red) {
       if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
+          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
         isReversed = true;
       }
     } else {
       if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
+          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
         isReversed = true;
       }
     }
