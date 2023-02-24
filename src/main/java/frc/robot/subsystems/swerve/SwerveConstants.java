@@ -74,28 +74,27 @@ public class SwerveConstants {
     public final static double DRIVE_PEAK_CURRENT_DURATION = 0.1;
     public final static boolean DRIVE_ENBLE_CURRENT_LIMIT = true;
 
-    // swerve controllers
-
-    // swerve x P_CONTROLLER
-    public final static double KP_X = 1.7;
-
-    // swerve y P_CONTROLLER
-    public final static double KP_Y = 1.7;
-
-    // swerve theta PID_CONTROLLER radians
-    public final static double THATA_KP = 3.5;
-    public final static double THATA_KI = 0;
-    public final static double THATA_KD = 0;
-
-    // swerve theta PROFILED_PID_CONTROLLER radians
-    public final static double PROFILED_THATA_KP = 0; // TODO
-    public final static double PROFILED_THATA_KI = 0; // TODO
-    public final static double PROFILED_THATA_KD = 0; // TODO
-    public final static double MAX_ANGULAR_ACCELERATION = 0; // TODO
-
     // swerve physics
     public final static double MAX_VELOCITY = 4.96824;
     public final static double MAX_ACCELERATION = Math.pow(MAX_VELOCITY, 2) / RADIUS;
     public final static double MAX_ANGULAR_VELOCITY = MAX_VELOCITY / RADIUS; // radians
-    public final static double MASS = 56.6;
+
+    // swerve controllers
+
+    // swerve x P_CONTROLLER
+    public final static double KP_X = 3.3;
+
+    // swerve y P_CONTROLLER
+    public final static double KP_Y = 3.3;
+
+    // swerve theta PID_CONTROLLER radians
+    public final static double THATA_KP = 2.9;
+    public final static double THATA_KI = 0;
+    public final static double THATA_KD = 0;
+
+    // swerve theta PROFILED_PID_CONTROLLER radians
+    public final static double PROFILED_THATA_KP = THATA_KP; // TODO
+    public final static double PROFILED_THATA_KI = 0; // TODO
+    public final static double PROFILED_THATA_KD = 0; // TODO
+    public final static double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY / 2.0; // TODO
 }

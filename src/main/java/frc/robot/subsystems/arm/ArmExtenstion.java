@@ -85,19 +85,19 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
       || (getExtenstion() < ArmConstants.MIN_EXTENSTION_FOR_ROTATION
       && setPoint < ArmConstants.MIN_EXTENSTION_FOR_ROTATION)
       )
-      && setPoint > 0
-      && setPoint < ArmConstants.ARM_EXTENTION_MAX_POSE;
+      && setPoint >= 0
+      && setPoint <= ArmConstants.ARM_EXTENTION_MAX_POSE;
   }
 
 
   @Override
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
-    double useSetPoint = this.setPoint;
     if (!isAbleToChangeExtenstion()) {
-      useSetPoint = getExtenstion();
+      setPower(0);
+    } else {
+      pidController.setReference(setPoint, ControlType.kPosition);
     }
-    pidController.setReference(useSetPoint, ControlType.kPosition);
   }
 
   public boolean atPoint() {

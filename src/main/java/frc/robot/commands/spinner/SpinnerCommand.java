@@ -26,36 +26,34 @@ public class SpinnerCommand extends CommandBase {
   public void initialize() {
     isReversed = false;
     isTurnd3 = false;
+    spinnerSubsystem.resetEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute(){
-    if(spinnerSubsystem.isGamePiceEntered()){
-      if(!isTurnd3){
-        if (spinnerSubsystem.getPosition() <= 500) {
-        spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
-        } else {
-          isTurnd3 = true;
-        }
+    if(!isTurnd3) {
+      if (spinnerSubsystem.getPosition() <= 500) {
+      spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
+      } else {
+        isTurnd3 = true;
       }
-      else{
-        spinnerSubsystem.resetEncoder();
-        if(!spinnerSubsystem.isStuck() && !isReversed && !isTurnd3){
-          spinnerSubsystem.resetEncoder();
-        }
-        if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() >= -500)){
-          spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-          isReversed = true;
-        }
-        if(spinnerSubsystem.isStuck()){
-          spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
-        }
-      }
-      
-    } else {
-      spinnerSubsystem.setPower(SpinnerConstants.IDLE_REVERSE_SPEED);
     }
+    else{
+      if(!spinnerSubsystem.isStuck() && !isReversed && !isTurnd3) {
+        spinnerSubsystem.resetEncoder();
+      }
+      if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() >= -440) ){
+        spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+        isReversed = true;
+      } else {
+        isTurnd3 = false;
+        spinnerSubsystem.resetEncoder();
+      }
+      if(spinnerSubsystem.isStuck()) {
+        spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
+      }
+    }   
   }
 
   // Called once the command ends or is interrupted.
@@ -65,8 +63,8 @@ public class SpinnerCommand extends CommandBase {
   }
   // Returns true when the command should end.
   @Override
-  public boolean isFinished(){
-    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() <= -500
+  public boolean isFinished() {
+    return !spinnerSubsystem.isStuck()
     && spinnerSubsystem.isGamePiceEntered();
   }
 }

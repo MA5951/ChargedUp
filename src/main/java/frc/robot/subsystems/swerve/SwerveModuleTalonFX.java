@@ -11,7 +11,6 @@ import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import com.ma5951.utils.MAShuffleboard;
 
 /** Add your docs here. */
 public class SwerveModuleTalonFX extends SwerveModule{
@@ -27,17 +26,6 @@ public class SwerveModuleTalonFX extends SwerveModule{
     private final boolean isAbsoluteEncoderReversed;
     private final double offsetEncoder;
 
-    private final MAShuffleboard board;
-    private final String driveKP = "driveKP";
-    private final String driveKI = "driveKI";
-    private final String driveKD = "driveKD";
-
-    private final String turningKP = "turningKP";
-    private final String turningKI = "turningKI";
-    private final String turningKD = "turningKD";
-
-
-
     public SwerveModuleTalonFX(String tabName, int driveID,
             int turningID, int absoluteEncoderID, boolean isDriveMotorReversed,
             boolean isTurningMotorReversed, boolean isAbsoluteEncoderReversed,
@@ -46,8 +34,6 @@ public class SwerveModuleTalonFX extends SwerveModule{
 
         this.offsetEncoder = offsetEncoder;
         this.isAbsoluteEncoderReversed = isAbsoluteEncoderReversed;
-
-        this.board = new MAShuffleboard(tabName);
 
         this.driveMotor = new TalonFX(driveID);
         this.turningMotor = new TalonFX(turningID);
@@ -61,14 +47,6 @@ public class SwerveModuleTalonFX extends SwerveModule{
         configTurningMotor();
         configDriveMotor();
         resetEncoders();
-
-        board.addNum(driveKP, SwerveConstants.DRIVE_PID_KP);
-        board.addNum(driveKI, SwerveConstants.DRIVE_PID_KI);
-        board.addNum(driveKD, SwerveConstants.DRIVE_PID_KD);
-
-        board.addNum(turningKP, SwerveConstants.turningPIDKP);
-        board.addNum(turningKI, SwerveConstants.turningPIDKI);
-        board.addNum(turningKD, SwerveConstants.turningPIDKD);
 
         absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 15000);
         absoluteEcoder.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 15000);

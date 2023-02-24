@@ -83,5 +83,6 @@ public class GripperSubsystem extends SubsystemBase {
   public void periodic() {
     board.addNum("position", getCurrentEncoderPosition());
     board.addNum("MotorCurrent", getMotorCurrent());
+    board.addNum("current", getMotorCurrent());
  }
 }

@@ -19,14 +19,13 @@ public class OpenIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (intakePosition.isAbleToClose()) {
-      intakePosition.calculate(IntakeConstants.OPEN_POSITION);
-    }
+    intakePosition.setPower(IntakeConstants.OPEN_INTAKE_POWER);
   }
 
   // Called once the command ends or is interrupted.

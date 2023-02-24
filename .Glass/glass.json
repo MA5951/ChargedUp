@@ -1,5 +1,11 @@
 {
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
+    "Transitory Values": {
+      "open": false
+    },
     "transitory": {
       "SmartDashboard": {
         "Field": {

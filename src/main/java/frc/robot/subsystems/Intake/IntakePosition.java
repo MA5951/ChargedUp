@@ -37,6 +37,7 @@ public class IntakePosition extends SubsystemBase {
       PortMap.Intake.intakePositionMotorID,
       MotorType.kBrushless);
 
+    motor.setInverted(true);
   
     encoder = motor.getEncoder();
 
@@ -44,6 +45,8 @@ public class IntakePosition extends SubsystemBase {
       PortMap.Intake.closingHallEffectPort);
 
     motor.setIdleMode(IdleMode.kCoast);
+
+    encoder.setPosition(0);
 
     encoder.setPositionConversionFactor(IntakeConstants.POSITION_CONVERSION_FACTOR
     );
@@ -79,18 +82,17 @@ public class IntakePosition extends SubsystemBase {
   }
   
   public boolean isClose(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.CLOSE_POSITION) < 
-    IntakeConstants.POSITION_TOLORANCE;
+    return !hallEffect.get();
   }
 
   public boolean isMiddle(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.MIDDLE_POSITION) < 
-    IntakeConstants.POSITION_TOLORANCE;
+    return Math.abs(getPosition() - IntakeConstants.MIDDLE_POSITION) < 
+      IntakeConstants.POSITION_TOLORANCE;
   }
 
   public boolean isOpen(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.OPEN_POSITION) < 
-    IntakeConstants.POSITION_TOLORANCE;
+    return Math.abs(getPosition() - IntakeConstants.OPEN_POSITION) < 
+      IntakeConstants.POSITION_TOLORANCE;
   }
 
   public static IntakePosition getInstance() {
@@ -109,9 +111,9 @@ public class IntakePosition extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (!hallEffect.get()) {
-      encoder.setPosition(IntakeConstants.CLOSE_POSITION);
-    }
+    // if (!hallEffect.get()) {
+    //   encoder.setPosition(IntakeConstants.CLOSE_POSITION);
+    // }
 
     board.addBoolean("isClose", isClose());
     board.addBoolean("isMiddle", isMiddle());

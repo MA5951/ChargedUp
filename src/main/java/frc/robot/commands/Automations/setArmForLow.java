@@ -12,12 +12,15 @@ import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
-public class setArmForMid extends InstantCommand {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class setArmForLow extends InstantCommand {
   /** Creates a new setArmForMid. */
   private ArmExtenstion armExtenstion;
   private ArmRotation armRotation;
 
-  public setArmForMid() {
+  public setArmForLow() {
     armExtenstion = ArmExtenstion.getInstance();
     armRotation = ArmRotation.getInstance();
   }
@@ -38,8 +41,8 @@ public class setArmForMid extends InstantCommand {
       }
     }
 
-    double extensionSetpoint = isReversed ? ArmConstants.EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK : ArmConstants.EXTENSTION_FOR_MID_SCORING;
-    double rotationSetpoint = isReversed ? ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING;
+    double extensionSetpoint = isReversed ? ArmConstants.EXTENSTION_FOR_LOW_SCORING_FROM_THE_BACK : ArmConstants.EXTENSTION_FOR_LOW_SCORING;
+    double rotationSetpoint = isReversed ? ArmConstants.ROTATION_FOR_LOW_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_FOR_LOW_SCORING;
     armExtenstion.setSetpoint(extensionSetpoint);
     armRotation.setSetpoint(rotationSetpoint);
   }

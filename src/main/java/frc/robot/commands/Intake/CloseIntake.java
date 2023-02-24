@@ -31,7 +31,8 @@ public class CloseIntake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakePosition.setPower(0);
+    intakePosition.setPower(Math.cos(
+      intakePosition.getPosition()) * IntakeConstants.KG);
   }
 
   // Returns true when the command should end.

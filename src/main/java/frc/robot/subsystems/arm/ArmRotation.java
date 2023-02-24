@@ -101,12 +101,12 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   @Override
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
-    double useSetPoint = this.setPoint;
     if (!isAbleToChangeRotation()) {
-      useSetPoint = getRotation();
+      setPower(getFeed());
+    } else {
+      pidController.setReference(setPoint, ControlType.kPosition,
+        0, getFeed(), ArbFFUnits.kPercentOut);
     }
-    pidController.setReference(useSetPoint, ControlType.kPosition,
-      0, getFeed(), ArbFFUnits.kPercentOut);
   }
 
   public boolean atPoint() {
@@ -154,5 +154,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     board.addNum("rotation in radians", getRotation());
 
     board.addBoolean("hallEffect", !hallEffect.get());
+
+    board.addBoolean("at point", atPoint());
   }
 }

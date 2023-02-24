@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
-import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
 import frc.robot.subsystems.arm.ArmConstants;
@@ -27,9 +26,11 @@ public class IntakeAutomation extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new SetArmAutomation(ArmConstants.ARM_EXTENSTION_FOR_GRABING, ArmConstants.ARM_ROTATION_START_POSE),
+        new SetArmAutomation(
+          0,
+          ArmConstants.ARM_ROTATION_START_POSE),
         new SequentialCommandGroup(
-          new GripperCloseCommand(),
+          new GripperControlCommand(GripperConstants.CLOSE_POSITION),
           new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation() <= 
             ArmConstants.ARM_ROTATION_START_POSE + ArmConstants.ARM_ROTATION_TOLERANCE),
           new GripperControlCommand(GripperConstants.OPEN_POSITION)
@@ -38,7 +39,6 @@ public class IntakeAutomation extends SequentialCommandGroup {
       new OpenIntake(),
       new ParallelDeadlineGroup(
         new IntakeCommand(),
-        new OpenIntake().repeatedly(),
         new SpinnerCommand()
       )
     );

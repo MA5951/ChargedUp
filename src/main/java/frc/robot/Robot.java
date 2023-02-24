@@ -5,8 +5,9 @@
 package frc.robot;
 
 import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
-import com.ma5951.utils.commands.MotorCommand;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -29,6 +30,7 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -38,6 +40,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(80, 60);
     
     // LED.getInstance();
     Intake.getInstance();
@@ -48,13 +53,6 @@ public class Robot extends TimedRobot {
     ChameleonClimb.getInstance();
     SwerveDrivetrainSubsystem.getInstance();
     GripperSubsystem.getInstance();
-
-    // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
-    
-    // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
-    
-    //Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    //new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
   }
 
   /**
@@ -78,6 +76,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // SwerveDrivetrainSubsystem.getInstance().setNeutralMode(NeutralMode.Coast);
+    IntakePosition.getInstance().setPower(0);
+    GripperSubsystem.getInstance().setPower(0);
   }
 
   @Override
@@ -91,17 +91,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmExtenstion.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmExtenstion.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    );
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmRotation.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    );
   }
 
   /** This function is called periodically during autonomous. */
@@ -118,13 +118,13 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // SwerveDrivetrainSubsystem.getInstance().fixOdometry();
+    SwerveDrivetrainSubsystem.getInstance().fixOdometry();
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
-    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
-    //     RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
-    //     RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
+    CommandScheduler.getInstance().setDefaultCommand(
+      SwerveDrivetrainSubsystem.getInstance(), new DriveSwerveCommand(
+        RobotContainer.DRIVER_PS4_CONTROLLER::getLeftX, 
+        RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
+        RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     
     CommandScheduler.getInstance().setDefaultCommand(
       ArmExtenstion.getInstance(),
@@ -137,13 +137,6 @@ public class Robot extends TimedRobot {
       new ControlCommandInsubsystemControl(
         ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
     );
-    
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(), new MotorCommand(ArmRotation.getInstance(),
-    //    RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY));
-    // CommandScheduler.getInstance().setDefaultCommand(ArmExtenstion.getInstance(), 
-    //   new MotorCommand(ArmExtenstion.getInstance(), RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
-    //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }
 
   /** This function is called periodically during operator control. */

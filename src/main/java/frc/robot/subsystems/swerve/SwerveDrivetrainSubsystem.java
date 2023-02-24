@@ -182,6 +182,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     thetaPID = new PIDController(board.getNum(theta_KP),
      board.getNum(theta_KI), board.getNum(theta_KD));
+
+    thetaPID.enableContinuousInput(-Math.PI, Math.PI);
     
     board.addNum(profiled_theta_KP, SwerveConstants.PROFILED_THATA_KP);
     board.addNum(profiled_theta_KI, SwerveConstants.PROFILED_THATA_KI);
@@ -192,6 +194,9 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       board.getNum(profiled_theta_KD), 
       new TrapezoidProfile.Constraints(SwerveConstants.MAX_ANGULAR_VELOCITY,
       SwerveConstants.MAX_ANGULAR_ACCELERATION));
+
+    thetaProfiledPID.enableContinuousInput(-Math.PI, Math.PI);
+
     
     SmartDashboard.putData("Field", field);
   }
@@ -421,14 +426,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    P_CONTROLLER_X.setP(board.getNum(KP_X));
-    P_CONTROLLER_Y.setP(board.getNum(KP_Y));
-    thetaPID.setPID(board.getNum(theta_KP), board.getNum(theta_KI),
-      board.getNum(theta_KD));
-    thetaProfiledPID.setPID(
-      board.getNum(profiled_theta_KP), board.getNum(profiled_theta_KI),
-      board.getNum(profiled_theta_KD));
-    
     odometry.update(getRotation2d(), getSwerveModulePositions());
 
     field.setRobotPose(getPose());
@@ -441,30 +438,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addNum("angle gyro", getFusedHeading());
     board.addNum("angle in radians", getPose().getRotation().getRadians());
 
-    board.addNum("frontLeft angle", frontLeftModule.getTurningPosition());
-    board.addNum("frontRight angle", frontRightModule.getTurningPosition());
-    board.addNum("rearLeft angle", rearLeftModule.getTurningPosition());
-    board.addNum("rearRight angle", rearRightModule.getTurningPosition());
-
-    board.addNum("frontLeft drive pose", frontLeftModule.getDrivePosition());
-    board.addNum("rearLeft drive pose", rearLeftModule.getDrivePosition());
-    board.addNum("frontRight drive pose", frontRightModule.getDrivePosition());
-    board.addNum("rearRight drive pose", rearRightModule.getDrivePosition());
-
-    board.addNum(
-      "front left module absolute encoder position",
-      frontLeftModule.getAbsoluteEncoderPosition());
-    
-    board.addNum(
-      "front right module absolute encoder position",
-      frontRightModule.getAbsoluteEncoderPosition());
-    
-    board.addNum(
-      "rear left module absolute encoder position",
-      rearLeftModule.getAbsoluteEncoderPosition());
-    
-    board.addNum(
-      "rear right module absolute encoder position",
-      rearRightModule.getAbsoluteEncoderPosition());
+    // drive(0, 0, thetaProfiledPID.calculate(
+    //   getPose().getRotation().getRadians()
+    // , 90), false);
   }
 }
