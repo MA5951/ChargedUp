@@ -39,8 +39,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     
     // LED.getInstance();
-    Intake.getInstance();
-    IntakePosition.getInstance();
+    //Intake.getInstance();
+    //IntakePosition.getInstance();
     // Spinner.getInstance();
     // GripperSubsystem.getInstance();
     // ArmRotation.getInstance();
