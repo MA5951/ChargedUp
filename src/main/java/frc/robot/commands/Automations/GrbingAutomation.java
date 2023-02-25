@@ -33,6 +33,7 @@ public class GrbingAutomation extends SequentialCommandGroup {
         new GripperControlCommand(GripperConstants.BEFOR_GRABING_POSE),
         new SequentialCommandGroup(
           new CloseIntake(),
+          new InstantCommand(() -> System.out.println("IN THE COMMAND")),
           new InstantCommand(
             () -> ArmExtenstion.getInstance().setSetpoint(
               ArmConstants.ARM_EXTENSTION_FOR_GRABING)),

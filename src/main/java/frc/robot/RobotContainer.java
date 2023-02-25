@@ -97,7 +97,7 @@ public class RobotContainer {
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40
       )
-    ).whileFalse(
+    ).onFalse(
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal
       )
@@ -107,7 +107,7 @@ public class RobotContainer {
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22
       )
-    ).whileFalse(
+    ).onFalse(
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::returnVelocityToNormal
       )
@@ -118,7 +118,7 @@ public class RobotContainer {
         new IntakeCommand()).alongWith(
         new SpinnerManualCommand(SpinnerConstants.REVERSED_SPINNER_SPEED)
       )
-    ).whileFalse(
+    ).onFalse(
       new CloseIntake()
     );
 
@@ -126,19 +126,19 @@ public class RobotContainer {
       new GoToScoring()
     );
 
-    DRIVER_PS4_CONTROLLER.triangle().whileTrue(
+    DRIVER_PS4_CONTROLLER.circle().whileTrue(
       new ScoringAutomation()
-    ).whileFalse(
+    ).onFalse(
       new ResetArmAutomation()
     );
 
     DRIVER_PS4_CONTROLLER.cross().whileTrue(
       new GripperControlCommand(GripperConstants.OPEN_POSITION)
-    ).whileFalse(
+    ).onFalse(
       new ResetArmAutomation()
     );
 
-    DRIVER_PS4_CONTROLLER.circle().whileTrue(
+    DRIVER_PS4_CONTROLLER.triangle().whileTrue(
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::updateOffset
       )
@@ -160,31 +160,31 @@ public class RobotContainer {
       new BeforeScoringAutomationLow()
     );
 
-    OPERATOR_PS4_CONTROLLER.povUp().whileTrue(
-      new InstantCommand(
-        () -> IntakePosition.getInstance()
-          .setPower(IntakeConstants.CLOSE_INTAKE_POWER)
-      )
-    ).whileFalse(
-      new InstantCommand(
-        () -> IntakePosition.getInstance()
-          .setPower(Math.cos(
-            IntakePosition.getInstance().getPosition()) * IntakeConstants.KG)
-      )
-    );
+    // OPERATOR_PS4_CONTROLLER.povUp().whileTrue(
+    //   new InstantCommand(
+    //     () -> IntakePosition.getInstance()
+    //       .setPower(IntakeConstants.CLOSE_INTAKE_POWER)
+    //   )
+    // ).onFalse(
+    //   new InstantCommand(
+    //     () -> IntakePosition.getInstance()
+    //       .setPower(Math.cos(
+    //         IntakePosition.getInstance().getPosition()) * IntakeConstants.KG)
+    //   )
+    // );
 
-    OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
-      new InstantCommand(
-        () -> IntakePosition.getInstance()
-          .setPower(IntakeConstants.OPEN_INTAKE_POWER)
-      )
-    ).whileFalse(
-      new InstantCommand(
-        () -> IntakePosition.getInstance()
-          .setPower(Math.cos(
-            IntakePosition.getInstance().getPosition()) * IntakeConstants.KG)
-      )
-    );
+    // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
+    //   new InstantCommand(
+    //     () -> IntakePosition.getInstance()
+    //       .setPower(IntakeConstants.OPEN_INTAKE_POWER)
+    //   )
+    // ).onFalse(
+    //   new InstantCommand(
+    //     () -> IntakePosition.getInstance()
+    //       .setPower(Math.cos(
+    //         IntakePosition.getInstance().getPosition()) * IntakeConstants.KG)
+    //   )
+    // );
 
     OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
       new ChameleonClimbCommand()

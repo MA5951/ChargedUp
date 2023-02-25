@@ -26,7 +26,7 @@ public class IntakeConstants {
 
     public static final double POSITION_TOLORANCE = Math.toRadians(2);
 
-    public static final double INTAKE_POWER = -0.8;
+    public static final double INTAKE_POWER = -1;
     public static final double OUTAKE_POWER = -INTAKE_POWER;
 
 

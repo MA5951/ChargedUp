@@ -6,6 +6,7 @@ package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;

@@ -30,7 +30,7 @@ public final class GripperConstants {
     public static final double POSITION_CONVERSION_FACTOR =
         Math.PI / 34.404449462890625;
 
-    public static final double kP = 1.55;
+    public static final double kP = 1.8;
     public static final double kI = 0;
     public static final double kD = 0;
 
