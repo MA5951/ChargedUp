@@ -32,6 +32,8 @@ public class IntakePosition extends SubsystemBase {
 
   private SparkMaxPIDController pidController;
 
+  public double lastPose = 0;
+
   public IntakePosition(){
     motor = new CANSparkMax(
       PortMap.Intake.intakePositionMotorID,
@@ -73,8 +75,8 @@ public class IntakePosition extends SubsystemBase {
     motor.set(power);
   }
 
-  public void resetEncoder(){
-    encoder.setPosition(0);
+  public void resetEncoder(double pose){
+    encoder.setPosition(pose);
   }
 
   public double getPosition() {
@@ -103,7 +105,6 @@ public class IntakePosition extends SubsystemBase {
     }
     return openIntake;
   }
-
   
   public boolean isAbleToClose() {
     return (

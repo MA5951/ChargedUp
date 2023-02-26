@@ -13,6 +13,7 @@ import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,6 +30,7 @@ public class GrabingAutomation extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SequentialCommandGroup (
+        new InstantCommand(() -> GripperSubsystem.getInstance().canSore = false),
         new GripperControlCommand(GripperConstants.BEFOR_GRABING_POSE),
         new SequentialCommandGroup(
           new InstantCommand(
@@ -44,7 +46,8 @@ public class GrabingAutomation extends SequentialCommandGroup {
       new GripperCloseCommand(),
       new InstantCommand(
         () -> ArmExtenstion.getInstance().setSetpoint(0)
-      )
+      ),
+      new InstantCommand(() -> GripperSubsystem.getInstance().canSore = true)
     );
   }
 }

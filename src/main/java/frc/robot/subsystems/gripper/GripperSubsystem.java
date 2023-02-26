@@ -23,6 +23,8 @@ public class GripperSubsystem extends SubsystemBase {
 
   private double setPoint;
 
+  public boolean canSore = false;
+
   private GripperSubsystem() {
     gripperMotor = new CANSparkMax(
       PortMap.Gripper.gripperMotorID, MotorType.kBrushless);
@@ -84,5 +86,7 @@ public class GripperSubsystem extends SubsystemBase {
     board.addNum("position", getCurrentEncoderPosition());
     board.addNum("MotorCurrent", getMotorCurrent());
     board.addNum("current", getMotorCurrent());
+
+    board.addBoolean("patt", canSore);
  }
 }

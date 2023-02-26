@@ -10,16 +10,14 @@ import frc.robot.commands.Automations.ScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrabingAutomation;
-import frc.robot.commands.ChameleonClimb.ChameleonClimbCommand;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
-import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.Swerve.GoToScoring;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeConstants;
-import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.Spinner.SpinnerConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.gripper.GripperConstants;
@@ -60,7 +58,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     try {
       aprilTagFieldLayout = 
-      AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+        AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
     } catch (Exception e) {
       System.err.println(e);
     }
@@ -106,7 +104,7 @@ public class RobotContainer {
       )
     );
 
-    DRIVER_PS4_CONTROLLER.R2().whileTrue(
+    DRIVER_PS4_CONTROLLER.L2().whileTrue(
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo22
       )
@@ -152,7 +150,7 @@ public class RobotContainer {
     );
 
     OPERATOR_PS4_CONTROLLER.L1().whileTrue(
-      new SpinnerManualCommand(-SpinnerConstants.IDLE_REVERSE_SPEED)
+      new SpinnerManualCommand(-SpinnerConstants.IDLE_REVERSE_SPEED + 0.2)
     );
     
     OPERATOR_PS4_CONTROLLER.square().whileTrue(
@@ -200,6 +198,12 @@ public class RobotContainer {
 
     OPERATOR_PS4_CONTROLLER.triangle().whileTrue(
       new GrabingAutomation()
+    );
+
+    DRIVER_PS4_CONTROLLER.cross().whileTrue(
+      new InstantCommand(() -> Intake.getInstance().setPower(-IntakeConstants.INTAKE_POWER))
+    ).onFalse(
+      new InstantCommand(() -> Intake.getInstance().setPower(0))
     );
     // ======================
   }

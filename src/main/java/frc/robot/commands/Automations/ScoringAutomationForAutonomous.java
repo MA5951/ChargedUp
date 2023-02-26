@@ -35,6 +35,7 @@ public class ScoringAutomationForAutonomous extends SequentialCommandGroup {
       new InstantCommand(
         () -> GripperSubsystem.getInstance().setPower(GripperConstants.HOLDING_POWER)
       ),
+      new MiddleIntake(),
       new InstantCommand(
         () ->
         ArmRotation.getInstance().setSetpoint(ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK)
