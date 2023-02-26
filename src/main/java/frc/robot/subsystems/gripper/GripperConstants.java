@@ -10,7 +10,7 @@ public final class GripperConstants {
 
 
     public static final double MAX_ARM_ROTATION_FOR_GRIPPER = 
-        ArmConstants.ARM_ROTATION_START_POSE + 0.01;
+        ArmConstants.ARM_ROTATION_START_POSE + 0.02;
 
     public static final double TACHED_CURRENT= 20;
 

@@ -115,9 +115,9 @@ public class IntakePosition extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (!hallEffect.get()) {
-      encoder.setPosition(IntakeConstants.CLOSE_POSITION);
-    }
+    // if (!hallEffect.get()) {
+    //   encoder.setPosition(IntakeConstants.CLOSE_POSITION);
+    // }
 
     board.addBoolean("isClose", isClose());
     board.addBoolean("isMiddle", isMiddle());
