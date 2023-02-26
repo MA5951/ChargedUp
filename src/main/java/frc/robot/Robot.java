@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
+import com.ma5951.utils.commands.MotorCommand;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -16,6 +17,7 @@ import frc.robot.commands.Swerve.DriveSwerveCommand;
 import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
+import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperSubsystem;
@@ -78,6 +80,8 @@ public class Robot extends TimedRobot {
     // SwerveDrivetrainSubsystem.getInstance().setNeutralMode(NeutralMode.Coast);
     IntakePosition.getInstance().setPower(0);
     GripperSubsystem.getInstance().setPower(0);
+    ArmExtenstion.getInstance().setSetpoint(0);
+    ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE);
   }
 
   @Override
@@ -91,17 +95,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    CommandScheduler.getInstance().setDefaultCommand(
-      ArmExtenstion.getInstance(),
-      new ControlCommandInsubsystemControl(
-        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    );
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmExtenstion.getInstance(),
+    //   new ControlCommandInsubsystemControl(
+    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    // );
 
-    CommandScheduler.getInstance().setDefaultCommand(
-      ArmRotation.getInstance(),
-      new ControlCommandInsubsystemControl(
-        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    );
+    // CommandScheduler.getInstance().setDefaultCommand(
+    //   ArmRotation.getInstance(),
+    //   new ControlCommandInsubsystemControl(
+    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    // );
   }
 
   /** This function is called periodically during autonomous. */

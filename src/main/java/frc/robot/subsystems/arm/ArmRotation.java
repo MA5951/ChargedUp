@@ -77,14 +77,15 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   public boolean isAbleToChangeRotation() {
     return (IntakePosition.getInstance().getPosition() 
-            < IntakeConstants.MIDDLE_POSITION +
-            IntakeConstants.POSITION_TOLORANCE || (
+            <= (IntakeConstants.MIDDLE_POSITION +
+            IntakeConstants.POSITION_TOLORANCE + Math.toRadians(2)) || (
         getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
         && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
       ))
       && (ArmExtenstion.getInstance().getExtenstion() < 
       ArmConstants.MIN_EXTENSTION_FOR_ROTATION
-      || getRotation() >= ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
+      || (getRotation() >= ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR &&
+      setPoint >= ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR))
       && setPoint >= ArmConstants.ARM_ROTATION_START_POSE
       && setPoint <= ArmConstants.ARM_ROTATION_MAX_POSE
       && (

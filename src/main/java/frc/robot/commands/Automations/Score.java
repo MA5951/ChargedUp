@@ -14,12 +14,8 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoreArmRotation extends InstantCommand {
-  private ArmRotation armRotation;
-  
-  public ScoreArmRotation() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    armRotation = ArmRotation.getInstance();
+public class Score extends InstantCommand {  
+  public Score() {
   }
 
   // Called when the command is initially scheduled.
@@ -28,17 +24,17 @@ public class ScoreArmRotation extends InstantCommand {
     boolean isReversed = false;
     if (DriverStation.getAlliance() == Alliance.Red) {
       if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
+          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
         isReversed = true;
       }
     } else {
       if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
+          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
         isReversed = true;
       }
     }
 
     double rotationSetpoint = isReversed ? ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_SCORING;
-    armRotation.setSetpoint(rotationSetpoint);
+    ArmRotation.getInstance().setSetpoint(rotationSetpoint);
   }
 }

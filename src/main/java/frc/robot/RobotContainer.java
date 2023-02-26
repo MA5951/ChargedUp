@@ -9,10 +9,11 @@ import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
-import frc.robot.commands.Automations.GrbingAutomation;
+import frc.robot.commands.Automations.GrabingAutomation;
 import frc.robot.commands.ChameleonClimb.ChameleonClimbCommand;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.Swerve.GoToScoring;
 import frc.robot.commands.gripper.GripperControlCommand;
@@ -20,6 +21,7 @@ import frc.robot.commands.spinner.SpinnerManualCommand;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.Spinner.SpinnerConstants;
+import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
@@ -93,6 +95,7 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+    // =================================================
     DRIVER_PS4_CONTROLLER.R2().whileTrue(
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::lowerVelocityTo40
@@ -114,11 +117,11 @@ public class RobotContainer {
     );
 
     DRIVER_PS4_CONTROLLER.R1().whileTrue(
-      new OpenIntake().andThen(
+      new OpenIntake().alongWith(
+        new GripperControlCommand(GripperConstants.OPEN_POSITION)).andThen(
         new IntakeCommand()).alongWith(
         new SpinnerManualCommand(SpinnerConstants.REVERSED_SPINNER_SPEED)
-      )
-    ).onFalse(
+      )).onFalse(
       new CloseIntake()
     );
 
@@ -132,7 +135,7 @@ public class RobotContainer {
       new ResetArmAutomation()
     );
 
-    DRIVER_PS4_CONTROLLER.cross().whileTrue(
+    DRIVER_PS4_CONTROLLER.square().whileTrue(
       new GripperControlCommand(GripperConstants.OPEN_POSITION)
     ).onFalse(
       new ResetArmAutomation()
@@ -158,7 +161,11 @@ public class RobotContainer {
 
     OPERATOR_PS4_CONTROLLER.cross().whileTrue(
       new BeforeScoringAutomationLow()
+    ).onFalse(
+      new InstantCommand(
+        () -> ArmExtenstion.getInstance().defultPower = 0)
     );
+    /// =============================
 
     // OPERATOR_PS4_CONTROLLER.povUp().whileTrue(
     //   new InstantCommand(
@@ -186,13 +193,15 @@ public class RobotContainer {
     //   )
     // );
 
-    OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
-      new ChameleonClimbCommand()
-    );
+    // =============================
+    // OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
+    //   new ChameleonClimbCommand()
+    // );
 
     OPERATOR_PS4_CONTROLLER.triangle().whileTrue(
-      new GrbingAutomation()
+      new GrabingAutomation()
     );
+    // ======================
   }
 
   /**

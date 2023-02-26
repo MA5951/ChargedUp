@@ -32,14 +32,15 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
 
   private static ArmExtenstion armExtenstion;
 
+  public double defultPower = 0;
+
   private ArmExtenstion() {
     motor = new CANSparkMax(PortMap.Arm.extenstionMotorID, MotorType.kBrushless);
-    encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
+    encoder = motor.getEncoder();
     hallEffect = new DigitalInput(PortMap.Arm.extenstionHallEffectPort);
 
     encoder.setPositionConversionFactor(
-      ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * Math.PI);
-    encoder.setInverted(true);
+      (ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * Math.PI) / 10);
     pidController = motor.getPIDController();
 
     motor.setIdleMode(IdleMode.kCoast);
@@ -94,7 +95,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
     if (!isAbleToChangeExtenstion()) {
-      setPower(0);
+      setPower(defultPower);
     } else {
       pidController.setReference(setPoint, ControlType.kPosition);
     }

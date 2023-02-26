@@ -28,17 +28,16 @@ public class setArmForMid extends InstantCommand {
     boolean isReversed = false;
     if (DriverStation.getAlliance() == Alliance.Red) {
       if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
+          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
         isReversed = true;
       }
     } else {
       if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
+          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
         isReversed = true;
       }
     }
-
-    double extensionSetpoint = isReversed ? ArmConstants.EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK : ArmConstants.EXTENSTION_FOR_MID_SCORING;
+    double extensionSetpoint = isReversed ? 0 : ArmConstants.EXTENSTION_FOR_MID_SCORING;
     double rotationSetpoint = isReversed ? ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING;
     armExtenstion.setSetpoint(extensionSetpoint);
     armRotation.setSetpoint(rotationSetpoint);

@@ -27,11 +27,10 @@ public class ResetArmAutomation extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new GripperControlCommand(GripperConstants.CLOSE_POSITION),
           new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation() 
-            <= ArmConstants.ARM_ROTATION_START_POSE + ArmConstants.ARM_ROTATION_TOLERANCE),
-          new GripperControlCommand(GripperConstants.OPEN_POSITION)
-        )
-      ),
-      new CloseIntake()
+            <= ArmConstants.ARM_ROTATION_START_POSE + ArmConstants.ARM_ROTATION_TOLERANCE)
+        )),
+        new GripperControlCommand(GripperConstants.OPEN_POSITION),
+        new CloseIntake()
     );
   }
 }

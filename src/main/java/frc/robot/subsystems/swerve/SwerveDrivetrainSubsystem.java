@@ -240,7 +240,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public void resetNavx() {
-    navx.zeroYaw();
+    navx.reset();
   }
 
   public Pose2d getPose() {
@@ -436,5 +436,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());
     board.addNum("angle in radians", getPose().getRotation().getRadians());
+
+    System.out.println(getPose().getRotation().getDegrees());
   }
 }

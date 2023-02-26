@@ -93,7 +93,7 @@ public final class Constants {
     public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Z = 0.7;
     public static final double CAMERA_ROLL = 0;
     public static final double CAMERA_PITCH = 0;
-    public static final double CAMERA_YAW = 0;
+    public static final double CAMERA_YAW = Math.PI;
 
   }
 
