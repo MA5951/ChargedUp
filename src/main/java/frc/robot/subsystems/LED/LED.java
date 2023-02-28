@@ -11,16 +11,17 @@ import com.ma5951.utils.led.BreathingTripleColorPattern;
 import com.ma5951.utils.led.EvenOddColorPattern;
 import com.ma5951.utils.led.RainbowColorPatterSimultaneously;
 import com.ma5951.utils.led.RainbowColorPattern;
+import com.ma5951.utils.led.SolidColorPattern;
+import com.ma5951.utils.led.WaveBlinkColorPattern;
 import com.ma5951.utils.led.SmoothColorTransitionPattern;
 import com.ma5951.utils.led.SmoothWaveColorPattern;
-import com.ma5951.utils.led.SolidColorPattern;
 import com.ma5951.utils.led.WavePattern;
-import com.ma5951.utils.led.WaveBlinkColorPattern;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.PortMap;
 
 public class LED extends SubsystemBase {
@@ -112,14 +113,16 @@ public class LED extends SubsystemBase {
   public void setAllianceColor() {
     if (DriverStation.isFMSAttached()) {
       if (DriverStation.getAlliance() == Alliance.Red) {
-        setSolidColor(Color.kRed);
+        // setSolidColor(Color.kRed);
+        setSmoothWave(2, 1, 1, new Color [] {Constants.ColorPresets.RED, Constants.ColorPresets.BLACK});
       } else if (DriverStation.getAlliance() == Alliance.Blue) {
-        setSolidColor(Color.kBlue);
+        // setSolidColor(Color.kBlue);
+        setSmoothWave(2, 1, 1, new Color [] {Constants.ColorPresets.BLUE, Constants.ColorPresets.BLACK});
       }
     }
     else{
-      setBreathing(Color.kPurple, 1);
-      // setRainbow();
+      setSmoothWave(2, 1, 1, new Color [] {Constants.ColorPresets.CUBE_PURPLE, Constants.ColorPresets.BLACK});
+      // setSolidColor(Color.kPurple);
     }
   }
 
@@ -132,9 +135,25 @@ public class LED extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // if (DriverStation.isDisabled()) {
-    //   setAllianceColor();
-    // }
+    if (DriverStation.isDisabled()) {
+      setAllianceColor();
+    }
+    else if (DriverStation.isAutonomous()) {
+      setSmoothWave(3, 1, 1, new Color [] {Constants.ColorPresets.CONE_YELLOW, Constants.ColorPresets.CUBE_PURPLE, Constants.ColorPresets.CYAN});
+    }
+    else if (DriverStation.isEStopped()){
+      setWaveBlink(Constants.ColorPresets.RED, Constants.ColorPresets.WHITE, 2);
+    }
+    else if (DriverStation.isTeleop() && !DriverStation.isJoystickConnected(0)){
+      setBlinking(Constants.ColorPresets.RED, Constants.ColorPresets.WHITE, 0.5);
+    }
+    else if (DriverStation.isTeleop()){
+      setSmoothWave(2, 1, 1, new Color [] {Constants.ColorPresets.CONE_YELLOW, Constants.ColorPresets.CUBE_PURPLE});
+    }
+    //if error in driver station flash leds to red
+    // if ()
+
+
     // This method will be called once per scheduler run
   }
 }
