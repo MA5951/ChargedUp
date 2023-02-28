@@ -84,9 +84,9 @@ public class IntakePosition extends SubsystemBase {
   }
   
   public boolean isClose(){
-    return !hallEffect.get()
-    || getPosition() >= IntakeConstants.CLOSE_POSITION - 
-      IntakeConstants.POSITION_TOLORANCE;
+    return !hallEffect.get() || 
+    Math.abs(getPosition() - IntakeConstants.CLOSE_POSITION) < 
+    IntakeConstants.POSITION_TOLORANCE;
   }
 
   public boolean isMiddle(){
@@ -107,11 +107,10 @@ public class IntakePosition extends SubsystemBase {
   }
   
   public boolean isAbleToClose() {
-    return (
-    ArmRotation.getInstance().getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
-    && ArmRotation.getInstance().getSetPoint() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR) 
+    return ((ArmRotation.getInstance().getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
+    && ArmRotation.getInstance().getSetPoint() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
     || (ArmRotation.getInstance().getRotation() < ArmConstants.MIN_ROTATION_FOR_CLOSING_INTAKE
-    && ArmRotation.getInstance().getSetPoint() < ArmConstants.MIN_ROTATION_FOR_CLOSING_INTAKE);
+    && ArmRotation.getInstance().getSetPoint() < ArmConstants.MIN_ROTATION_FOR_CLOSING_INTAKE));
   }
 
   @Override
@@ -119,7 +118,7 @@ public class IntakePosition extends SubsystemBase {
     // if (!hallEffect.get()) {
     //   encoder.setPosition(IntakeConstants.CLOSE_POSITION);
     // }
-
+    
     board.addBoolean("isClose", isClose());
     board.addBoolean("isMiddle", isMiddle());
     board.addBoolean("isOpen", isOpen());

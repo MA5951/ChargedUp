@@ -4,13 +4,10 @@
 
 package frc.robot.commands.Automations;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,17 +26,17 @@ public class setArmForLow extends InstantCommand {
   @Override
   public void initialize() {
     boolean isReversed = false;
-    if (DriverStation.getAlliance() == Alliance.Red) {
-      if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
-        isReversed = true;
-      }
-    } else {
-      if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
-        isReversed = true;
-      }
-    }
+    // if (DriverStation.getAlliance() == Alliance.Red) {
+    //   if (Math.abs(
+    //       SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
+    //     isReversed = true;
+    //   }
+    // } else {
+    //   if (Math.abs(
+    //       SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
+    //     isReversed = true;
+    //   }
+    // }
 
     double extensionSetpoint = isReversed ? -1 : ArmConstants.EXTENSTION_FOR_LOW_SCORING;
     double rotationSetpoint = isReversed ? ArmConstants.ROTATION_FOR_LOW_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_FOR_LOW_SCORING;

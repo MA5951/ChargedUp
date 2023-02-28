@@ -6,10 +6,10 @@ package frc.robot.subsystems.Intake;
 
 /** Add your docs here. */
 public class IntakeConstants {
-    public final static double CLOSE_POSITION = Math.toRadians(86); 
+    public final static double CLOSE_POSITION = Math.toRadians(84); 
     public final static double OPEN_POSITION = Math.toRadians(0);
     public final static double POSITION_CONVERSION_FACTOR = ((Math.PI * 0.5) / 1229.125107485757) * 57.296;
-    public final static double MIDDLE_POSITION = Math.toRadians(30);
+    public final static double MIDDLE_POSITION = Math.toRadians(20);
 
     public final static double KG = 0.0555694386210075;
     public final static double KP = 1;
@@ -24,7 +24,7 @@ public class IntakeConstants {
 
     public static final double GEAR_ROTATION_RATIO = 1/84.44;
 
-    public static final double POSITION_TOLORANCE = Math.toRadians(3);
+    public static final double POSITION_TOLORANCE = Math.toRadians(4);
 
     public static final double INTAKE_POWER = -1;
     public static final double OUTAKE_POWER = -INTAKE_POWER;

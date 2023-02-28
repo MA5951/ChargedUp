@@ -56,11 +56,16 @@ public class GripperSubsystem extends SubsystemBase {
     return encoder.getPosition();
   }
 
+  public Boolean atMaxPose() {
+    return (getCurrentEncoderPosition() - GripperConstants.MAX_POSE)
+    < GripperConstants.GRIPPER_TOLERANCE;
+  }
+
   public void calculate(double setPoint){
     this.setPoint = setPoint;
     double useSetPoint = setPoint;
     if (!(ArmRotation.getInstance().getRotation() < 
-      GripperConstants.MAX_ARM_ROTATION_FOR_GRIPPER
+      GripperConstants.MAX_ARM_ROTATION_FOR_GRIPPER + Math.toRadians(1.5)
     || ArmRotation.getInstance().getRotation() > 
       ArmConstants.MIN_ROTATION_FOR_EXTENSTION)
     ) {

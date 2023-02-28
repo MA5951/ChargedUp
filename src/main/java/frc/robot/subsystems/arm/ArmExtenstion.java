@@ -43,7 +43,7 @@ public class ArmExtenstion extends SubsystemBase implements ControlSubsystemInSu
       (ArmConstants.ARM_EXTENSTION_DIAMETER_OF_THE_WHEEL * Math.PI) / 10);
     pidController = motor.getPIDController();
 
-    motor.setIdleMode(IdleMode.kCoast);
+    motor.setIdleMode(IdleMode.kBrake);
     pidController.setFeedbackDevice(encoder);
 
     pidController.setP(ArmConstants.ARM_EXUTENSTION_KP);

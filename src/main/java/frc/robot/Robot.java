@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -44,8 +42,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    UsbCamera camera = CameraServer.startAutomaticCapture();
-    camera.setResolution(80, 60);
+    // UsbCamera camera = CameraServer.startAutomaticCapture();
+    // camera.setResolution(80, 60);
     
     // LED.getInstance();
     Intake.getInstance();
@@ -100,17 +98,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmExtenstion.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmExtenstion.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    );
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmRotation.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    );
   }
 
   /** This function is called periodically during autonomous. */

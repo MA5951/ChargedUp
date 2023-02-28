@@ -5,16 +5,15 @@
 package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
-import frc.robot.subsystems.gripper.GripperSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -32,13 +31,11 @@ public class ScoringAutomationForAutonomous extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(
-        () -> GripperSubsystem.getInstance().setPower(GripperConstants.HOLDING_POWER)
-      ),
-      new MiddleIntake(),
+      new OpenIntake(),
+      new GripperCloseCommand(),
       new InstantCommand(
         () ->
-        ArmRotation.getInstance().setSetpoint(ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK)
+        ArmRotation.getInstance().setSetpoint(ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK)
       ),
       new WaitUntilCommand(this::startExtation),
       new InstantCommand(
@@ -46,10 +43,7 @@ public class ScoringAutomationForAutonomous extends SequentialCommandGroup {
         ArmExtenstion.getInstance().setSetpoint(ArmConstants.EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK)
       ),
       new WaitUntilCommand(this::atPoint),
-      new ParallelDeadlineGroup(
-        new GripperControlCommand(GripperConstants.OPEN_POSITION),
-        new MiddleIntake().repeatedly()
-      )
+      new GripperControlCommand(GripperConstants.OPEN_POSITION)
     );
   }
 }

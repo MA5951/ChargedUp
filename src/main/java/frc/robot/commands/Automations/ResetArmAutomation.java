@@ -21,20 +21,18 @@ import frc.robot.subsystems.gripper.GripperConstants;
 public class ResetArmAutomation extends SequentialCommandGroup {
   /** Creates a new AfterScoringAutomation. */
   public ResetArmAutomation() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() ->
-      ArmExtenstion.getInstance().setSetpoint(0)),
+      ArmExtenstion.getInstance().setSetpoint(0)).alongWith(
       new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint),
-      new GripperControlCommand(GripperConstants.CLOSE_POSITION).alongWith(
+      new GripperControlCommand(GripperConstants.MAX_POSE).alongWith(
         new MiddleIntake()
-      ),
+      )),
       new InstantCommand(() ->
         ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)),
       new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
-      new GripperControlCommand(GripperConstants.OPEN_POSITION),
-      new CloseIntake()
+      new GripperControlCommand(GripperConstants.OPEN_POSITION).alongWith(
+      new CloseIntake())
     );
   }
 }

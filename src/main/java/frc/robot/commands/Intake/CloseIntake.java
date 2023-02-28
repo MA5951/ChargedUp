@@ -26,13 +26,14 @@ public class CloseIntake extends CommandBase {
   public void execute() {
     if (intakePosition.isAbleToClose()) {
       intakePosition.calculate(IntakeConstants.CLOSE_POSITION);
+    } else {
+      intakePosition.setPower(0);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakePosition.lastPose = intakePosition.getPosition();
     intakePosition.setPower(Math.cos(
       intakePosition.getPosition()) * IntakeConstants.KG);
   }

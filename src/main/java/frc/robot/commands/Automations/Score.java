@@ -4,12 +4,9 @@
 
 package frc.robot.commands.Automations;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmRotation;
-import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,20 +18,20 @@ public class Score extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    boolean isReversed = false;
-    if (DriverStation.getAlliance() == Alliance.Red) {
-      if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
-        isReversed = true;
-      }
-    } else {
-      if (Math.abs(
-          SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
-        isReversed = true;
-      }
-    }
+    //boolean isReversed = false;
+    // if (DriverStation.getAlliance() == Alliance.Red) {
+    //   if (Math.abs(
+    //       SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
+    //     isReversed = true;
+    //   }
+    // } else {
+    //   if (Math.abs(
+    //       SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) < 90) {
+    //     isReversed = true;
+    //   }
+    // }
 
-    double rotationSetpoint = isReversed ? ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_SCORING;
-    ArmRotation.getInstance().setSetpoint(rotationSetpoint);
+    //double rotationSetpoint = isReversed ? ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_SCORING;
+    ArmRotation.getInstance().setSetpoint(ArmConstants.ROTATION_MID_FOR_SCORING);
   }
 }

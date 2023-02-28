@@ -78,10 +78,11 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
   public boolean isAbleToChangeRotation() {
     return (IntakePosition.getInstance().getPosition() 
             <= (IntakeConstants.MIDDLE_POSITION +
-            IntakeConstants.POSITION_TOLORANCE + Math.toRadians(2.7)) || (
+            IntakeConstants.POSITION_TOLORANCE + Math.toRadians(5)) || (
         getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
         && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
-      ))
+      ) || (getRotation() < ArmConstants.ARM_MAX_ROTATION_INTAKE_CLOSED
+      && getSetPoint() < ArmConstants.ARM_MAX_ROTATION_INTAKE_CLOSED))
       && (ArmExtenstion.getInstance().getExtenstion() < 
       ArmConstants.MIN_EXTENSTION_FOR_ROTATION
       || (getRotation() >= ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR &&
@@ -90,9 +91,11 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       && setPoint <= ArmConstants.ARM_ROTATION_MAX_POSE
       && (
         (GripperSubsystem.getInstance().getCurrentEncoderPosition()
-          < GripperConstants.INTAKE_POSITION) ||
+          < GripperConstants.INTAKE_POSITION + Math.toRadians(1.5)) ||
         (getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
-        && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
+        && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR) ||
+        (GripperSubsystem.getInstance().getCurrentEncoderPosition()
+        > GripperConstants.MAX_POSE - GripperConstants.GRIPPER_TOLERANCE)
       ); 
   }
 
@@ -152,5 +155,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     board.addNum("rotation in radians", getRotation());
 
     board.addBoolean("at point", atPoint());
+
+    board.addBoolean("is able to move", isAbleToChangeRotation());
   }
 }

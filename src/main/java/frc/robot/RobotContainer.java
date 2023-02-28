@@ -7,19 +7,21 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
+import frc.robot.commands.Autonomous.Score1;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrabingAutomation;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
-import frc.robot.commands.Swerve.GoToScoring;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.Spinner.SpinnerConstants;
+import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
+import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
@@ -32,6 +34,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -123,12 +126,15 @@ public class RobotContainer {
       new CloseIntake()
     );
 
-    DRIVER_PS4_CONTROLLER.L1().whileTrue(
-      new GoToScoring()
-    );
+    // DRIVER_PS4_CONTROLLER.L1().whileTrue(
+    //   new GoToScoring()
+    // );
 
     DRIVER_PS4_CONTROLLER.circle().whileTrue(
-      new ScoringAutomation()
+      new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation()
+      > ArmConstants.ROTATION_MID_FOR_SCORING - ArmConstants.ARM_ROTATION_TOLERANCE)
+      .andThen(
+      new ScoringAutomation())
     ).onFalse(
       new ResetArmAutomation()
     );
@@ -200,6 +206,16 @@ public class RobotContainer {
       new GrabingAutomation()
     );
 
+    OPERATOR_PS4_CONTROLLER.povUp().whileTrue(
+      new ResetArmAutomation()
+    );
+
+    // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
+    //   new GripperControlCommand(
+    //     GripperConstants.MAX_POSE
+    //   )
+    // );
+
     DRIVER_PS4_CONTROLLER.cross().whileTrue(
       new InstantCommand(() -> Intake.getInstance().setPower(-IntakeConstants.INTAKE_POWER))
     ).onFalse(
@@ -215,6 +231,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return new Score1();
   }
 }

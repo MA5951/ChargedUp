@@ -3,10 +3,11 @@ package frc.robot.subsystems.gripper;
 import frc.robot.subsystems.arm.ArmConstants;
 
 public final class GripperConstants {
-    public static final double OPEN_POSITION = Math.toRadians(200);
+    public static final double MAX_POSE = 6;
+    public static final double OPEN_POSITION = Math.toRadians(220);
     public static final double CLOSE_POSITION = Math.toRadians(0);
     public static final double INTAKE_POSITION = Math.toRadians(95.03518730824291);
-    public static final double BEFOR_GRABING_POSE = 1.1088119745254517;
+    public static final double BEFOR_GRABING_POSE = 1.1088119745254517 - 0.05;
 
 
     public static final double MAX_ARM_ROTATION_FOR_GRIPPER = 
