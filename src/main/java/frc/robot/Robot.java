@@ -4,16 +4,19 @@
 
 package frc.robot;
 
-import com.ma5951.utils.commands.MotorCommand;
+import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Spinner.Spinner;
 import frc.robot.commands.Swerve.DriveSwerveCommand;
-import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
+// import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
+import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperSubsystem;
@@ -28,6 +31,7 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -37,22 +41,23 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // UsbCamera camera = CameraServer.startAutomaticCapture();
+    // camera.setResolution(80, 60);
     
     // LED.getInstance();
     Intake.getInstance();
     IntakePosition.getInstance();
-    // Spinner.getInstance();
-    // GripperSubsystem.getInstance();
-    // ArmRotation.getInstance();
-    // ArmExtenstion.getInstance();
+    Spinner.getInstance();
+    ArmRotation.getInstance();
+    ArmExtenstion.getInstance();
     // ChameleonClimb.getInstance();
-    // SwerveDrivetrainSubsystem.getInstance();
-    // Logger.getInstance().recordMetadata("ProjectName", "ChargedUp-Testing"); // Set a metadata value
-    
-    // Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
-    
-    //Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    //new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+    SwerveDrivetrainSubsystem.getInstance();
+    GripperSubsystem.getInstance();
+
+    if (DriverStation.getAlliance() == Alliance.Red) {
+      Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_X = -Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_X;
+    }
   }
 
   /**
@@ -76,6 +81,10 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // SwerveDrivetrainSubsystem.getInstance().setNeutralMode(NeutralMode.Coast);
+    IntakePosition.getInstance().setPower(0);
+    GripperSubsystem.getInstance().setPower(0);
+    ArmExtenstion.getInstance().setSetpoint(0);
+    ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE);
   }
 
   @Override
@@ -89,17 +98,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmExtenstion.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmExtenstion.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    );
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmRotation.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    );
   }
 
   /** This function is called periodically during autonomous. */
@@ -124,30 +133,23 @@ public class Robot extends TimedRobot {
         RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY,
         RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
     
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmExtenstion.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
-    // );
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmExtenstion.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmExtenstion.getInstance(), ArmExtenstion.getInstance()::getSetpoint)
+    );
 
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(),
-    //   new ControlCommandInsubsystemControl(
-    //     ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
-    // );
-    
-    // CommandScheduler.getInstance().setDefaultCommand(
-    //   ArmRotation.getInstance(), new MotorCommand(ArmRotation.getInstance(),
-    //    RobotContainer.DRIVER_PS4_CONTROLLER::getLeftY));
-    // CommandScheduler.getInstance().setDefaultCommand(ArmExtenstion.getInstance(), 
-    //   new MotorCommand(ArmExtenstion.getInstance(), RobotContainer.DRIVER_PS4_CONTROLLER::getRightX));
-    //Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+    CommandScheduler.getInstance().setDefaultCommand(
+      ArmRotation.getInstance(),
+      new ControlCommandInsubsystemControl(
+        ArmRotation.getInstance(), ArmRotation.getInstance()::getSetPoint)
+    );
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //SwerveDrivetrainSubsystem.getInstance().updateOdometry();
+    SwerveDrivetrainSubsystem.getInstance().updateOdometry();
   }
 
   @Override

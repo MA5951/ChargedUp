@@ -6,27 +6,29 @@ package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.gripper.GripperControlCommand;
+import frc.robot.commands.Intake.CloseIntake;
+import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
-import frc.robot.subsystems.gripper.GripperConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoringAutomation extends SequentialCommandGroup {
+public class BeforeScoringAutomation extends SequentialCommandGroup {
   /** Creates a new ScoringAutomation. */
   private boolean atPoint() {
     return ArmExtenstion.getInstance().atPoint() 
       && ArmRotation.getInstance().atPoint();
   }
-  public ScoringAutomation() {
+  public BeforeScoringAutomation() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new Score(),
+      new MiddleIntake(),
+      new setArmForMid(),
+      new CloseIntake(),
       new WaitUntilCommand(this::atPoint),
-      new GripperControlCommand(GripperConstants.OPEN_POSITION)
+      new setExtenstion()
     );
   }
 }

@@ -15,24 +15,21 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.IntakePosition;
+import frc.robot.subsystems.gripper.GripperConstants;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubsystemControl{
   /** Creates a new ArmRotation. */
   private CANSparkMax motor;
-  private DigitalInput hallEffect;
 
   private RelativeEncoder encoder;
   private SparkMaxPIDController pidController;
 
   private MAShuffleboard board;
-  private String kp = "kp";
-  private String ki = "ki";
-  private String kd = "kd";
 
   private double setPoint = ArmConstants.ARM_ROTATION_START_POSE;
 
@@ -40,7 +37,6 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   private ArmRotation() {
     motor = new CANSparkMax(PortMap.Arm.rotationMotorID, MotorType.kBrushless);
-    hallEffect = new DigitalInput(PortMap.Arm.rotationHallEffectPort);
     encoder = motor.getAlternateEncoder(ArmConstants.kCPR);
 
     motor.setIdleMode(IdleMode.kCoast);
@@ -50,17 +46,13 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
     encoder.setVelocityConversionFactor(2 * Math.PI / 60);
 
     pidController.setFeedbackDevice(encoder);
+    encoder.setPosition(ArmConstants.ARM_ROTATION_START_POSE);
 
     pidController.setP(ArmConstants.ARM_ROTATION_KP);
     pidController.setI(ArmConstants.ARM_ROTATION_KI);
     pidController.setD(ArmConstants.ARM_ROTATION_KD);
 
     board = new MAShuffleboard("ArmRotation");
-    board.addNum(kp, ArmConstants.ARM_ROTATION_KP);
-    board.addNum(ki, ArmConstants.ARM_ROTATION_KI);
-    board.addNum(kd, ArmConstants.ARM_ROTATION_KD);
-
-    // motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
   }
 
   /**
@@ -85,28 +77,37 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   public boolean isAbleToChangeRotation() {
     return (IntakePosition.getInstance().getPosition() 
-            < IntakeConstants.MIDDLE_POSITION +
-            IntakeConstants.POSITION_TOLORANCE || (
+            <= (IntakeConstants.MIDDLE_POSITION +
+            IntakeConstants.POSITION_TOLORANCE + Math.toRadians(5)) || (
         getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
         && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
-      ))
+      ) || (getRotation() < ArmConstants.ARM_MAX_ROTATION_INTAKE_CLOSED
+      && getSetPoint() < ArmConstants.ARM_MAX_ROTATION_INTAKE_CLOSED))
       && (ArmExtenstion.getInstance().getExtenstion() < 
       ArmConstants.MIN_EXTENSTION_FOR_ROTATION
-      || getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
-      && setPoint < ArmConstants.ARM_ROTATION_START_POSE
-      && setPoint > ArmConstants.ARM_ROTATION_MAX_POSE
-      ; 
+      || (getRotation() >= ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR &&
+      setPoint >= ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR))
+      && setPoint >= ArmConstants.ARM_ROTATION_START_POSE
+      && setPoint <= ArmConstants.ARM_ROTATION_MAX_POSE
+      && (
+        (GripperSubsystem.getInstance().getCurrentEncoderPosition()
+          < GripperConstants.INTAKE_POSITION + Math.toRadians(1.5)) ||
+        (getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
+        && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR) ||
+        (GripperSubsystem.getInstance().getCurrentEncoderPosition()
+        > GripperConstants.MAX_POSE - GripperConstants.GRIPPER_TOLERANCE)
+      ); 
   }
 
   @Override
   public void calculate(double setPoint) {
     this.setPoint = setPoint;
-    double useSetPoint = this.setPoint;
     if (!isAbleToChangeRotation()) {
-      useSetPoint = getRotation();
+      setPower(getFeed());
+    } else {
+      pidController.setReference(setPoint, ControlType.kPosition,
+        0, getFeed(), ArbFFUnits.kPercentOut);
     }
-    pidController.setReference(useSetPoint, ControlType.kPosition,
-      0, getFeed(), ArbFFUnits.kPercentOut);
   }
 
   public boolean atPoint() {
@@ -129,12 +130,6 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       (2 * ArmConstants.ARM_MASS + ArmConstants.CONE_MASS)
       / 2.0;
     double dis = getCenterOfMass();
-    // double r = ArmConstants.armDistanceFromTheCenter + 
-    //   Math.cos(getRotation()) * dis;
-    // double aR = 
-    //   Math.pow(SwerveDrivetrainSubsystem.getInstance().getAngularVelocity(), 2) * r;
-    // double FR = (aR * mass) * Math.sin(getRotation());
-    // double TR = FR * dis;
     double GT = (mass * RobotConstants.KGRAVITY_ACCELERATION) * Math.cos(getRotation()) * dis;
     double angularMomentum = ArmConstants.ARM_MASS * getAngularVelocity();
     return (GT + dis * (-angularMomentum / 
@@ -156,17 +151,11 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
 
   @Override
   public void periodic() {
-    if (!hallEffect.get()) {
-      encoder.setPosition(ArmConstants.ARM_ROTATION_START_POSE);
-    }
-
-    // pidController.setP(board.getNum(kp));
-    // pidController.setI(board.getNum(ki));
-    // pidController.setD(board.getNum(kd));
-
     board.addNum("rotation in dagrees", Math.toDegrees(getRotation()));
     board.addNum("rotation in radians", getRotation());
 
-    board.addBoolean("hallEffect", !hallEffect.get());
+    board.addBoolean("at point", atPoint());
+
+    board.addBoolean("is able to move", isAbleToChangeRotation());
   }
 }

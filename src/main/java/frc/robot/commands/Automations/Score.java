@@ -6,23 +6,19 @@ package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.arm.ArmConstants;
-import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 
-public class setArmForMid extends InstantCommand {
-  /** Creates a new setArmForMid. */
-  private ArmExtenstion armExtenstion;
-  private ArmRotation armRotation;
-
-  public setArmForMid() {
-    armExtenstion = ArmExtenstion.getInstance();
-    armRotation = ArmRotation.getInstance();
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class Score extends InstantCommand {  
+  public Score() {
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // boolean isReversed = false;
+    //boolean isReversed = false;
     // if (DriverStation.getAlliance() == Alliance.Red) {
     //   if (Math.abs(
     //       SwerveDrivetrainSubsystem.getInstance().getPose().getRotation().getDegrees()) > 90) {
@@ -34,9 +30,8 @@ public class setArmForMid extends InstantCommand {
     //     isReversed = true;
     //   }
     // }
-    // double extensionSetpoint = isReversed ? 0 : ArmConstants.EXTENSTION_FOR_MID_SCORING;
-    // double rotationSetpoint = isReversed ? ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING;
-    armExtenstion.setSetpoint(ArmConstants.EXTENSTION_FOR_MID_SCORING);
-    armRotation.setSetpoint(ArmConstants.ROTATION_MID_FOR_BEFORE_SCORING);
+
+    //double rotationSetpoint = isReversed ? ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK : ArmConstants.ROTATION_MID_FOR_SCORING;
+    ArmRotation.getInstance().setSetpoint(ArmConstants.ROTATION_MID_FOR_SCORING);
   }
 }

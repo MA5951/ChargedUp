@@ -25,20 +25,28 @@ public final class Constants {
     public static final int OPERATOR_CONTROLLER_PORT = 1;
   }
 
+  public static final class Robot {
+    public final static double LENGTH = 0.915;
+    public final static double WIDTH = 0.915;
+  }
+
   public static final class FieldConstants {
     public static final double FIELD_WIDTH_METERS = 8.02;
     public static final double FIELD_LENGTH_METERS = 16.54;
-    private static final double BLUE_X = 1.80;
-    private static final double RED_X = 14.74;
-    private static final double A1Y = 0.5;
-    private static final double A2Y = 1.10;
-    private static final double A3Y = 1.60;
-    private static final double B1Y = 2.2;
-    private static final double B2Y = 2.76;
-    private static final double B3Y = 3.30;
-    private static final double C1Y = 3.90;
-    private static final double C2Y = 4.42;
-    private static final double C3Y = 4.92;
+    public static final double TO_2 = 0.56;
+    public static final double TO_3 = 1.08;
+    private static final double BLUE_X = 1 + Robot.WIDTH / 2;
+    private static final double RED_X = FIELD_LENGTH_METERS - 1 - Robot.WIDTH / 2;
+    private static final double A1Y = Robot.LENGTH / 2.0;
+    private static final double A2Y = Robot.LENGTH / 2.0 + TO_2;
+    private static final double A3Y = Robot.LENGTH / 2.0 + TO_3;
+    private static final double DISTANCE_FROM_GRIDS = A3Y - A2Y;
+    private static final double B1Y = A3Y + DISTANCE_FROM_GRIDS;
+    private static final double B2Y = B1Y + DISTANCE_FROM_GRIDS;
+    private static final double B3Y = B2Y + DISTANCE_FROM_GRIDS;
+    private static final double C1Y = B3Y + DISTANCE_FROM_GRIDS;
+    private static final double C2Y = C1Y + DISTANCE_FROM_GRIDS;
+    private static final double C3Y = C2Y + DISTANCE_FROM_GRIDS;
     public static final Translation2d[] ScoringPoses = {
         new Translation2d(
             BLUE_X, C3Y),
@@ -76,20 +84,15 @@ public final class Constants {
             RED_X, A2Y),
         new Translation2d(
             RED_X, A1Y)
-    }; // need to check
-  }
-
-  public static class PipeLines {
-    public static final int APRIL_TAG_PIPELINE = 0; // TODO
-    public static final int REFLECTIVE_TAPE_PIPELINE = 0; // TODO
+    }; // need to check TODO
   }
 
   public static class Camera {
-    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_X = 0.2;
-    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = 0.022;
+    public static double CAMERA_DISTANCE_FROM_CENTER_IN_X = -0.6;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = -0.22;
     public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Z = 0.7;
     public static final double CAMERA_ROLL = 0;
-    public static final double CAMERA_PITCH = Math.PI * 0.5;
+    public static final double CAMERA_PITCH = 0;
     public static final double CAMERA_YAW = Math.PI;
 
   }

@@ -7,43 +7,47 @@ package frc.robot.commands.Automations;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoringAutomationForAutonomous extends SequentialCommandGroup {
-  /** Creates a new ScoringAutomationForAutonomous. */
-  private boolean startExtation() {
-    return ArmRotation.getInstance().getRotation() > Math.toRadians(120);
-  }
+public class GrabingAutomation extends SequentialCommandGroup {
+  /** Creates a new GrabingCommand. */
   private boolean atPoint() {
     return ArmExtenstion.getInstance().atPoint() 
       && ArmRotation.getInstance().atPoint();
   }
-  public ScoringAutomationForAutonomous() {
+  
+  public GrabingAutomation() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new OpenIntake(),
+      new SequentialCommandGroup (
+        new InstantCommand(() -> GripperSubsystem.getInstance().canSore = false),
+        new GripperControlCommand(GripperConstants.BEFOR_GRABING_POSE),
+        new SequentialCommandGroup(
+          new InstantCommand(
+            () -> ArmExtenstion.getInstance().setSetpoint(
+              ArmConstants.ARM_EXTENSTION_FOR_GRABING)),
+          new InstantCommand(
+            () -> ArmRotation.getInstance().setSetpoint(
+              ArmConstants.MIN_ROTATION_FOR_GRABING
+            )),
+            new WaitUntilCommand(this::atPoint)
+        )
+      ),
       new GripperCloseCommand(),
       new InstantCommand(
-        () ->
-        ArmRotation.getInstance().setSetpoint(ArmConstants.ROTATION_FOR_MID_SCORING_FROM_THE_BACK)
+        () -> ArmExtenstion.getInstance().setSetpoint(0)
       ),
-      new WaitUntilCommand(this::startExtation),
-      new InstantCommand(
-        () ->
-        ArmExtenstion.getInstance().setSetpoint(ArmConstants.EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK)
-      ),
-      new WaitUntilCommand(this::atPoint),
-      new GripperControlCommand(GripperConstants.OPEN_POSITION)
+      new InstantCommand(() -> GripperSubsystem.getInstance().canSore = true)
     );
   }
 }

@@ -13,6 +13,7 @@ public class SpinnerCommand extends CommandBase {
   private Spinner spinnerSubsystem;
 
   private boolean isReversed;
+  private boolean isTurnd3;
 
   public SpinnerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,26 +25,29 @@ public class SpinnerCommand extends CommandBase {
   @Override
   public void initialize() {
     isReversed = false;
+    isTurnd3 = false;
+    spinnerSubsystem.resetEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
-    // if(spinnerSubsystem.isGamePiceEntered()){
-    //   if(!spinnerSubsystem.isStuck() && !isReversed){
-    //     spinnerSubsystem.resetEncoder();
-    //   }
-    //   if(!spinnerSubsystem.isStuck() && (spinnerSubsystem.getPosition() <= 360)){
-    //     spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-    //     isReversed = true;
-    //   }
-    //   if(spinnerSubsystem.isStuck()){
-    //     spinnerSubsystem.setPower(-SpinnerConstants.SPINNER_SPEED);
-    //   }
-    // } else {
-    //   spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
-    // }
-    spinnerSubsystem.setPower(0.3);
+  public void execute() {
+    if(!isTurnd3) {
+      if (spinnerSubsystem.getPosition() <= 500) {
+      spinnerSubsystem.setPower(SpinnerConstants.REVERSED_SPINNER_SPEED);
+      } else {
+        isTurnd3 = true;
+      }
+    }
+    else{
+      if(!isReversed && !isTurnd3) {
+        spinnerSubsystem.resetEncoder();
+      }
+      if((spinnerSubsystem.getPosition() >= -440) ){
+        spinnerSubsystem.setPower(SpinnerConstants.SPINNER_SPEED);
+        isReversed = true;
+      }
+    }   
   }
 
   // Called once the command ends or is interrupted.
@@ -53,8 +57,8 @@ public class SpinnerCommand extends CommandBase {
   }
   // Returns true when the command should end.
   @Override
-  public boolean isFinished(){
-    return !spinnerSubsystem.isStuck() && spinnerSubsystem.getPosition() >= 360
-    && spinnerSubsystem.isGamePiceEntered();
+  public boolean isFinished() {
+    return spinnerSubsystem.getPosition() >= -440
+      && spinnerSubsystem.isGamePiceEntered();
   }
 }

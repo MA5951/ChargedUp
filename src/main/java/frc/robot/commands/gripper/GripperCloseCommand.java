@@ -4,8 +4,8 @@
 
 package frc.robot.commands.gripper;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
 
@@ -14,8 +14,8 @@ public class GripperCloseCommand extends CommandBase {
   // Declare the subsystem
   private GripperSubsystem gripperSubsystem;
 
-  private double lastCurrent;
   private boolean tachedGamePice;
+  private double startTime;
 
   public GripperCloseCommand() {
     gripperSubsystem = GripperSubsystem.getInstance();
@@ -24,35 +24,22 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    lastCurrent = 0;
     tachedGamePice = false;
+    startTime = Timer.getFPGATimestamp();
   }
 
   @Override
   public void execute() {
-    // double current = gripperSubsystem.getMotorCurrent();
-    // if (Math.abs(lastCurrent - current) >= GripperConstants.CURRENT_JUMP) {
-    //   tachedGamePice = true;
-    // }
-    // lastCurrent = current;
-    // }
-      if (gripperSubsystem.getMotorCurrent() <= GripperConstants.MAX_CURRENT_ALLOWED) {
-        gripperSubsystem.setPower(-0.3);
-      } else {
-        gripperSubsystem.setPower(0);
-      }
+    if (Timer.getFPGATimestamp() - startTime > 0.7) {
+      tachedGamePice = true;
     }
+    gripperSubsystem.setPower(GripperConstants.CLOSING_POWER);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (gripperSubsystem.getCurrentEncoderPosition()
-     <= GripperConstants.CONE_ANGLE) {
-      gripperSubsystem.setPower(GripperConstants.CONE_POWER);
-      ArmConstants.isThereCone = true;
-    } else {
-      gripperSubsystem.setPower(GripperConstants.CUBE_POWER);
-    }
+    gripperSubsystem.setPower(GripperConstants.HOLDING_POWER);
   }
 
   @Override

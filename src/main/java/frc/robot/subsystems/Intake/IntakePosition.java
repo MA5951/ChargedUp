@@ -16,6 +16,8 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
+import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.arm.ArmRotation;
 
 public class IntakePosition extends SubsystemBase {
 
@@ -27,41 +29,39 @@ public class IntakePosition extends SubsystemBase {
   private DigitalInput hallEffect;
 
   private MAShuffleboard board;
-  private String kp = "kp";
-  private String ki = "ki";
-  private String kd = "kd";
 
   private SparkMaxPIDController pidController;
 
+  public double lastPose = 0;
 
   public IntakePosition(){
     motor = new CANSparkMax(
       PortMap.Intake.intakePositionMotorID,
       MotorType.kBrushless);
 
+    motor.setInverted(true);
+  
     encoder = motor.getEncoder();
 
     hallEffect = new DigitalInput(
       PortMap.Intake.closingHallEffectPort);
 
     motor.setIdleMode(IdleMode.kCoast);
-    encoder.setPositionConversionFactor(
-      2 * Math.PI * (1 / IntakeConstants.TICKS_PER_ROUND) * IntakeConstants.GEAR
-    );
-    board = new MAShuffleboard("IntakePosition");
 
-    board.addNum(kp, IntakeConstants.KP);
-    board.addNum(ki, IntakeConstants.KI);
-    board.addNum(kd, IntakeConstants.KD);
+    encoder.setPosition(0);
+
+    encoder.setPositionConversionFactor(IntakeConstants.POSITION_CONVERSION_FACTOR
+    );
+
+    board = new MAShuffleboard("IntakePosition");
 
     pidController = motor.getPIDController();
     pidController.setFeedbackDevice(encoder);
 
-    pidController.setP(board.getNum(kp));
-    pidController.setI(board.getNum(ki));
-    pidController.setD(board.getNum(kd));
+    pidController.setP(IntakeConstants.KP);
+    pidController.setI(IntakeConstants.KI);
+    pidController.setD(IntakeConstants.KD);
 
-    resetEncoder();
   }
 
   public void calculate(double setPoint) {
@@ -75,28 +75,28 @@ public class IntakePosition extends SubsystemBase {
     motor.set(power);
   }
 
-  public void resetEncoder(){
-    encoder.setPosition(0);
+  public void resetEncoder(double pose){
+    encoder.setPosition(pose);
   }
 
   public double getPosition() {
     return encoder.getPosition();
   }
-
-  public boolean isOpen(){
-    return Math.abs(
-      encoder.getPosition() - IntakeConstants.CLOSE_POSITION) < 
-      IntakeConstants.POSITION_TOLORANCE;
-  }
-
+  
   public boolean isClose(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.CLOSE_POSITION) < 
+    return !hallEffect.get() || 
+    Math.abs(getPosition() - IntakeConstants.CLOSE_POSITION) < 
     IntakeConstants.POSITION_TOLORANCE;
   }
 
   public boolean isMiddle(){
-    return Math.abs(encoder.getPosition()-IntakeConstants.MIDDLE_POSITION) < 
-    IntakeConstants.POSITION_TOLORANCE;
+    return Math.abs(getPosition() - IntakeConstants.MIDDLE_POSITION) < 
+      IntakeConstants.POSITION_TOLORANCE;
+  }
+
+  public boolean isOpen(){
+    return Math.abs(getPosition() - IntakeConstants.OPEN_POSITION) < 
+      IntakeConstants.POSITION_TOLORANCE;
   }
 
   public static IntakePosition getInstance() {
@@ -105,19 +105,28 @@ public class IntakePosition extends SubsystemBase {
     }
     return openIntake;
   }
+  
+  public boolean isAbleToClose() {
+    return ((ArmRotation.getInstance().getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
+    && ArmRotation.getInstance().getSetPoint() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR)
+    || (ArmRotation.getInstance().getRotation() < ArmConstants.MIN_ROTATION_FOR_CLOSING_INTAKE
+    && ArmRotation.getInstance().getSetPoint() < ArmConstants.MIN_ROTATION_FOR_CLOSING_INTAKE));
+  }
 
   @Override
   public void periodic() {
-    if (!hallEffect.get()) {
-      encoder.setPosition(IntakeConstants.CLOSE_POSITION);
-    }
-
+    // if (!hallEffect.get()) {
+    //   encoder.setPosition(IntakeConstants.CLOSE_POSITION);
+    // }
+    
     board.addBoolean("isClose", isClose());
-    board.addBoolean("isOpen", isOpen());
     board.addBoolean("isMiddle", isMiddle());
+    board.addBoolean("isOpen", isOpen());
 
-    board.addNum("position", encoder.getPosition());
+    board.addNum("position", getPosition());
+    board.addNum("positionn degrees", Math.toDegrees(getPosition()));
 
-    board.addBoolean("hall effect", hallEffect.get());
+
+    board.addBoolean("hall effect", !hallEffect.get());
   }
 }

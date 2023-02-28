@@ -4,14 +4,16 @@
 
 package frc.robot.commands.Automations;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.commands.gripper.GripperCloseCommand;
-import frc.robot.commands.gripper.GripperOpenCommand;
+import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
+import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
+import frc.robot.subsystems.gripper.GripperConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,19 +21,18 @@ import frc.robot.subsystems.arm.ArmRotation;
 public class ResetArmAutomation extends SequentialCommandGroup {
   /** Creates a new AfterScoringAutomation. */
   public ResetArmAutomation() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ParallelCommandGroup(
-        new SetArmAutomation(0, ArmConstants.ARM_ROTATION_START_POSE),
-        new SequentialCommandGroup(
-          new GripperCloseCommand(),
-          new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation() 
-            <= ArmConstants.ARM_ROTATION_START_POSE + ArmConstants.ARM_ROTATION_TOLERANCE),
-          new GripperOpenCommand()
-        )
-      ),
-      new CloseIntake()
+      new InstantCommand(() ->
+      ArmExtenstion.getInstance().setSetpoint(0)).alongWith(
+      new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint),
+      new GripperControlCommand(GripperConstants.MAX_POSE).alongWith(
+        new MiddleIntake()
+      )),
+      new InstantCommand(() ->
+        ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)),
+      new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
+      new GripperControlCommand(GripperConstants.OPEN_POSITION).alongWith(
+      new CloseIntake())
     );
   }
 }

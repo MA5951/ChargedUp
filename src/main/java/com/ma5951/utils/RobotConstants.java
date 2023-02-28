@@ -49,12 +49,12 @@ public class RobotConstants {
             public static final int STICK_RIGHT = 10;
         }
         public static class Axis {
-            public static final int STICK_RIGHT_Y_AXIS = 5; // TODO
-            public static final int STICK_RIGHT_X_AXIS = 4; // TODO
-            public static final int STICK_LEFT_Y_AXIS = 1; // TODO
-            public static final int STICK_LEFT_X_AXIS = 2; // TODO
-            public static final int L_TRIGER = 2; // TODO
-            public static final int R_TRIGER = 3; // TODO
+            public static final int STICK_RIGHT_Y_AXIS = 5; 
+            public static final int STICK_RIGHT_X_AXIS = 4;
+            public static final int STICK_LEFT_Y_AXIS = 1;
+            public static final int STICK_LEFT_X_AXIS = 2;
+            public static final int L_TRIGER = 2;
+            public static final int R_TRIGER = 3;
         }
     }
 

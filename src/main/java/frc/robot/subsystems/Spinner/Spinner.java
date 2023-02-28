@@ -19,7 +19,6 @@ public class Spinner extends SubsystemBase {
   private CANSparkMax spinnerMotor;
   
   private DigitalInput buttomIR;
-  private DigitalInput stuckIR;
 
   private RelativeEncoder encoder;
 
@@ -29,22 +28,18 @@ public class Spinner extends SubsystemBase {
     spinnerMotor = new CANSparkMax(
       PortMap.Spinner.spinnerMotorID, MotorType.kBrushless);
     buttomIR = new DigitalInput(PortMap.Spinner.buttomIRPort);
-    stuckIR = new DigitalInput(PortMap.Spinner.stuckIRPort);
 
     encoder = spinnerMotor.getEncoder();
 
-    encoder.setPositionConversionFactor(360 * (1 / SpinnerConstants.TICKS_PER_ROUND));
+    encoder.setPositionConversionFactor(
+      SpinnerConstants.POSITION_CONVERSION_FACTOR);
     board = new MAShuffleboard("Spinner");
 
-    // spinnerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 0);
+    encoder.setPosition(0);
   }
 
   public boolean isGamePiceEntered() {
     return !buttomIR.get();
-  }
-
-  public boolean isStuck() {
-    return !stuckIR.get();
   }
 
   public void setPower(double power){
@@ -73,7 +68,6 @@ public class Spinner extends SubsystemBase {
   @Override
   public void periodic() {
     board.addBoolean("isGamePiceEntered", isGamePiceEntered());
-    board.addBoolean("isStuck", isStuck());
     board.addNum("position", getPosition());
   }
 }
