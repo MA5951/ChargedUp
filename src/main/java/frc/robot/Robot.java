@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Spinner.Spinner;
 import frc.robot.commands.Swerve.DriveSwerveCommand;
-import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
+// import frc.robot.subsystems.ChameleonClimb.ChameleonClimb;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.arm.ArmConstants;
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     Spinner.getInstance();
     ArmRotation.getInstance();
     ArmExtenstion.getInstance();
-    ChameleonClimb.getInstance();
+    // ChameleonClimb.getInstance();
     SwerveDrivetrainSubsystem.getInstance();
     GripperSubsystem.getInstance();
 

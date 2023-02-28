@@ -18,6 +18,7 @@ import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeConstants;
+import frc.robot.subsystems.Intake.IntakePosition;
 import frc.robot.subsystems.Spinner.SpinnerConstants;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
@@ -148,6 +149,12 @@ public class RobotContainer {
     DRIVER_PS4_CONTROLLER.triangle().whileTrue(
       new InstantCommand(
         SwerveDrivetrainSubsystem.getInstance()::updateOffset
+      )
+    );
+
+    DRIVER_PS4_CONTROLLER.options().whileTrue(
+      new InstantCommand(
+        () -> IntakePosition.getInstance().resetEncoder(IntakeConstants.CLOSE_POSITION)
       )
     );
 
