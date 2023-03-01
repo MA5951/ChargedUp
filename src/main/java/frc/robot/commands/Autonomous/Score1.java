@@ -4,6 +4,9 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
@@ -14,6 +17,24 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Score1 extends SequentialCommandGroup {
   /** Creates a new Score1. */
+  private final SwerveModuleState[] states = new SwerveModuleState[] {
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(45)
+    ),
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(-45)
+    ),
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(45)
+    ),
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(-45)
+    ),
+  };
   public Score1() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -22,7 +43,12 @@ public class Score1 extends SequentialCommandGroup {
       SwerveDrivetrainSubsystem.getInstance()
         .getAutonomousPathCommand("move out of the com", true).alongWith(
           new ResetArmAutomation()
+        ),
+      new InstantCommand(
+        () -> SwerveDrivetrainSubsystem.getInstance().setModules(
+          states
         )
+      )
     );
   }
 }
