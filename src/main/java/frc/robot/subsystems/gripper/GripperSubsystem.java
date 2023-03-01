@@ -65,7 +65,7 @@ public class GripperSubsystem extends SubsystemBase {
     this.setPoint = setPoint;
     double useSetPoint = setPoint;
     if (!(ArmRotation.getInstance().getRotation() < 
-      GripperConstants.MAX_ARM_ROTATION_FOR_GRIPPER + Math.toRadians(1.5)
+      GripperConstants.MAX_ARM_ROTATION_FOR_GRIPPER + Math.toRadians(2)
     || ArmRotation.getInstance().getRotation() > 
       ArmConstants.MIN_ROTATION_FOR_EXTENSTION)
     ) {
