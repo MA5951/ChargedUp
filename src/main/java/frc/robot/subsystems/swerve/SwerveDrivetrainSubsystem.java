@@ -32,6 +32,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -91,7 +92,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       SwerveConstants.WIDTH / 2,
       -SwerveConstants.LENGTH / 2);
 
-  private final AHRS navx = new AHRS(Port.kMXP);
+  private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
   private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation,
       rearLeftLocation, rearRightLocation);
@@ -359,7 +360,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public PathPlannerTrajectory getTrajectory(String pathName) {
     return PathPlanner.loadPath(pathName, new PathConstraints(
-      2,1));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
+      3,3));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
   }
 
   public Command getAutonomousPathCommand(

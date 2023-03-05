@@ -17,16 +17,34 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Score1 extends SequentialCommandGroup {
+public class Score1AndClimb extends SequentialCommandGroup {
   /** Creates a new Score1. */
-  public Score1() {
+  private final SwerveModuleState[] states = new SwerveModuleState[] {
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(45)
+    ),
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(-45)
+    ),
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(45)
+    ),
+    new SwerveModuleState(
+      0,
+      Rotation2d.fromDegrees(-45)
+    ),
+  };
+  public Score1AndClimb() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ScoringAutomationForAutonomous(),
       new ResetArmAutomation(),
       SwerveDrivetrainSubsystem.getInstance()
-        .getAutonomousPathCommand("move out of the com", true),
+        .getAutonomousPathCommand("climb", true).alongWith(new CloseIntake().repeatedly()),
       new LockModules()
     );
   }

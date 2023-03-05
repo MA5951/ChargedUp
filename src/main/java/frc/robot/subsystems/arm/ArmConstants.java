@@ -4,7 +4,7 @@ public class ArmConstants {
 
     public static final int kCPR = 4096;
 
-    public static final double ARM_EXUTENSTION_KP = 3;
+    public static final double ARM_EXUTENSTION_KP = 3.1;
     public static final double ARM_EXTENSTION_KI = 0.0005;
     public static final double ARM_EXTENSTION_KD = 0.8;
     public static final double ARM_EXTENSTION_TOLERANCE = 0.015;
