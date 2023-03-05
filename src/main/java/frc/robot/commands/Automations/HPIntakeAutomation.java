@@ -23,6 +23,6 @@ public class HPIntakeAutomation extends SequentialCommandGroup {
         new SetArmAutomation(ArmConstants.EXTENSTION_FOR_HP,
                               ArmConstants.ROTATION_FOR_HP),
         new GripperControlCommand(GripperConstants.OPEN_POSITION))
-    );
+      );
   }
 }

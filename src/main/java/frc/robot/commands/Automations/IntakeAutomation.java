@@ -12,6 +12,7 @@ import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerCommand;
+import frc.robot.subsystems.Spinner.Spinner;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
@@ -38,6 +39,7 @@ public class IntakeAutomation extends SequentialCommandGroup {
       ),
       new OpenIntake(),
       new ParallelDeadlineGroup(
+        new WaitUntilCommand(Spinner.getInstance()::isGamePiceEntered),
         new IntakeCommand(),
         new SpinnerCommand()
       )

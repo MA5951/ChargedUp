@@ -5,15 +5,9 @@
 package frc.robot.commands.Automations;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
-import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
-import frc.robot.subsystems.arm.ArmRotation;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -26,16 +20,8 @@ public class ResetArmFromHpAutomation extends SequentialCommandGroup {
     addCommands(
       new GripperCloseCommand(),
       new InstantCommand(
-        () -> ArmExtenstion.getInstance().setSetpoint(0)),
-      new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint),
-      new InstantCommand(
-        () -> 
-        ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)),
-      new ParallelDeadlineGroup(
-        new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
-        new MiddleIntake()
-      ),
-      new CloseIntake()
+        () -> ArmExtenstion.getInstance().setSetpoint(0)
+      )
     );
   }
 }
