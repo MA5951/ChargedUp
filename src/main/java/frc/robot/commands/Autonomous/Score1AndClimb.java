@@ -4,9 +4,6 @@
 
 package frc.robot.commands.Autonomous;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
@@ -19,24 +16,6 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Score1AndClimb extends SequentialCommandGroup {
   /** Creates a new Score1. */
-  private final SwerveModuleState[] states = new SwerveModuleState[] {
-    new SwerveModuleState(
-      0,
-      Rotation2d.fromDegrees(45)
-    ),
-    new SwerveModuleState(
-      0,
-      Rotation2d.fromDegrees(-45)
-    ),
-    new SwerveModuleState(
-      0,
-      Rotation2d.fromDegrees(45)
-    ),
-    new SwerveModuleState(
-      0,
-      Rotation2d.fromDegrees(-45)
-    ),
-  };
   public Score1AndClimb() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

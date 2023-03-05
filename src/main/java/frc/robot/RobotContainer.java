@@ -6,16 +6,15 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Automations.ResetArmAutomation;
+import frc.robot.commands.Automations.ResetArmFromHpAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
 import frc.robot.commands.Autonomous.Score1;
-import frc.robot.commands.Autonomous.Score1AndClimb;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrabingAutomation;
+import frc.robot.commands.Automations.HPIntakeAutomation;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
-import frc.robot.commands.Intake.IntakeManualCommand;
-import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
@@ -180,22 +179,11 @@ public class RobotContainer {
       new InstantCommand(
         () -> ArmExtenstion.getInstance().defultPower = 0)
     );
-    /// =============================
 
-
-    // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
-    //   new IntakeManualCommand(IntakeConstants.POSITION_POWER)
-    // );
-
-    // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
-    //   new IntakeManualCommand(-IntakeConstants.POSITION_POWER)
-    // );
-
-    // =============================
     // OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
     //   new ChameleonClimbCommand()
     // );
-
+    
     OPERATOR_PS4_CONTROLLER.triangle().whileTrue(
       new GrabingAutomation()
     );
@@ -223,7 +211,12 @@ public class RobotContainer {
     OPERATOR_PS4_CONTROLLER.share().whileTrue(
       new GripperControlCommand(GripperConstants.MAX_POSE)
     );
-    // ======================
+
+    OPERATOR_PS4_CONTROLLER.povLeft().whileTrue(
+      new HPIntakeAutomation()
+    ).onFalse(
+      new ResetArmFromHpAutomation()
+    );
   }
 
   /**

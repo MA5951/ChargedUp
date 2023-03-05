@@ -62,7 +62,6 @@ public class DriveSwerveCommand extends CommandBase {
     turningSpeed = turningSpeed * 
       swerve.maxAngularVelocity;
     
-    
     swerve.drive(xSpeed, ySpeed, turningSpeed, true);
 
   }

@@ -4,13 +4,9 @@
 
 package frc.robot.commands.Autonomous;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
-import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Swerve.LockModules;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
