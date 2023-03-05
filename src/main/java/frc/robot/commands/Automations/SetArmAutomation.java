@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 
@@ -26,14 +27,14 @@ public class SetArmAutomation extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MiddleIntake(),
+      new OpenIntake(),
       new InstantCommand(
         () -> ArmExtenstion.getInstance().setSetpoint(extensionSetpoint)),
       new InstantCommand(
         () -> ArmRotation.getInstance().setSetpoint(rotationSetpoint)),
       new ParallelDeadlineGroup(
         new WaitUntilCommand(this::atPoint),
-        new MiddleIntake().repeatedly())
+        new OpenIntake().repeatedly())
       );
   }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.Intake.OpenIntake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -18,7 +19,7 @@ public class BeforeScoringAutomationLow extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MiddleIntake(),
+      new OpenIntake(),
       new ParallelCommandGroup(
         new SequentialCommandGroup(
           new setArmForLow(),

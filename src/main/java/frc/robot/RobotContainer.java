@@ -8,11 +8,14 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
 import frc.robot.commands.Autonomous.Score1;
+import frc.robot.commands.Autonomous.Score1AndClimb;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrabingAutomation;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.IntakeManualCommand;
+import frc.robot.commands.Intake.MiddleIntake;
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
@@ -24,6 +27,7 @@ import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
+import frc.robot.subsystems.gripper.GripperSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -154,7 +158,7 @@ public class RobotContainer {
 
     DRIVER_PS4_CONTROLLER.options().whileTrue(
       new InstantCommand(
-        () -> IntakePosition.getInstance().resetEncoder(IntakeConstants.CLOSE_POSITION)
+        () -> IntakePosition.getInstance().resetEncoder(IntakeConstants.OPEN_POSITION)
       )
     );
 
@@ -178,30 +182,13 @@ public class RobotContainer {
     );
     /// =============================
 
-    // OPERATOR_PS4_CONTROLLER.povUp().whileTrue(
-    //   new InstantCommand(
-    //     () -> IntakePosition.getInstance()
-    //       .setPower(IntakeConstants.CLOSE_INTAKE_POWER)
-    //   )
-    // ).onFalse(
-    //   new InstantCommand(
-    //     () -> IntakePosition.getInstance()
-    //       .setPower(Math.cos(
-    //         IntakePosition.getInstance().getPosition()) * IntakeConstants.KG)
-    //   )
+
+    // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
+    //   new IntakeManualCommand(IntakeConstants.POSITION_POWER)
     // );
 
     // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
-    //   new InstantCommand(
-    //     () -> IntakePosition.getInstance()
-    //       .setPower(IntakeConstants.OPEN_INTAKE_POWER)
-    //   )
-    // ).onFalse(
-    //   new InstantCommand(
-    //     () -> IntakePosition.getInstance()
-    //       .setPower(Math.cos(
-    //         IntakePosition.getInstance().getPosition()) * IntakeConstants.KG)
-    //   )
+    //   new IntakeManualCommand(-IntakeConstants.POSITION_POWER)
     // );
 
     // =============================
@@ -227,6 +214,14 @@ public class RobotContainer {
       new InstantCommand(() -> Intake.getInstance().setPower(-IntakeConstants.INTAKE_POWER))
     ).onFalse(
       new InstantCommand(() -> Intake.getInstance().setPower(0))
+    );
+
+    OPERATOR_PS4_CONTROLLER.options().whileTrue(
+      new InstantCommand(() -> GripperSubsystem.getInstance().ResetToMaxPose())
+    );
+
+    OPERATOR_PS4_CONTROLLER.share().whileTrue(
+      new GripperControlCommand(GripperConstants.MAX_POSE)
     );
     // ======================
   }

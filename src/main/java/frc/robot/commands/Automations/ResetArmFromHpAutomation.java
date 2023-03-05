@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperCloseCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
@@ -33,7 +34,7 @@ public class ResetArmFromHpAutomation extends SequentialCommandGroup {
         ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)),
       new ParallelDeadlineGroup(
         new WaitUntilCommand(ArmRotation.getInstance()::atPoint),
-        new MiddleIntake()
+        new OpenIntake()
       ),
       new CloseIntake()
     );

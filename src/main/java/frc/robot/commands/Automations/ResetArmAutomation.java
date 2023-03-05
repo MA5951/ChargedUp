@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.commands.Intake.MiddleIntake;
+import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
@@ -26,7 +26,7 @@ public class ResetArmAutomation extends SequentialCommandGroup {
       ArmExtenstion.getInstance().setSetpoint(0)).alongWith(
       new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint),
       new GripperControlCommand(GripperConstants.MAX_POSE).alongWith(
-        new MiddleIntake()
+        new OpenIntake()
       )),
       new InstantCommand(() ->
         ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)),

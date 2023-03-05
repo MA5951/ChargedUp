@@ -24,10 +24,12 @@ public class IntakeConstants {
 
     public static final double GEAR_ROTATION_RATIO = 1/84.44;
 
-    public static final double POSITION_TOLORANCE = Math.toRadians(4);
+    public static final double POSITION_TOLORANCE = Math.toRadians(11);
 
     public static final double INTAKE_POWER = -1;
     public static final double OUTAKE_POWER = -INTAKE_POWER;
+
+    public static final double POSITION_POWER = 0.5;
 
 
 }
