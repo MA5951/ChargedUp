@@ -4,10 +4,11 @@
 
 package frc.robot.commands.Automations;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.commands.Intake.MiddleIntake;
+
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
@@ -26,8 +27,10 @@ public class BeforeScoringAutomation extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new OpenIntake(),
-      new setArmForMid(),
-      new CloseIntake(),
+      new ParallelCommandGroup(
+        new setArmForMid(),
+        new CloseIntake()
+      ),
       new WaitUntilCommand(this::atPoint),
       new setExtenstion()
     );

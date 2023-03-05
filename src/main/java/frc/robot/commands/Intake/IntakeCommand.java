@@ -7,7 +7,6 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeConstants;
-import frc.robot.subsystems.Spinner.Spinner;
 
 public class IntakeCommand extends CommandBase {
   /** Creates a new IntakeCommand. */
@@ -36,6 +35,6 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Spinner.getInstance().isGamePiceEntered();
+    return false;
   }
 }

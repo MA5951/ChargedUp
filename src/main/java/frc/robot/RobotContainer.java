@@ -124,7 +124,7 @@ public class RobotContainer {
 
     DRIVER_PS4_CONTROLLER.R1().whileTrue(
       new OpenIntake().alongWith(
-        new GripperControlCommand(GripperConstants.OPEN_POSITION)).andThen(
+      new GripperControlCommand(GripperConstants.OPEN_POSITION)).andThen(
         new IntakeCommand()).alongWith(
         new SpinnerManualCommand(SpinnerConstants.REVERSED_SPINNER_SPEED)
       )).onFalse(
@@ -204,11 +204,11 @@ public class RobotContainer {
       new ResetArmAutomation()
     );
 
-    // OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
-    //   new GripperControlCommand(
-    //     GripperConstants.MAX_POSE
-    //   )
-    // );
+    OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
+      new GripperControlCommand(
+        GripperConstants.MAX_POSE
+      )
+    );
 
     DRIVER_PS4_CONTROLLER.cross().whileTrue(
       new InstantCommand(() -> Intake.getInstance().setPower(-IntakeConstants.INTAKE_POWER))
