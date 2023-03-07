@@ -9,7 +9,7 @@ public class IntakeConstants {
     public final static double CLOSE_POSITION = Math.toRadians(84); 
     public final static double OPEN_POSITION = Math.toRadians(0);
     public final static double POSITION_CONVERSION_FACTOR = ((Math.PI * 0.5) / 1229.125107485757) * 57.296;
-    public final static double MIDDLE_POSITION = Math.toRadians(20);
+    public final static double MIDDLE_POSITION = Math.toRadians(30);
 
     public final static double KG = 0.0555694386210075;
     public final static double KP = 1;

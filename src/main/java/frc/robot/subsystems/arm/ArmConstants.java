@@ -4,7 +4,7 @@ public class ArmConstants {
 
     public static final int kCPR = 4096;
 
-    public static final double ARM_EXUTENSTION_KP = 3.1;
+    public static final double ARM_EXUTENSTION_KP = 3.2;
     public static final double ARM_EXTENSTION_KI = 0.0005;
     public static final double ARM_EXTENSTION_KD = 0.8;
     public static final double ARM_EXTENSTION_TOLERANCE = 0.015;
@@ -13,7 +13,7 @@ public class ArmConstants {
     public static final double ARM_ROTATION_KP = 1.8;
     public static final double ARM_ROTATION_KI = 0.00001;
     public static final double ARM_ROTATION_KD = 0;
-    public static final double ARM_ROTATION_TOLERANCE = Math.toRadians(2);
+    public static final double ARM_ROTATION_TOLERANCE = Math.toRadians(1.7);
 
     public static final double ARM_ROTATION_START_POSE = -0.987 -0.26998063921928406;
     public static final double ARM_ROTATION_MAX_POSE = Math.toRadians(208);
@@ -35,18 +35,18 @@ public class ArmConstants {
     public static final double MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR = -0.448544383049011 + 0.05;
     public static final double MIN_ROTATION_FOR_CLOSING_INTAKE = -1.1348544383049011 + 0.05;
 
-    public static final double ARM_EXTENSTION_FOR_GRABING = 0.029089621707797;
+    public static final double ARM_EXTENSTION_FOR_GRABING = 0.030089621707797;
     public static final double MIN_ROTATION_FOR_GRABING = -1.234854578971863 + 0.04;
 
     public static final double ARM_MAX_ROTATION_INTAKE_CLOSED = -1.059980750083923;
 
     public static final double ROTATION_MID_FOR_BEFORE_SCORING = Math.toRadians(13.535156213103427);
-    public static final double ROTATION_MID_FOR_SCORING = Math.toRadians(2.72460941746863);
+    public static final double ROTATION_MID_FOR_SCORING = Math.toRadians(7.72460941746863);
     public static final double EXTENSTION_FOR_MID_SCORING = 0.41;
 
-    public static final double ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK = Math.toRadians(166.81641485413274);
-    public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = Math.toRadians(180.97851490144268);
-    public static final double EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK = 0.252665064334869;
+    public static final double ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK = Math.toRadians(162.81641485413274);
+    public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = Math.toRadians(170.97851490144268);
+    public static final double EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK = 0.237665064334869;
     
     public static final double ROTATION_FOR_LOW_SCORING = Math.toRadians(-16.0839855896399);
     public static final double EXTENSTION_FOR_LOW_SCORING = 0.214644178748131;
@@ -54,6 +54,8 @@ public class ArmConstants {
     public static final double ROTATION_FOR_LOW_SCORING_FROM_THE_BACK = 2.3886993885040283;
     public static final double EXTENSTION_FOR_LOW_SCORING_FROM_THE_BACK = ARM_EXTENSTION_FOR_GRABING;
 
-    public static final double ROTATION_FOR_HP = 0; //TODO
-    public static final double EXTENSTION_FOR_HP = 0; //TODO
+    public static final double ROTATION_FOR_HP = 0.367883538722992;
+    public static final double EXTENSTION_FOR_HP = 0;
+
+    public static final double ROTATION_AFTER_HP = ROTATION_FOR_HP + 0.1;
 }

@@ -5,7 +5,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.subsystems.arm.ArmConstants;
@@ -21,6 +24,8 @@ public class GripperSubsystem extends SubsystemBase {
 
   private SparkMaxPIDController pid;
 
+  private DigitalInput limitSwitch;
+
   private double setPoint;
 
   public boolean canSore = false;
@@ -30,6 +35,7 @@ public class GripperSubsystem extends SubsystemBase {
       PortMap.Gripper.gripperMotorID, MotorType.kBrushless);
     encoder = gripperMotor.getEncoder();
     gripperMotor.setInverted(true);
+    gripperMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPositionConversionFactor((GripperConstants.POSITION_CONVERSION_FACTOR));
     board = new MAShuffleboard("gripper");
     encoder.setPosition(0);
@@ -42,6 +48,8 @@ public class GripperSubsystem extends SubsystemBase {
     pid.setD(GripperConstants.kD);
 
     encoder.setPosition(0);
+
+    limitSwitch = new DigitalInput(PortMap.Gripper.limitSwitchPort);
   }
 
   public void setPower(double power){
@@ -97,5 +105,9 @@ public class GripperSubsystem extends SubsystemBase {
     board.addNum("current", getMotorCurrent());
 
     board.addBoolean("patt", canSore);
+
+    if (!limitSwitch.get()) {
+      encoder.setPosition(GripperConstants.MAX_POSE);
+    }
  }
 }

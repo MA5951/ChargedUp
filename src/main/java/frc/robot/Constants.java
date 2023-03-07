@@ -33,14 +33,14 @@ public final class Constants {
   public static final class FieldConstants {
     public static final double FIELD_WIDTH_METERS = 8.02;
     public static final double FIELD_LENGTH_METERS = 16.54;
-    public static final double TO_2 = 0.56;
-    public static final double TO_3 = 1.08;
-    private static final double BLUE_X = 1 + Robot.WIDTH / 2;
-    private static final double RED_X = FIELD_LENGTH_METERS - 1 - Robot.WIDTH / 2;
-    private static final double A1Y = Robot.LENGTH / 2.0;
+    public static final double TO_2 = 0.56 + 0.2;
+    public static final double TO_3 = 1.08 + 0.1;
+    private static final double BLUE_X = 0.95 + Robot.WIDTH / 2;
+    private static final double RED_X = FIELD_LENGTH_METERS - 1.5 - Robot.WIDTH / 2;
+    private static final double A1Y = Robot.LENGTH / 2.0 + 0.2;
     private static final double A2Y = Robot.LENGTH / 2.0 + TO_2;
     private static final double A3Y = Robot.LENGTH / 2.0 + TO_3;
-    private static final double DISTANCE_FROM_GRIDS = A3Y - A2Y;
+    private static final double DISTANCE_FROM_GRIDS = A3Y - A2Y + 0.14;
     private static final double B1Y = A3Y + DISTANCE_FROM_GRIDS;
     private static final double B2Y = B1Y + DISTANCE_FROM_GRIDS;
     private static final double B3Y = B2Y + DISTANCE_FROM_GRIDS;
@@ -88,12 +88,12 @@ public final class Constants {
   }
 
   public static class Camera {
-    public static double CAMERA_DISTANCE_FROM_CENTER_IN_X = -0.6;
-    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = -0.22;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_X = 0;//-0.405;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = 0.22;
     public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Z = 0.7;
     public static final double CAMERA_ROLL = 0;
     public static final double CAMERA_PITCH = 0;
-    public static final double CAMERA_YAW = Math.PI;
+    public static final double CAMERA_YAW = 0;
 
   }
 

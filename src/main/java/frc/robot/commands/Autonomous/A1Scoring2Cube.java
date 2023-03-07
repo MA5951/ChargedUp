@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.Automations.SpinnerAutomation;
 import frc.robot.commands.Automations.ResetArmAutomation;
+import frc.robot.commands.Automations.GrabingAutomation;
 import frc.robot.commands.Automations.IntakeAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Intake.CloseIntake;
@@ -37,13 +37,13 @@ public class A1Scoring2Cube extends SequentialCommandGroup {
           new ResetArmAutomation(),
           new WaitUntilCommand(
             this::shouldIOpenTheIntake
-          )
-        ),
-        new IntakeAutomation(),
-        new CloseIntake()
+          ),
+          new IntakeAutomation(),
+          new CloseIntake()
+        )
       ),
       swerve.getAutonomousPathCommand("From pickup 1 to A2").alongWith(
-        new SpinnerAutomation()
+        new GrabingAutomation()
       ),
       new ScoringAutomationForAutonomous(),
       new ResetArmAutomation()

@@ -4,17 +4,14 @@
 
 package frc.robot.commands.Automations;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.gripper.GripperControlCommand;
-import frc.robot.commands.spinner.SpinnerCommand;
-import frc.robot.subsystems.Spinner.Spinner;
-import frc.robot.subsystems.arm.ArmConstants;
-import frc.robot.subsystems.arm.ArmRotation;
+import frc.robot.commands.spinner.SpinnerManualCommand;
+import frc.robot.subsystems.Spinner.SpinnerConstants;
 import frc.robot.subsystems.gripper.GripperConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -26,22 +23,12 @@ public class IntakeAutomation extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ParallelCommandGroup(
-        new SetArmAutomation(
-          0,
-          ArmConstants.ARM_ROTATION_START_POSE),
-        new SequentialCommandGroup(
-          new GripperControlCommand(GripperConstants.CLOSE_POSITION),
-          new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation() <= 
-            ArmConstants.ARM_ROTATION_START_POSE + ArmConstants.ARM_ROTATION_TOLERANCE),
-          new GripperControlCommand(GripperConstants.OPEN_POSITION)
-        )
-      ),
+      new GripperControlCommand(GripperConstants.OPEN_POSITION),
       new OpenIntake(),
       new ParallelDeadlineGroup(
-        new WaitUntilCommand(Spinner.getInstance()::isGamePiceEntered),
+        new WaitCommand(0.8),
         new IntakeCommand(),
-        new SpinnerCommand()
+        new SpinnerManualCommand(SpinnerConstants.IDLE_REVERSE_SPEED)
       )
     );
   }

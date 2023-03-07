@@ -91,7 +91,7 @@ public class ArmRotation extends SubsystemBase implements ControlSubsystemInSubs
       && setPoint <= ArmConstants.ARM_ROTATION_MAX_POSE
       && (
         (GripperSubsystem.getInstance().getCurrentEncoderPosition()
-          < GripperConstants.INTAKE_POSITION + Math.toRadians(1.5)) ||
+          < GripperConstants.INTAKE_POSITION + Math.toRadians(3)) ||
         (getRotation() > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR
         && setPoint > ArmConstants.MIN_ROTATION_FOR_EXTENSTION_SAFTY_BUFFR) ||
         (GripperSubsystem.getInstance().getCurrentEncoderPosition()

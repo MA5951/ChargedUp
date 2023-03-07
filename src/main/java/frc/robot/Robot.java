@@ -8,9 +8,7 @@ import com.ma5951.utils.commands.ControlCommandInsubsystemControl;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Spinner.Spinner;
@@ -42,10 +40,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    if (DriverStation.getAlliance() == Alliance.Red) {
-      Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_X = -Constants.Camera.CAMERA_DISTANCE_FROM_CENTER_IN_X;
-    }
-
     m_robotContainer = new RobotContainer();
 
     UsbCamera camera = CameraServer.startAutomaticCapture();

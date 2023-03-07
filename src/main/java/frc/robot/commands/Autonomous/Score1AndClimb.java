@@ -4,10 +4,12 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ScoringAutomationForAutonomous;
 import frc.robot.commands.Intake.CloseIntake;
+import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.LockModules;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
@@ -22,8 +24,11 @@ public class Score1AndClimb extends SequentialCommandGroup {
     addCommands(
       new ScoringAutomationForAutonomous(),
       new ResetArmAutomation(),
-      SwerveDrivetrainSubsystem.getInstance()
-        .getAutonomousPathCommand("climb", true).alongWith(new CloseIntake().repeatedly()),
+      new ParallelDeadlineGroup(SwerveDrivetrainSubsystem.getInstance()
+      .getAutonomousPathCommand("climb", true),
+      new CloseIntake().repeatedly()
+      ),
+      new AutoBalance(),
       new LockModules()
     );
   }
