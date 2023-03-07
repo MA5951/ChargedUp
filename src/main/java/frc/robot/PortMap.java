@@ -6,11 +6,11 @@ public class PortMap {
         public static final int intakeMotor2ID = 15;
         public static final int intakePositionMotorID = 13;
     
-        public static final int closingHallEffectPort = 1;
+        public static final int closeHallEffectPort = 1;
+        public static final int openHallEffectPort = 2;
       }
   
       public static class Spinner {
-        public static final int stuckIRPort = 4;
         public static final int buttomIRPort = 0;
     
         public static final int spinnerMotorID = 16;
@@ -18,6 +18,7 @@ public class PortMap {
   
       public static class Gripper {
         public static final int gripperMotorID = 17;
+        public static final int limitSwitchPort = 7;
       }
   
       public static class ChameleonClimb {

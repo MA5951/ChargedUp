@@ -46,7 +46,7 @@ public class DriveSwerveCommand extends CommandBase {
     double ySpeed =
       SwerveDrivetrainSubsystem.getInstance().isXYReversed ? 
       xSpeedSupplier.get() : ySpeedSupplier.get();
-    double turningSpeed = turningSpeedSupplier.get();
+    double turningSpeed = turningSpeedSupplier.get() * -1;
 
     xSpeed = Math.abs(xSpeed) < 0.1 ? 0 : xSpeed;
     ySpeed = Math.abs(ySpeed) < 0.1 ? 0 : ySpeed;

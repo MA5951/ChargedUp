@@ -1,17 +1,16 @@
 {
   "NetworkTables": {
-    "Retained Values": {
-      "open": false
-    },
-    "Transitory Values": {
-      "open": false
-    },
     "transitory": {
-      "SmartDashboard": {
-        "Field": {
+      "CameraPublisher": {
+        "USB Camera 0": {
           "open": true
         },
         "open": true
+      },
+      "SmartDashboard": {
+        "Field": {
+          "open": true
+        }
       }
     },
     "types": {
@@ -21,8 +20,8 @@
     "windows": {
       "/SmartDashboard/Field": {
         "Robot": {
-          "length": 0.75,
-          "width": 0.75
+          "length": 0.9150000214576721,
+          "width": 0.9150000214576721
         },
         "image": "C:\\Users\\User\\Desktop\\PathPlanner-Windows (2)\\data\\flutter_assets\\images\\field23.png",
         "window": {

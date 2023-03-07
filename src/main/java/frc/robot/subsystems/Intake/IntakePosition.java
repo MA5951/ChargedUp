@@ -26,13 +26,12 @@ public class IntakePosition extends SubsystemBase {
   private CANSparkMax motor;
   private RelativeEncoder encoder;
 
-  private DigitalInput hallEffect;
+  private DigitalInput closeHallEffect;
+  private DigitalInput openHallEffect;
 
   private MAShuffleboard board;
 
   private SparkMaxPIDController pidController;
-
-  public double lastPose = 0;
 
   public IntakePosition(){
     motor = new CANSparkMax(
@@ -43,8 +42,12 @@ public class IntakePosition extends SubsystemBase {
   
     encoder = motor.getEncoder();
 
-    hallEffect = new DigitalInput(
-      PortMap.Intake.closingHallEffectPort);
+    closeHallEffect = new DigitalInput(
+      PortMap.Intake.closeHallEffectPort);
+    
+    openHallEffect = new DigitalInput(
+      PortMap.Intake.openHallEffectPort
+    );
 
     motor.setIdleMode(IdleMode.kCoast);
 
@@ -84,7 +87,7 @@ public class IntakePosition extends SubsystemBase {
   }
   
   public boolean isClose(){
-    return !hallEffect.get() || 
+    return !closeHallEffect.get() || 
     Math.abs(getPosition() - IntakeConstants.CLOSE_POSITION) < 
     IntakeConstants.POSITION_TOLORANCE;
   }
@@ -96,7 +99,8 @@ public class IntakePosition extends SubsystemBase {
 
   public boolean isOpen(){
     return Math.abs(getPosition() - IntakeConstants.OPEN_POSITION) < 
-      IntakeConstants.POSITION_TOLORANCE;
+      IntakeConstants.POSITION_TOLORANCE
+      || !openHallEffect.get();
   }
 
   public static IntakePosition getInstance() {
@@ -115,10 +119,10 @@ public class IntakePosition extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // if (!hallEffect.get()) {
-    //   encoder.setPosition(IntakeConstants.CLOSE_POSITION);
-    // }
-    
+    if (!openHallEffect.get()) {
+      encoder.setPosition(IntakeConstants.OPEN_POSITION);
+    }
+
     board.addBoolean("isClose", isClose());
     board.addBoolean("isMiddle", isMiddle());
     board.addBoolean("isOpen", isOpen());
@@ -127,6 +131,6 @@ public class IntakePosition extends SubsystemBase {
     board.addNum("positionn degrees", Math.toDegrees(getPosition()));
 
 
-    board.addBoolean("hall effect", !hallEffect.get());
+    board.addBoolean("hall effect", !closeHallEffect.get());
   }
 }

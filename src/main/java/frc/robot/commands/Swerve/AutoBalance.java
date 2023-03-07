@@ -4,30 +4,33 @@
 
 package frc.robot.commands.Swerve;
 
-import com.ma5951.utils.controllers.PIDController;
-
-import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 public class AutoBalance extends CommandBase {
   /** Creates a new AutoBallance. */
   private SwerveDrivetrainSubsystem swerve;
-  private ArmFeedforward feed;
   private PIDController pid;
+  private double time;
+  private final double deley;
+  private boolean wasAtPoint;
 
   public AutoBalance() {
     // Use addRequirements() here to declare subsystem dependencies.
     swerve = SwerveDrivetrainSubsystem.getInstance();
     addRequirements(swerve);
-    feed = new ArmFeedforward(0, 0, 0);
-    pid = new PIDController(0, 0, 0, 0, 0, -1, 1);
+    pid = new PIDController(0.025, 0, 0.007);
+    pid.setTolerance(1);
+    deley = 1;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     pid.setSetpoint(0);
+    wasAtPoint = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,9 +38,14 @@ public class AutoBalance extends CommandBase {
   public void execute() {
     swerve.drive(
     pid.calculate(
-      swerve.getPitch()) + 
-      feed.calculate((Math.PI / 2.0) - Math.toRadians(swerve.getPitch()), 0),
-      0, 0, true);
+      swerve.getPitch()),
+      0, 0, false);
+    
+
+    if (pid.atSetpoint() && !wasAtPoint) {
+      time = Timer.getFPGATimestamp();
+      wasAtPoint = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +57,6 @@ public class AutoBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return pid.atSetpoint() && Timer.getFPGATimestamp() - time > deley;
   }
 }

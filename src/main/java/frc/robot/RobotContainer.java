@@ -8,7 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ResetArmFromHpAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
-import frc.robot.commands.Autonomous.Score1;
+import frc.robot.commands.Autonomous.C3Scoring2Cube;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrabingAutomation;
@@ -16,6 +16,7 @@ import frc.robot.commands.Automations.HPIntakeAutomation;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.Swerve.GoToScoring;
 import frc.robot.commands.gripper.GripperControlCommand;
 import frc.robot.commands.spinner.SpinnerManualCommand;
 import frc.robot.subsystems.Intake.Intake;
@@ -130,9 +131,9 @@ public class RobotContainer {
       new CloseIntake()
     );
 
-    // DRIVER_PS4_CONTROLLER.L1().whileTrue(
-    //   new GoToScoring()
-    // );
+    DRIVER_PS4_CONTROLLER.L1().whileTrue(
+      new GoToScoring()
+    );
 
     DRIVER_PS4_CONTROLLER.circle().whileTrue(
       new WaitUntilCommand(() -> ArmRotation.getInstance().getRotation()
@@ -214,7 +215,9 @@ public class RobotContainer {
 
     OPERATOR_PS4_CONTROLLER.povLeft().whileTrue(
       new HPIntakeAutomation()
-    ).onFalse(
+    );
+
+    OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
       new ResetArmFromHpAutomation()
     );
   }
@@ -226,6 +229,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new Score1();
+    return new C3Scoring2Cube();
   }
 }

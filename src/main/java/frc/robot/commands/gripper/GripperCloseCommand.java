@@ -30,7 +30,8 @@ public class GripperCloseCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (Timer.getFPGATimestamp() - startTime > 0.7) {
+    if (Timer.getFPGATimestamp() - startTime > 0.7 && 
+      gripperSubsystem.getMotorCurrent() > 10) {
       tachedGamePice = true;
     }
     gripperSubsystem.setPower(GripperConstants.CLOSING_POWER);

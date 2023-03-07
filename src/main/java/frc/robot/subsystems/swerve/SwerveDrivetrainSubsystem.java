@@ -48,12 +48,12 @@ import frc.robot.RobotContainer;
 public class SwerveDrivetrainSubsystem extends SubsystemBase {
   private static SwerveDrivetrainSubsystem swerve;
 
-  public PIDController P_CONTROLLER_X;
-  public PIDController P_CONTROLLER_Y;
+  public PIDController CONTROLLER_X;
+  public PIDController CONTROLLER_Y;
   public PIDController thetaPID;
 
   public boolean isXReversed = true;
-  public boolean isYReversed = true;
+  public boolean isYReversed = false;
   public boolean isXYReversed = true;
   public double offsetAngle = 0;
 
@@ -66,8 +66,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   
   private ProfiledPIDController thetaProfiledPID;
 
-  private static final String KP_X = "kp_x";
-  private static final String KP_Y = "kp_y";
   private static final String theta_KP = "theta_KP";
   private static final String theta_KI = "theta_KI";
   private static final String theta_KD = "theta_KD";
@@ -79,16 +77,16 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public final MAShuffleboard board;
 
   private final Translation2d frontLeftLocation = new Translation2d(
-      -SwerveConstants.WIDTH / 2,
+      SwerveConstants.WIDTH / 2,
       SwerveConstants.LENGTH / 2);
   private final Translation2d frontRightLocation = new Translation2d(
-      SwerveConstants.WIDTH / 2,
+      -SwerveConstants.WIDTH / 2,
       SwerveConstants.LENGTH / 2);
   private final Translation2d rearLeftLocation = new Translation2d(
-      -SwerveConstants.WIDTH / 2,
+      SwerveConstants.WIDTH / 2,
       -SwerveConstants.LENGTH / 2);
   private final Translation2d rearRightLocation = new Translation2d(
-      SwerveConstants.WIDTH / 2,
+      -SwerveConstants.WIDTH / 2,
       -SwerveConstants.LENGTH / 2);
 
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
@@ -168,13 +166,11 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
    
     this.board = new MAShuffleboard("swerve");
 
-    board.addNum(KP_X, SwerveConstants.KP_X);
+    CONTROLLER_X = new PIDController(
+      SwerveConstants.KP_X, SwerveConstants.KI_X, 0);
 
-    P_CONTROLLER_X = new PIDController(board.getNum(KP_X), 0, 0);
-
-    board.addNum(KP_Y, SwerveConstants.KP_Y);
-
-    P_CONTROLLER_Y = new PIDController(board.getNum(KP_Y), 0, 0);
+    CONTROLLER_Y = new PIDController(
+      SwerveConstants.KP_Y, SwerveConstants.KI_Y, 0);
 
     board.addNum(theta_KP, SwerveConstants.THATA_KP);
     board.addNum(theta_KI, SwerveConstants.THATA_KI);
@@ -197,7 +193,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
     thetaProfiledPID.enableContinuousInput(0, 2 * Math.PI);
 
-    
     SmartDashboard.putData("Field", field);
   }
 
@@ -228,11 +223,11 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getFusedHeading() {
-    return -navx.getAngle();
+    return navx.getAngle();
   }
 
   public double getPitch() {
-    return navx.getPitch();
+    return navx.getRoll();
   }
 
   public Rotation2d getRotation2d() {
@@ -264,10 +259,10 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void setModules(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_VELOCITY);
-    rearLeftModule.setDesiredState(states[0]);
-    frontLeftModule.setDesiredState(states[1]);
-    rearRightModule.setDesiredState(states[2]);
-    frontRightModule.setDesiredState(states[3]);
+    rearLeftModule.setDesiredState(states[3]);
+    frontLeftModule.setDesiredState(states[2]);
+    rearRightModule.setDesiredState(states[1]);
+    frontRightModule.setDesiredState(states[0]);
 
   }
 
@@ -275,7 +270,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     SwerveModuleState[] states = kinematics
         .toSwerveModuleStates(
             fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, 
-            new Rotation2d(Math.toRadians(getFusedHeading() - offsetAngle)))
+            new Rotation2d(Math.toRadians((getFusedHeading() - offsetAngle))))
                 : new ChassisSpeeds(x, y, omega));
     setModules(states);
   }
@@ -305,19 +300,19 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     Translation2d closest = scoringPoses[0];
     for (int i = 1; i < scoringPoses.length; i++) {
       Translation2d pose = scoringPoses[i];
-      if (robotPose.getTranslation().getDistance(pose) < 
-          robotPose.getTranslation().getDistance(closest)) {
+      if (Math.abs(robotPose.getTranslation().getDistance(pose)) < 
+          Math.abs(robotPose.getTranslation().getDistance(closest))) {
         closest = pose;
       }
     }
     Pose2d ClosestScoringPose;
-    double targetAngle = (Math.abs(getPose().getRotation().getDegrees()) > 90) ? 180 : 0;
+    double angle = DriverStation.getAlliance() == Alliance.Red ? 0 : 180;
     ClosestScoringPose = new
       Pose2d(
         closest.getX(),
         closest.getY(),
         new Rotation2d(
-          Math.toRadians(targetAngle)
+          Math.toRadians(angle)
         )
       );
     return ClosestScoringPose;
@@ -333,8 +328,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       trajectory,
       this::getPose,
       getKinematics(),
-      P_CONTROLLER_X,
-      P_CONTROLLER_Y,
+      CONTROLLER_X,
+      CONTROLLER_Y,
       thetaProfiledPID,
       this::setModules,
       this
@@ -352,14 +347,19 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
       tPathPlannerTrajectory = trajectory;
     }
     resetNavx();
-    resetOdometry(
-      tPathPlannerTrajectory.getInitialPose());
-    navx.setAngleAdjustment(getPose().getRotation().getDegrees());
+    navx.setAngleAdjustment(
+      tPathPlannerTrajectory.getInitialState().holonomicRotation.getDegrees());
+    Pose2d pose = new Pose2d(
+      tPathPlannerTrajectory.getInitialPose().getX(),
+      tPathPlannerTrajectory.getInitialPose().getY(),
+      tPathPlannerTrajectory.getInitialState().holonomicRotation
+    ); 
+    resetOdometry(pose);
   }
 
   public PathPlannerTrajectory getTrajectory(String pathName) {
     return PathPlanner.loadPath(pathName, new PathConstraints(
-      3,3));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
+      SwerveConstants.MAX_VELOCITY,3));//SwerveConstants.maxVelocity, SwerveConstants.maxAcceleration));
   }
 
   public Command getAutonomousPathCommand(
@@ -374,8 +374,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
         trajectory,
         this::getPose,
         getKinematics(),
-        P_CONTROLLER_X,
-        P_CONTROLLER_Y,
+        CONTROLLER_X,
+        CONTROLLER_Y,
         thetaPID,
         this::setModules,
         true,
@@ -412,7 +412,6 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
           getRotation2d()
         )
       );
-      updateOffset();
     }
   }
 
@@ -436,5 +435,8 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
     board.addString("point", "(" + getPose().getX() + "," + getPose().getY() + ")");
     board.addNum("angle in degrees", getPose().getRotation().getDegrees());
     board.addNum("angle in radians", getPose().getRotation().getRadians());
+
+    board.addNum("pitch", getPitch());
+    board.addNum("roll", navx.getRoll());
   }
 }
