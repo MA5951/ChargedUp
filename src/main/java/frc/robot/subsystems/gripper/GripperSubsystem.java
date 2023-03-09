@@ -73,6 +73,18 @@ public class GripperSubsystem extends SubsystemBase {
     encoder.setPosition(GripperConstants.MAX_POSE);
   }
 
+  public boolean limitSwitch() {
+    return !limitSwitch.get();
+  }
+
+  public double getSetPoint() {
+    return setPoint;
+  }
+
+  public void setSetpoint(double setPoint) {
+    this.setPoint = setPoint;
+  }
+
   public void calculate(double setPoint){
     this.setPoint = setPoint;
     double useSetPoint = setPoint;

@@ -5,6 +5,7 @@
 package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
 
 public class GripperControlCommand extends CommandBase {
@@ -28,7 +29,14 @@ public class GripperControlCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripperSubsystem.calculate(setPoint);
+    if (setPoint == GripperConstants.MAX_POSE) {
+      if (!gripperSubsystem.limitSwitch()) {
+        gripperSubsystem.setSetpoint(-1);
+        gripperSubsystem.setPower(0.7);
+      }
+    } else {
+      gripperSubsystem.calculate(setPoint);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -40,6 +48,7 @@ public class GripperControlCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return gripperSubsystem.atSetPoint();
+    return gripperSubsystem.atSetPoint() || (gripperSubsystem.limitSwitch()
+    && setPoint == GripperConstants.MAX_POSE);
   }
 }

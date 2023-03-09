@@ -13,7 +13,6 @@ import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
 import frc.robot.subsystems.gripper.GripperConstants;
-import frc.robot.subsystems.gripper.GripperSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,25 +28,23 @@ public class GrabingAutomation extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SequentialCommandGroup (
-        new InstantCommand(() -> GripperSubsystem.getInstance().canSore = false),
-        new GripperControlCommand(GripperConstants.BEFOR_GRABING_POSE),
-        new SequentialCommandGroup(
-          new InstantCommand(
-            () -> ArmExtenstion.getInstance().setSetpoint(
-              ArmConstants.ARM_EXTENSTION_FOR_GRABING)),
-          new InstantCommand(
-            () -> ArmRotation.getInstance().setSetpoint(
-              ArmConstants.MIN_ROTATION_FOR_GRABING
-            )),
-            new WaitUntilCommand(this::atPoint)
-        )
-      ),
-      new GripperCloseCommand(),
+      new GripperControlCommand(GripperConstants.BEFOR_GRABING_POSE),
       new InstantCommand(
-        () -> ArmExtenstion.getInstance().setSetpoint(0)
-      ),
-      new InstantCommand(() -> GripperSubsystem.getInstance().canSore = true)
-    );
+        () -> ArmExtenstion.getInstance().setSetpoint(
+          ArmConstants.ARM_EXTENSTION_FOR_GRABING)),
+      new InstantCommand(
+        () -> ArmRotation.getInstance().setSetpoint(
+          ArmConstants.MIN_ROTATION_FOR_GRABING
+        )),
+    new WaitUntilCommand(this::atPoint),
+    new GripperCloseCommand(),
+    new InstantCommand(
+      () -> ArmExtenstion.getInstance().setSetpoint(0)
+    ),
+    new InstantCommand(
+      () -> ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)
+    ),
+    new WaitUntilCommand(this::atPoint)
+  );
   }
 }

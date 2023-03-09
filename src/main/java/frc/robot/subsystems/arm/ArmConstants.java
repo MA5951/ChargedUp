@@ -36,14 +36,16 @@ public class ArmConstants {
     public static final double MIN_ROTATION_FOR_CLOSING_INTAKE = -1.1348544383049011 + 0.05;
 
     public static final double ARM_EXTENSTION_FOR_GRABING = 0.030089621707797;
-    public static final double MIN_ROTATION_FOR_GRABING = -1.234854578971863 + 0.04;
+    public static final double MIN_ROTATION_FOR_GRABING = -1.181165218353271;
 
     public static final double ARM_MAX_ROTATION_INTAKE_CLOSED = -1.059980750083923;
 
     public static final double ROTATION_MID_FOR_BEFORE_SCORING = Math.toRadians(13.535156213103427);
     public static final double ROTATION_MID_FOR_SCORING = Math.toRadians(7.72460941746863);
     public static final double EXTENSTION_FOR_MID_SCORING = 0.41;
+    public static final double MAX_ROTATION_FOR_OPEN_GRIPPER = Math.toRadians(-69);
 
+    
     public static final double ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK = Math.toRadians(162.81641485413274);
     public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = Math.toRadians(170.97851490144268);
     public static final double EXTENSTION_FOR_MID_SCORING_FROM_THE_BACK = 0.237665064334869;
