@@ -53,7 +53,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public PIDController thetaPID;
 
   public boolean isXReversed = true;
-  public boolean isYReversed = false;
+  public boolean isYReversed = true;
   public boolean isXYReversed = true;
   public double offsetAngle = 0;
 
@@ -77,16 +77,16 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   public final MAShuffleboard board;
 
   private final Translation2d frontLeftLocation = new Translation2d(
-      SwerveConstants.WIDTH / 2,
+      -SwerveConstants.WIDTH / 2,
       SwerveConstants.LENGTH / 2);
   private final Translation2d frontRightLocation = new Translation2d(
-      -SwerveConstants.WIDTH / 2,
+      SwerveConstants.WIDTH / 2,
       SwerveConstants.LENGTH / 2);
   private final Translation2d rearLeftLocation = new Translation2d(
-      SwerveConstants.WIDTH / 2,
+      -SwerveConstants.WIDTH / 2,
       -SwerveConstants.LENGTH / 2);
   private final Translation2d rearRightLocation = new Translation2d(
-      -SwerveConstants.WIDTH / 2,
+      SwerveConstants.WIDTH / 2,
       -SwerveConstants.LENGTH / 2);
 
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
@@ -223,7 +223,7 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getFusedHeading() {
-    return navx.getAngle();
+    return -navx.getAngle();
   }
 
   public double getPitch() {
@@ -259,10 +259,10 @@ public class SwerveDrivetrainSubsystem extends SubsystemBase {
 
   public void setModules(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_VELOCITY);
-    rearLeftModule.setDesiredState(states[3]);
-    frontLeftModule.setDesiredState(states[2]);
-    rearRightModule.setDesiredState(states[1]);
-    frontRightModule.setDesiredState(states[0]);
+    rearLeftModule.setDesiredState(states[0]);
+    frontLeftModule.setDesiredState(states[1]);
+    rearRightModule.setDesiredState(states[2]);
+    frontRightModule.setDesiredState(states[3]);
 
   }
 

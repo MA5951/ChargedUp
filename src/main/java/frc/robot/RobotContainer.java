@@ -26,8 +26,8 @@ import frc.robot.subsystems.Spinner.SpinnerConstants;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.arm.ArmExtenstion;
 import frc.robot.subsystems.arm.ArmRotation;
-import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.gripper.GripperSubsystem;
+import frc.robot.subsystems.gripper.GripperConstants;
 import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 
 import com.ma5951.utils.PhotonVision;
@@ -186,7 +186,10 @@ public class RobotContainer {
     // );
     
     OPERATOR_PS4_CONTROLLER.triangle().whileTrue(
-      new GrabingAutomation()
+      new InstantCommand(() -> GripperSubsystem.getInstance().canSore = false).andThen(
+      new GrabingAutomation()).andThen(
+        new InstantCommand(() -> GripperSubsystem.getInstance().canSore = true)
+      )
     );
 
     OPERATOR_PS4_CONTROLLER.povUp().whileTrue(
@@ -205,9 +208,9 @@ public class RobotContainer {
       new InstantCommand(() -> Intake.getInstance().setPower(0))
     );
 
-    OPERATOR_PS4_CONTROLLER.options().whileTrue(
-      new InstantCommand(() -> GripperSubsystem.getInstance().ResetToMaxPose())
-    );
+    // OPERATOR_PS4_CONTROLLER.options().whileTrue(
+    //   new InstantCommand(() -> GripperSubsystem.getInstance().ResetToMaxPose())
+    // );
 
     OPERATOR_PS4_CONTROLLER.share().whileTrue(
       new GripperControlCommand(GripperConstants.MAX_POSE)
