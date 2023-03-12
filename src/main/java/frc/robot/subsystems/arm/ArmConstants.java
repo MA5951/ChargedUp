@@ -44,7 +44,6 @@ public class ArmConstants {
     public static final double ROTATION_MID_FOR_SCORING = Math.toRadians(7.72460941746863);
     public static final double EXTENSTION_FOR_MID_SCORING = 0.41;
     public static final double MAX_ROTATION_FOR_OPEN_GRIPPER = Math.toRadians(-69);
-
     
     public static final double ROTATION_MID_FOR_BEFORE_SCORING_FROM_THE_BACK = Math.toRadians(162.81641485413274);
     public static final double ROTATION_FOR_MID_SCORING_FROM_THE_BACK = Math.toRadians(170.97851490144268);

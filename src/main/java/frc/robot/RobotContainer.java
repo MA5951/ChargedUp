@@ -9,6 +9,9 @@ import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ResetArmFromHpAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
 import frc.robot.commands.Autonomous.C3Scoring2Cube;
+import frc.robot.commands.Autonomous.Score1;
+import frc.robot.commands.Autonomous.Score1AndClimb;
+import frc.robot.commands.ChameleonClimb.ChameleonClimbCommand;
 import frc.robot.commands.Automations.BeforeScoringAutomation;
 import frc.robot.commands.Automations.BeforeScoringAutomationLow;
 import frc.robot.commands.Automations.GrabingAutomation;
@@ -167,6 +170,14 @@ public class RobotContainer {
     );
 
     OPERATOR_PS4_CONTROLLER.L1().whileTrue(
+      new SpinnerManualCommand(-SpinnerConstants.IDLE_REVERSE_SPEED)
+    );
+
+    OPERATOR_PS4_CONTROLLER.R2().whileTrue(
+      new SpinnerManualCommand(SpinnerConstants.IDLE_REVERSE_SPEED + 0.2)
+    );
+
+    OPERATOR_PS4_CONTROLLER.L2().whileTrue(
       new SpinnerManualCommand(-SpinnerConstants.IDLE_REVERSE_SPEED + 0.2)
     );
     
@@ -181,9 +192,9 @@ public class RobotContainer {
         () -> ArmExtenstion.getInstance().defultPower = 0)
     );
 
-    // OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
-    //   new ChameleonClimbCommand()
-    // );
+    DRIVER_PS4_CONTROLLER.povDown().whileTrue(
+      new ChameleonClimbCommand()
+    );
     
     OPERATOR_PS4_CONTROLLER.triangle().whileTrue(
       new InstantCommand(() -> GripperSubsystem.getInstance().canSore = false).andThen(
@@ -207,10 +218,6 @@ public class RobotContainer {
     ).onFalse(
       new InstantCommand(() -> Intake.getInstance().setPower(0))
     );
-
-    // OPERATOR_PS4_CONTROLLER.options().whileTrue(
-    //   new InstantCommand(() -> GripperSubsystem.getInstance().ResetToMaxPose())
-    // );
 
     OPERATOR_PS4_CONTROLLER.share().whileTrue(
       new GripperControlCommand(GripperConstants.MAX_POSE)
