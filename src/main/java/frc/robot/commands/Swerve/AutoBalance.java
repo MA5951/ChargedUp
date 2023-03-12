@@ -23,13 +23,13 @@ public class AutoBalance extends CommandBase {
     addRequirements(swerve);
     pid = new PIDController(0.025, 0, 0.007);
     pid.setTolerance(1);
-    deley = 1;
+    deley = 3;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pid.setSetpoint(0);
+    pid.setSetpoint(3);
     wasAtPoint = false;
   }
 

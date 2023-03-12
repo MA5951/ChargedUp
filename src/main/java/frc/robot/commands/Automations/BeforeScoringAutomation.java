@@ -39,8 +39,7 @@ public class BeforeScoringAutomation extends SequentialCommandGroup {
         new setArmForMid(),
         new CloseIntake()
       ),
-      new WaitUntilCommand(this::atPoint),
-      new setExtenstion()
+      new WaitUntilCommand(this::atPoint)
     );
   }
 }

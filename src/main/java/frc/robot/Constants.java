@@ -88,8 +88,8 @@ public final class Constants {
   }
 
   public static class Camera {
-    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_X = 0.05; // -0.405;
-    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = 0.22;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_X = 0.1; // -0.405;
+    public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Y = 0.2;
     public static final double CAMERA_DISTANCE_FROM_CENTER_IN_Z = 0.7476;
     public static final double CAMERA_ROLL = 0;
     public static final double CAMERA_PITCH = 0;

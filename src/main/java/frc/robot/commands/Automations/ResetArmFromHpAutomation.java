@@ -25,7 +25,7 @@ public class ResetArmFromHpAutomation extends SequentialCommandGroup {
       new InstantCommand(
         () -> GripperSubsystem.getInstance().setPower(GripperConstants.CLOSING_POWER)
       ),
-      new WaitCommand(2),
+      new WaitCommand(2.3),
       new InstantCommand(
         () -> GripperSubsystem.getInstance().setPower(GripperConstants.HOLDING_POWER)
       ),

@@ -25,8 +25,8 @@ public class ResetArmAutomationForAuto extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() ->
       ArmExtenstion.getInstance().setSetpoint(0)).alongWith(
-      new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint),
-      new GripperControlCommand(GripperConstants.MAX_POSE).alongWith(
+      new WaitUntilCommand(ArmExtenstion.getInstance()::atPoint).andThen(
+      new GripperControlCommand(GripperConstants.MAX_POSE)).alongWith(
         new OpenIntake()
       )),
       new InstantCommand(() ->
