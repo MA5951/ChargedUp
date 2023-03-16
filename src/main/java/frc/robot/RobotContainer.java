@@ -9,6 +9,7 @@ import frc.robot.commands.Automations.ResetArmAutomation;
 import frc.robot.commands.Automations.ResetArmFromHpAutomation;
 import frc.robot.commands.Automations.ScoringAutomation;
 import frc.robot.commands.Autonomous.C3Scoring2Cube;
+import frc.robot.commands.Autonomous.OutOfComAndClimb;
 import frc.robot.commands.Autonomous.Score1;
 import frc.robot.commands.Autonomous.Score1AndClimb;
 import frc.robot.commands.ChameleonClimb.ChameleonClimbCommand;
@@ -207,12 +208,6 @@ public class RobotContainer {
       new ResetArmAutomation()
     );
 
-    OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
-      new GripperControlCommand(
-        GripperConstants.MAX_POSE
-      )
-    );
-
     DRIVER_PS4_CONTROLLER.cross().whileTrue(
       new InstantCommand(() -> Intake.getInstance().setPower(-IntakeConstants.INTAKE_POWER))
     ).onFalse(
@@ -230,6 +225,15 @@ public class RobotContainer {
     OPERATOR_PS4_CONTROLLER.povRight().whileTrue(
       new ResetArmFromHpAutomation()
     );
+
+    OPERATOR_PS4_CONTROLLER.circle().whileTrue(
+      new InstantCommand(() -> ArmExtenstion.getInstance().setSetpoint(0))
+    );
+
+    OPERATOR_PS4_CONTROLLER.povDown().whileTrue(
+      new InstantCommand(() -> ArmExtenstion.getInstance().setSetpoint(0)).alongWith(
+        new InstantCommand(() -> ArmRotation.getInstance().setSetpoint(ArmConstants.ARM_ROTATION_START_POSE)))
+    );
   }
 
   /**
@@ -239,6 +243,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new C3Scoring2Cube();
+    return new Score1();
   }
 }

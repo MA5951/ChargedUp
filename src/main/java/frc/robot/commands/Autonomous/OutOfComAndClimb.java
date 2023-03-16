@@ -26,7 +26,7 @@ import frc.robot.subsystems.swerve.SwerveDrivetrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Score1AndClimb extends SequentialCommandGroup {
+public class OutOfComAndClimb extends SequentialCommandGroup {
   /** Creates a new Score1. */
 
   private boolean atPoint() {
@@ -34,34 +34,19 @@ public class Score1AndClimb extends SequentialCommandGroup {
       && ArmRotation.getInstance().atPoint();
   }
 
-  public Score1AndClimb() {
+  public OutOfComAndClimb() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new GripperCloseCommand(),
-      // new ParallelDeadlineGroup(
-      //   new WaitUntilCommand(
-      //     () -> IntakePosition.getInstance().getPosition() < 
-      //     IntakeConstants.MIDDLE_POSITION  + Math.toRadians(5)
-      //   ), new OpenIntake()),
-      // new InstantCommand(
-      //   () -> ArmRotation.getInstance().setSetpoint(
-      //     ArmConstants.ROTATION_MID_FOR_SCORING)
-      // ).alongWith(new WaitUntilCommand(ArmRotation.getInstance()::atPoint)),
-      // new InstantCommand(
-      //   () -> ArmExtenstion.getInstance().setSetpoint(
-      //     ArmConstants.EXTENSTION_FOR_MID_SCORING
-      //   )
-      // ),
-      // new CloseIntake(),
-      // new WaitUntilCommand(this::atPoint),
-      // new GripperControlCommand(GripperConstants.MAX_POSE),
-      // new ResetArmAutomation(),
       new ParallelDeadlineGroup(SwerveDrivetrainSubsystem.getInstance()
-      .getAutonomousPathCommand("climb", true),
+      .getAutonomousPathCommand("out of com via ramp", true),
       new CloseIntake().repeatedly()
       ),
-      new AutoBalance(),
+      // new ParallelDeadlineGroup(SwerveDrivetrainSubsystem.getInstance()
+      // .getAutonomousPathCommand("from com to climb", true),
+      // new CloseIntake().repeatedly()
+      // ),
+      // new AutoBalance(),
       new LockModules()
     );
   }

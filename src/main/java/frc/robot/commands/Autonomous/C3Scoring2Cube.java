@@ -38,7 +38,7 @@ public class C3Scoring2Cube extends SequentialCommandGroup {
         new WaitUntilCommand(
           () -> 
           IntakePosition.getInstance().getPosition() <
-           IntakeConstants.MIDDLE_POSITION),
+           IntakeConstants.MIDDLE_POSITION + Math.toRadians(5)),
         new OpenIntake()
       ).alongWith(new GripperCloseCommand()),
       new InstantCommand(() -> 

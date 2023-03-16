@@ -22,8 +22,7 @@ public class Score1 extends SequentialCommandGroup {
       new ScoringAutomationForAutonomous(),
       new ResetArmAutomation(),
       SwerveDrivetrainSubsystem.getInstance()
-        .getAutonomousPathCommand("move out of the com", true),
-      new LockModules()
+        .getAutonomousPathCommand("move out of the com", true)
     );
   }
 }
